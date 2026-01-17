@@ -1,0 +1,27 @@
+{
+  "name": "@math-wiz/api",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@math-wiz/auth": "workspace:*",
+    "@math-wiz/db": "workspace:*",
+    "@math-wiz/env": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "dotenv": "catalog:",
+    "next": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@math-wiz/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

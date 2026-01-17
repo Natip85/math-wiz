@@ -1,0 +1,24 @@
+{
+  "name": "@math-wiz/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@math-wiz/db": "workspace:*",
+    "@math-wiz/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@math-wiz/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

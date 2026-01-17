@@ -1,0 +1,3 @@
+{
+  "extends": "@math-wiz/config/tsconfig.base.json"
+}

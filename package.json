@@ -1,0 +1,42 @@
+{
+  "name": "math-wiz",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:native": "turbo -F native dev",
+    "dev:web": "turbo -F web dev",
+    "db:push": "turbo -F @math-wiz/db db:push",
+    "db:studio": "turbo -F @math-wiz/db db:studio",
+    "db:generate": "turbo -F @math-wiz/db db:generate",
+    "db:migrate": "turbo -F @math-wiz/db db:migrate",
+    "db:start": "turbo -F @math-wiz/db db:start",
+    "db:watch": "turbo -F @math-wiz/db db:watch",
+    "db:stop": "turbo -F @math-wiz/db db:stop",
+    "db:down": "turbo -F @math-wiz/db db:down",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@math-wiz/env": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@math-wiz/config": "workspace:*",
+    "@types/node": "^22.13.14",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "turbo": "^2.6.3",
+    "typescript": "catalog:"
+  },
+  "lint-staged": {
+    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": ""
+  },
+  "packageManager": "pnpm@10.11.1"
+}
