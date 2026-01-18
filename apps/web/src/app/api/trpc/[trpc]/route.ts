@@ -1,7 +1,7 @@
 import { createContext } from "@math-wiz/api/context";
 import { appRouter } from "@math-wiz/api/routers/index";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 function handler(req: NextRequest) {
   return fetchRequestHandler({

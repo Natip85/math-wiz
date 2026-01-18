@@ -15,6 +15,7 @@
     "@math-wiz/env": "workspace:*",
     "better-auth": "catalog:",
     "dotenv": "catalog:",
+    "resend": "^4.1.2",
     "zod": "catalog:"
   },
   "devDependencies": {

@@ -11,12 +11,17 @@
   },
   "scripts": {},
   "dependencies": {
+    "@ai-sdk/anthropic": "^2.0.57",
+    "@ai-sdk/google": "^2.0.0",
     "@math-wiz/auth": "workspace:*",
     "@math-wiz/db": "workspace:*",
     "@math-wiz/env": "workspace:*",
     "@trpc/client": "catalog:",
     "@trpc/server": "catalog:",
+    "@vercel/blob": "^2.0.0",
+    "ai": "^6.0.39",
     "dotenv": "catalog:",
+    "drizzle-orm": "^0.45.1",
     "next": "catalog:",
     "zod": "catalog:"
   },
