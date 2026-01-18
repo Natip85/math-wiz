@@ -69,6 +69,7 @@ const createPlaygroundRunInput = z.object({
   difficulty: z.enum(["easy", "medium", "hard"]),
   questionCount: z.number().min(1).max(10),
   maxNumber: z.number().min(10).max(1000),
+  locale: z.string().default("en"),
 });
 
 export type CreatePlaygroundRunInput = z.infer<typeof createPlaygroundRunInput>;
@@ -209,7 +210,7 @@ export const playgroundRouter = router({
   createPlaygroundRun: protectedProcedure
     .input(createPlaygroundRunInput)
     .mutation(async ({ input, ctx }) => {
-      const { topic, difficulty, questionCount, maxNumber } = input;
+      const { topic, difficulty, questionCount, maxNumber, locale } = input;
       const userId = ctx.session.user.id;
 
       // Distribute questions across types (roughly equal, with remainder going to word problems)
@@ -217,7 +218,24 @@ export const playgroundRouter = router({
       const multipleChoiceCount = Math.floor(questionCount / 3);
       const wordProblemCount = questionCount - equationCount - multipleChoiceCount;
 
+      // Language-specific instructions
+      const languageInstructions =
+        locale === "he"
+          ? `
+**CRITICAL: Generate ALL text content in Hebrew (עברית).**
+- All questionText must be in Hebrew
+- All hints must be in Hebrew
+- Use Hebrew names for children (e.g., דני, מאיה, יוסי, נועה)
+- Keep visual descriptions in English (for image generation)
+- Use natural, child-friendly Hebrew appropriate for a 9-year-old`
+          : `
+**Generate ALL text content in English.**
+- Use English names for children (e.g., Emma, Jack, Sophie, Tom)
+- Keep language simple and clear for a 9-year-old`;
+
       const prompt = `You are generating a set of ${questionCount} math questions for a 9-year-old child for a **playground app**.
+
+${languageInstructions}
 
 Requirements:
 - Topic: ${topic} (e.g., addition, subtraction, multiplication, division)
@@ -251,7 +269,7 @@ Requirements:
 - Keep language simple and clear for a 9-year-old
 
 **For word problems with visuals:**
-- Visual descriptions should be detailed enough to create an illustration
+- Visual descriptions should be detailed enough to create an illustration (ALWAYS in English)
 - Example: "5 red apples on the left and 3 green apples on the right"
 - Use colorful, kid-friendly objects (apples, stars, balloons, toys, animals)
 
