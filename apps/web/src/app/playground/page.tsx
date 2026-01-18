@@ -56,11 +56,6 @@ export default async function Playground() {
             </p>
           </div>
 
-          {/* Paused sessions */}
-          <div className="mb-6">
-            <PausedSessions />
-          </div>
-
           {/* Config card */}
           <Card className="border-border shadow-border/50 bg-card border-4 shadow-[6px_6px_0px_0px]">
             <CardHeader className="pb-2">
@@ -80,6 +75,11 @@ export default async function Playground() {
               <PlaygroundConfigForm />
             </CardContent>
           </Card>
+
+          {/* Paused sessions */}
+          <div className="mt-6">
+            <PausedSessions />
+          </div>
         </div>
       </section>
     </main>
