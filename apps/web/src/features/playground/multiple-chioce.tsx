@@ -12,7 +12,7 @@ import { trpc } from "@/utils/trpc-client";
 import { HintPopover } from "./hint-popover";
 import type { QuestionComponentProps } from "./question-renderer";
 
-export function MultipleChoice({ question, sessionId }: QuestionComponentProps) {
+export function MultipleChoice({ question, sessionId, isFetching }: QuestionComponentProps) {
   const queryClient = useQueryClient();
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [hintsUsed, setHintsUsed] = useState(0);
@@ -67,7 +67,7 @@ export function MultipleChoice({ question, sessionId }: QuestionComponentProps) 
                 variant="outline"
                 key={index}
                 onClick={() => handleSelect(option)}
-                disabled={isPending}
+                disabled={isPending || isFetching}
               >
                 {isPending && selectedOption === option && (
                   <Loader2 className="mr-2 size-4 animate-spin" />

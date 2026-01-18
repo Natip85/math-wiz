@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
-import { toast } from "sonner";
 
 const CONFETTI_DURATION_MS = 8000;
 
@@ -14,7 +13,6 @@ export function useSessionCompletion() {
 
   const completeSession = useCallback(() => {
     setShowConfetti(true);
-    toast.success("Session complete! Well done!");
 
     setTimeout(() => {
       setShowConfetti(false);

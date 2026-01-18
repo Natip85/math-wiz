@@ -23,7 +23,7 @@ const answerSchema = z.object({
 
 type AnswerFormValues = z.infer<typeof answerSchema>;
 
-export function Equation({ question, sessionId }: QuestionComponentProps) {
+export function Equation({ question, sessionId, isFetching }: QuestionComponentProps) {
   const queryClient = useQueryClient();
   const [hintsUsed, setHintsUsed] = useState(0);
   const { showConfetti, completeSession } = useSessionCompletion();
@@ -99,8 +99,8 @@ export function Equation({ question, sessionId }: QuestionComponentProps) {
                 </FormItem>
               )}
             />
-            <Button type="submit" size="sm" disabled={isPending}>
-              {isPending ? (
+            <Button type="submit" size="sm" disabled={isPending || isFetching}>
+              {isPending || isFetching ? (
                 <>
                   <Loader2 className="size-4 animate-spin" />
                   Checking...
