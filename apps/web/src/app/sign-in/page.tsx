@@ -65,7 +65,6 @@ export default function LoginPage() {
         </Card>
       )}
 
-      {/* Email Verification - no state to preserve */}
       <TabsContent value="email-verification">
         <Card>
           <CardHeader>
@@ -78,7 +77,6 @@ export default function LoginPage() {
         </Card>
       </TabsContent>
 
-      {/* Forgot Password - no state to preserve */}
       <TabsContent value="forgot-password">
         <Card>
           <CardHeader>
