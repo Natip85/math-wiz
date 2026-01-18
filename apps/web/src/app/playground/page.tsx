@@ -22,6 +22,8 @@ export default async function Playground() {
     if (activeSession?.sessionId) {
       redirect(`/playground/${activeSession.sessionId}`);
     }
+  } else {
+    redirect("/sign-in");
   }
 
   return (
