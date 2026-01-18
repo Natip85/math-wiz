@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@math-wiz/env": "workspace:*",
+    "@neondatabase/serverless": "^0.10.4",
     "dotenv": "catalog:",
     "drizzle-orm": "^0.45.1",
     "pg": "^8.17.1",
