@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,12 @@ export function MultipleChoice({ question, sessionId, isFetching }: QuestionComp
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [hintsUsed, setHintsUsed] = useState(0);
   const { showConfetti, completeSession } = useSessionCompletion();
+  const [startTime, setStartTime] = useState(Date.now);
+
+  // Reset timer when question changes
+  useEffect(() => {
+    setStartTime(Date.now());
+  }, [question.id]);
 
   const { mutateAsync: submitAnswer, isPending } = useMutation(
     trpc.playground.submitAnswer.mutationOptions({
@@ -40,13 +46,15 @@ export function MultipleChoice({ question, sessionId, isFetching }: QuestionComp
   );
 
   async function handleSelect(option: number) {
+    // eslint-disable-next-line react-hooks/purity
+    const timeMs = Date.now() - startTime;
     setSelectedOption(option);
     await submitAnswer({
       sessionId,
       questionId: question.id,
       userAnswer: option,
       hintsUsed,
-      timeMs: undefined,
+      timeMs,
     });
   }
 

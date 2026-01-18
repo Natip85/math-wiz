@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod/v4";
@@ -28,6 +28,12 @@ export function WordProblem({ question, sessionId, isFetching }: QuestionCompone
   const queryClient = useQueryClient();
   const [hintsUsed, setHintsUsed] = useState(0);
   const { showConfetti, completeSession } = useSessionCompletion();
+  const [startTime, setStartTime] = useState(Date.now);
+
+  // Reset timer when question changes
+  useEffect(() => {
+    setStartTime(Date.now());
+  }, [question.id]);
 
   const form = useForm<AnswerFormValues>({
     resolver: zodResolver(answerSchema),
@@ -59,12 +65,14 @@ export function WordProblem({ question, sessionId, isFetching }: QuestionCompone
   );
 
   async function onSubmit(values: AnswerFormValues) {
+    // eslint-disable-next-line react-hooks/purity
+    const timeMs = Date.now() - startTime;
     await submitAnswer({
       sessionId,
       questionId: question.id,
       userAnswer: values.answer,
       hintsUsed,
-      timeMs: undefined, // TODO: track time
+      timeMs,
     });
   }
 

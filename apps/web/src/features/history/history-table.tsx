@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, XCircle, Lightbulb, Play } from "lucide-react";
+import { CheckCircle2, XCircle, Lightbulb, Play, Clock } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,16 @@ function formatDate(date: Date | string) {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(new Date(date));
+}
+
+function formatTime(ms: number | null) {
+  if (ms === null) return null;
+  if (ms < 1000) return `${ms}ms`;
+  const seconds = ms / 1000;
+  if (seconds < 60) return `${seconds.toFixed(1)}s`;
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.round(seconds % 60);
+  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
 
 function QuestionTypeLabel({ type }: { type: string }) {
@@ -160,6 +170,7 @@ export function HistoryTable() {
                   <TableHead className="w-24">Type</TableHead>
                   <TableHead className="w-24 text-center">Answer</TableHead>
                   <TableHead className="w-24 text-center">Correct answer</TableHead>
+                  <TableHead className="w-20 text-center">Time</TableHead>
                   <TableHead className="w-20 text-center">Hints</TableHead>
                   <TableHead className="w-20 text-center">Result</TableHead>
                 </TableRow>
@@ -181,6 +192,16 @@ export function HistoryTable() {
                     </TableCell>
                     <TableCell className="text-center">
                       <span className="font-mono">{question.correctAnswer}</span>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {question.timeMs ? (
+                        <div className="text-muted-foreground flex items-center justify-center gap-1">
+                          <Clock className="size-3" />
+                          <span className="text-xs">{formatTime(question.timeMs)}</span>
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      )}
                     </TableCell>
                     <TableCell className="text-center">
                       {question.hintsUsed > 0 ? (

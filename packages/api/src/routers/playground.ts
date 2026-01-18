@@ -129,6 +129,7 @@ export const playgroundRouter = router({
           userAnswer: answer?.userAnswer ?? null,
           isCorrect: answer?.isCorrect ?? null,
           hintsUsed: answer?.hintsUsed ?? 0,
+          timeMs: answer?.timeMs ?? null,
         };
       });
 
