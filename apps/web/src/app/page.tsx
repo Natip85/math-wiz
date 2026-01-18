@@ -33,10 +33,10 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="w-full sm:w-auto">
               <Link href={session ? "/playground" : "/sign-in"}>Start Playing Free</Link>
             </Button>
-            <Button size="lg" variant="outline">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto">
               Watch Demo
             </Button>
           </div>
