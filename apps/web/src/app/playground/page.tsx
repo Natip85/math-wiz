@@ -6,7 +6,6 @@ import { appRouter } from "@math-wiz/api/routers/index";
 import { auth } from "@math-wiz/auth";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { HistoryButton } from "@/features/playground/history-button";
 import { PausedSessions } from "@/features/playground/paused-sessions";
 import { PlaygroundConfigForm } from "@/features/playground/playground-config-form";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -31,10 +30,7 @@ export default async function Playground() {
     <main className="min-h-screen">
       <section className="relative overflow-hidden px-4 py-2">
         {/* Top navigation row */}
-        <div className="flex items-center justify-between">
-          <Breadcrumbs pages={playgroundBreadcrumbs} />
-          {session && <HistoryButton />}
-        </div>
+        <Breadcrumbs pages={playgroundBreadcrumbs} />
 
         {/* Decorative background elements */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
