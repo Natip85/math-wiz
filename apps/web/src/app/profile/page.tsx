@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Suspense } from "react";
+import { getTranslations } from "next-intl/server";
 import { headers } from "next/headers";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -23,19 +24,21 @@ export default async function ProfilePage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (session == null) return redirect("/sign-in");
 
+  const t = await getTranslations("ProfilePage");
+
   return (
     <div className="p-2">
       <Breadcrumbs pages={profileBreadcrumbs} />
-      <div className="mx-auto flex max-w-7xl flex-1 flex-col gap-4 py-2 pr-4.5 pl-6">
+      <div className="mx-auto flex max-w-7xl flex-1 flex-col gap-4 py-2 pr-4.5 pl-6 rtl:pr-6 rtl:pl-4.5">
         <div className="mb-8">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-4">
             <div className="bg-muted flex size-16 items-center justify-center overflow-hidden rounded-full">
               {session.user.image ? (
                 <Image
                   width={64}
                   height={64}
                   src={session.user.image}
-                  alt="User Avatar"
+                  alt={t("avatarAlt")}
                   className="object-cover"
                 />
               ) : (
@@ -44,7 +47,7 @@ export default async function ProfilePage() {
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-5">
-                <h1 className="text-3xl font-bold">{session.user.name || "User Profile"}</h1>
+                <h1 className="text-3xl font-bold">{session.user.name || t("title")}</h1>
               </div>
               <p className="text-muted-foreground">{session.user.email}</p>
             </div>
@@ -55,23 +58,23 @@ export default async function ProfilePage() {
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="profile">
               <User />
-              <span className="max-sm:hidden">Profile</span>
+              <span className="max-sm:hidden">{t("tabs.profile")}</span>
             </TabsTrigger>
             <TabsTrigger value="security">
               <Shield />
-              <span className="max-sm:hidden">Security</span>
+              <span className="max-sm:hidden">{t("tabs.security")}</span>
             </TabsTrigger>
             <TabsTrigger value="sessions">
               <Key />
-              <span className="max-sm:hidden">Sessions</span>
+              <span className="max-sm:hidden">{t("tabs.sessions")}</span>
             </TabsTrigger>
             <TabsTrigger value="accounts">
               <LinkIcon />
-              <span className="max-sm:hidden">Accounts</span>
+              <span className="max-sm:hidden">{t("tabs.accounts")}</span>
             </TabsTrigger>
             <TabsTrigger value="danger">
               <Trash2 />
-              <span className="max-sm:hidden">Danger</span>
+              <span className="max-sm:hidden">{t("tabs.danger")}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -107,7 +110,7 @@ export default async function ProfilePage() {
           <TabsContent value="danger">
             <Card className="border-destructive border">
               <CardHeader>
-                <CardTitle className="text-destructive">Danger Zone</CardTitle>
+                <CardTitle className="text-destructive">{t("dangerZone.title")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <AccountDeletion />
@@ -127,9 +130,9 @@ async function SecurityTab({
   email: string;
   isTwoFactorEnabled: boolean;
 }) {
-  const [accounts] = await Promise.all([
-    // auth.api.listPasskeys({headers: await headers()}),
+  const [accounts, t] = await Promise.all([
     auth.api.listUserAccounts({ headers: await headers() }),
+    getTranslations("ProfilePage"),
   ]);
 
   const hasPasswordAccount = accounts.some((a) => a.providerId === "credential");
@@ -139,8 +142,8 @@ async function SecurityTab({
       {hasPasswordAccount ? (
         <Card>
           <CardHeader>
-            <CardTitle>Change Password</CardTitle>
-            <CardDescription>Update your password for improved security.</CardDescription>
+            <CardTitle>{t("changePassword.title")}</CardTitle>
+            <CardDescription>{t("changePassword.description")}</CardDescription>
           </CardHeader>
           <CardContent>
             <ChangePasswordForm />
@@ -149,10 +152,8 @@ async function SecurityTab({
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>Set Password</CardTitle>
-            <CardDescription>
-              We will send you a password reset email to set up a password.
-            </CardDescription>
+            <CardTitle>{t("setPassword.title")}</CardTitle>
+            <CardDescription>{t("setPassword.description")}</CardDescription>
           </CardHeader>
           <CardContent>
             <SetPasswordButton email={email} />
@@ -162,9 +163,9 @@ async function SecurityTab({
       {hasPasswordAccount && (
         <Card>
           <CardHeader className="flex items-center justify-between gap-2">
-            <CardTitle>Two-Factor Authentication</CardTitle>
+            <CardTitle>{t("twoFactor.title")}</CardTitle>
             <Badge variant={isTwoFactorEnabled ? "default" : "secondary"}>
-              {isTwoFactorEnabled ? "Enabled" : "Disabled"}
+              {isTwoFactorEnabled ? t("twoFactor.enabled") : t("twoFactor.disabled")}
             </Badge>
           </CardHeader>
           <CardContent>

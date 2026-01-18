@@ -13,7 +13,7 @@ export const authClient = createAuthClient({
     inferAdditionalFields<typeof auth>(),
     twoFactorClient({
       onTwoFactorRedirect: () => {
-        window.location.href = "/auth/2fa";
+        window.location.href = "/2fa";
       },
     }),
     //   adminClient({

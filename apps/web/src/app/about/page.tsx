@@ -1,13 +1,18 @@
 "use client";
+
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { Brain, Calculator, Heart, Rocket, Star, Target, Trophy, Zap } from "lucide-react";
+
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { aboutBreadcrumbs } from "@/lib/breadcrumbs";
-import { Brain, Calculator, Heart, Rocket, Star, Target, Trophy, Zap } from "lucide-react";
-import Link from "next/link";
 
 export default function AboutPage() {
+  const t = useTranslations("AboutPage");
+
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
@@ -24,13 +29,12 @@ export default function AboutPage() {
 
         <div className="relative mx-auto max-w-4xl text-center">
           <h1 className="text-foreground mb-6 text-4xl leading-tight font-black text-balance md:text-6xl">
-            Making Math Fun <br />
-            <span className="text-primary">One Problem at a Time!</span>
+            {t("hero.title")} <br />
+            <span className="text-primary">{t("hero.titleHighlight")}</span>
           </h1>
 
           <p className="text-muted-foreground mx-auto max-w-2xl text-xl leading-relaxed">
-            Math Quest is a fun and engaging way for kids to practice their math skills. We believe
-            learning should feel like an adventure!
+            {t("hero.description")}
           </p>
         </div>
       </section>
@@ -39,26 +43,26 @@ export default function AboutPage() {
       <section className="px-4 py-12">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-foreground mb-12 text-center text-3xl font-black md:text-4xl">
-            Why Kids Love Math Quest
+            {t("features.title")}
           </h2>
 
           <div className="grid gap-6 md:grid-cols-3">
             <FeatureCard
               icon={<Calculator className="h-10 w-10" />}
-              title="Custom Quizzes"
-              description="Choose addition, subtraction, multiplication, or division. Pick how many questions you want!"
+              title={t("features.customQuizzes.title")}
+              description={t("features.customQuizzes.description")}
               color="primary"
             />
             <FeatureCard
               icon={<Brain className="h-10 w-10" />}
-              title="Learn at Your Pace"
-              description="No pressure! Take your time with each question and build confidence step by step."
+              title={t("features.learnAtYourPace.title")}
+              description={t("features.learnAtYourPace.description")}
               color="accent"
             />
             <FeatureCard
               icon={<Trophy className="h-10 w-10" />}
-              title="Track Progress"
-              description="Watch your progress grow with each quiz. See how many stars you can collect!"
+              title={t("features.trackProgress.title")}
+              description={t("features.trackProgress.description")}
               color="primary"
             />
           </div>
@@ -69,27 +73,27 @@ export default function AboutPage() {
       <section className="bg-muted/50 px-4 py-16">
         <div className="mx-auto max-w-4xl">
           <h2 className="text-foreground mb-12 text-center text-3xl font-black md:text-4xl">
-            How It Works
+            {t("howItWorks.title")}
           </h2>
 
           <div className="space-y-6">
             <StepCard
               number={1}
               icon={<Target className="h-8 w-8" />}
-              title="Set Up Your Quiz"
-              description="Pick the type of math problems and how many questions you want to practice."
+              title={t("howItWorks.step1.title")}
+              description={t("howItWorks.step1.description")}
             />
             <StepCard
               number={2}
               icon={<Zap className="h-8 w-8" />}
-              title="Solve Problems"
-              description="Answer each question at your own pace. Type in your answer and hit submit!"
+              title={t("howItWorks.step2.title")}
+              description={t("howItWorks.step2.description")}
             />
             <StepCard
               number={3}
               icon={<Star className="h-8 w-8" />}
-              title="See Your Results"
-              description="Check how many you got right and celebrate your math victories!"
+              title={t("howItWorks.step3.title")}
+              description={t("howItWorks.step3.description")}
             />
           </div>
         </div>
@@ -103,11 +107,11 @@ export default function AboutPage() {
               <div className="bg-secondary mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full">
                 <Heart className="text-accent h-10 w-10" />
               </div>
-              <h2 className="text-foreground mb-4 text-2xl font-black md:text-3xl">Our Mission</h2>
+              <h2 className="text-foreground mb-4 text-2xl font-black md:text-3xl">
+                {t("mission.title")}
+              </h2>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                We want every child to feel confident with math. Math Quest turns practice into
-                play, helping kids build strong foundations while having fun. Because when learning
-                feels like a game, everyone wins!
+                {t("mission.description")}
               </p>
             </CardContent>
           </Card>
@@ -118,14 +122,12 @@ export default function AboutPage() {
       <section className="bg-primary/5 px-4 py-16">
         <div className="mx-auto max-w-2xl text-center">
           <Rocket className="text-primary mx-auto mb-6 h-16 w-16" />
-          <h2 className="text-foreground mb-4 text-3xl font-black md:text-4xl">Ready to Start?</h2>
-          <p className="text-muted-foreground mb-8 text-lg">
-            Jump into a math adventure and see how fun practice can be!
-          </p>
+          <h2 className="text-foreground mb-4 text-3xl font-black md:text-4xl">{t("cta.title")}</h2>
+          <p className="text-muted-foreground mb-8 text-lg">{t("cta.description")}</p>
           <Link href="/playground">
             <Button size="lg">
               <Rocket className="mr-2 h-6 w-6" />
-              Start a Quiz
+              {t("cta.button")}
             </Button>
           </Link>
         </div>
@@ -136,8 +138,9 @@ export default function AboutPage() {
         <div className="mx-auto max-w-4xl">
           <Separator className="mb-8" />
           <p className="text-muted-foreground text-center">
-            Made with <Heart className="text-accent inline h-4 w-4" /> for young mathematicians
-            everywhere
+            {t.rich("footer", {
+              heart: () => <Heart className="text-accent inline h-4 w-4" />,
+            })}
           </p>
         </div>
       </footer>

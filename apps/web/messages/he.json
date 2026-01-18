@@ -1,0 +1,314 @@
+{
+  "Common": {
+    "appName": "מתמטיקאי",
+    "loading": "טוען..."
+  },
+  "Nav": {
+    "home": "בית",
+    "about": "אודות",
+    "playground": "משחק",
+    "signIn": "התחברות",
+    "logoAlt": "מתמטיקאי"
+  },
+  "NavUser": {
+    "profile": "פרופיל",
+    "history": "היסטוריה",
+    "logOut": "התנתקות"
+  },
+  "Breadcrumbs": {
+    "home": "בית",
+    "about": "אודות",
+    "history": "היסטוריה",
+    "playground": "משחק",
+    "profile": "פרופיל",
+    "learningSession": "מפגש למידה: {id}"
+  },
+  "HomePage": {
+    "title": "הרפתקאות מתמטיות",
+    "titleHighlight": "מחכות לך!",
+    "description": "הפכו את תרגול המתמטיקה למסע מרגש! משחקים אינטראקטיביים, אתגרים צבעוניים ופרסים שיגרמו לילד שלכם לאהוב מספרים.",
+    "startPlaying": "התחילו לשחק בחינם",
+    "watchDemo": "צפו בהדגמה",
+    "heroImageAlt": "ילד שמח לומד מתמטיקה"
+  },
+  "AboutPage": {
+    "hero": {
+      "title": "הופכים מתמטיקה לכיף",
+      "titleHighlight": "תרגיל אחד בכל פעם!",
+      "description": "Math Quest היא דרך מהנה ומרתקת לילדים לתרגל את כישורי המתמטיקה שלהם. אנחנו מאמינים שלמידה צריכה להרגיש כמו הרפתקה!"
+    },
+    "features": {
+      "title": "למה ילדים אוהבים את Math Quest",
+      "customQuizzes": {
+        "title": "חידונים מותאמים אישית",
+        "description": "בחרו חיבור, חיסור, כפל או חילוק. בחרו כמה שאלות אתם רוצים!"
+      },
+      "learnAtYourPace": {
+        "title": "למדו בקצב שלכם",
+        "description": "בלי לחץ! קחו את הזמן עם כל שאלה ובנו ביטחון צעד אחר צעד."
+      },
+      "trackProgress": {
+        "title": "עקבו אחר ההתקדמות",
+        "description": "צפו בהתקדמות שלכם עם כל חידון. ראו כמה כוכבים תוכלו לאסוף!"
+      }
+    },
+    "howItWorks": {
+      "title": "איך זה עובד",
+      "step1": {
+        "title": "הגדירו את החידון",
+        "description": "בחרו את סוג תרגילי המתמטיקה וכמה שאלות אתם רוצים לתרגל."
+      },
+      "step2": {
+        "title": "פתרו תרגילים",
+        "description": "ענו על כל שאלה בקצב שלכם. הקלידו את התשובה ולחצו שלח!"
+      },
+      "step3": {
+        "title": "ראו את התוצאות",
+        "description": "בדקו כמה צדקתם וחגגו את הניצחונות המתמטיים שלכם!"
+      }
+    },
+    "mission": {
+      "title": "המשימה שלנו",
+      "description": "אנחנו רוצים שכל ילד ירגיש בטוח עם מתמטיקה. Math Quest הופכת תרגול למשחק, עוזרת לילדים לבנות יסודות חזקים תוך כדי הנאה. כי כשלמידה מרגישה כמו משחק, כולם מנצחים!"
+    },
+    "cta": {
+      "title": "מוכנים להתחיל?",
+      "description": "קפצו להרפתקה מתמטית וראו כמה כיף יכול להיות תרגול!",
+      "button": "התחילו חידון"
+    },
+    "footer": "נוצר עם <heart></heart> למתמטיקאים צעירים בכל מקום"
+  },
+  "PlaygroundPage": {
+    "title": "מוכנים ל",
+    "titleHighlight": "אתגר?",
+    "description": "הגדירו את החידון ובחנו את כישורי המתמטיקה שלכם!",
+    "configureQuiz": "הגדרות חידון",
+    "chooseSettings": "בחרו את ההגדרות למטה"
+  },
+  "PlaygroundConfigForm": {
+    "generating": "מייצר את האתגר שלך...",
+    "difficulty": {
+      "label": "רמת קושי",
+      "easy": "קל",
+      "medium": "בינוני",
+      "hard": "קשה"
+    },
+    "topic": {
+      "label": "נושא",
+      "placeholder": "בחרו נושא",
+      "addition": "חיבור",
+      "subtraction": "חיסור",
+      "multiplication": "כפל",
+      "division": "חילוק"
+    },
+    "maxNumber": {
+      "label": "מספר מקסימלי",
+      "placeholder": "בחרו מספר מקסימלי",
+      "description": "המספר הגדול ביותר שיכול להופיע בשאלות",
+      "upTo": "עד {value}"
+    },
+    "questions": {
+      "label": "שאלות"
+    },
+    "startQuiz": "התחל חידון"
+  },
+  "PausedSessions": {
+    "title": "משחקים מושהים",
+    "description": "המשיכו מאיפה שהפסקתם",
+    "resume": "המשך"
+  },
+  "ProfilePage": {
+    "title": "פרופיל משתמש",
+    "avatarAlt": "תמונת משתמש",
+    "tabs": {
+      "profile": "פרופיל",
+      "security": "אבטחה",
+      "sessions": "הפעלות",
+      "accounts": "חשבונות",
+      "danger": "סכנה"
+    },
+    "dangerZone": {
+      "title": "אזור סכנה"
+    },
+    "changePassword": {
+      "title": "שינוי סיסמה",
+      "description": "עדכנו את הסיסמה שלכם לאבטחה משופרת."
+    },
+    "setPassword": {
+      "title": "הגדרת סיסמה",
+      "description": "נשלח לכם אימייל לאיפוס סיסמה כדי להגדיר סיסמה."
+    },
+    "twoFactor": {
+      "title": "אימות דו-שלבי",
+      "enabled": "מופעל",
+      "disabled": "מושבת"
+    }
+  },
+  "HistoryPage": {
+    "title": "היסטוריית משחקים",
+    "description": "סקרו את המשחקים הקודמים שלכם וראו איך הצלחתם בכל שאלה."
+  },
+  "PlayRunProgress": {
+    "questionOf": "שאלה {current} מתוך {total}",
+    "pause": "השהה",
+    "pauseDialog": {
+      "title": "להשהות את המשחק?",
+      "description": "ההתקדמות שלך תישמר ותוכל להמשיך את המשחק מאוחר יותר מדף המשחק.",
+      "cancel": "להמשיך לשחק",
+      "confirm": "השהה משחק",
+      "confirming": "משהה..."
+    }
+  },
+  "HistoryTable": {
+    "empty": {
+      "title": "אין היסטוריית משחקים עדיין",
+      "description": "השלימו כמה משחקים כדי לראות את ההיסטוריה שלכם כאן."
+    },
+    "status": {
+      "completed": "הושלם",
+      "paused": "מושהה",
+      "in_progress": "בתהליך"
+    },
+    "questionType": {
+      "word_problem": "בעיית מילים",
+      "equation": "משוואה",
+      "multiple_choice": "בחירה מרובה"
+    },
+    "resume": "המשך",
+    "table": {
+      "number": "#",
+      "question": "שאלה",
+      "type": "סוג",
+      "answer": "תשובה",
+      "correctAnswer": "תשובה נכונה",
+      "time": "זמן",
+      "hints": "רמזים",
+      "result": "תוצאה"
+    }
+  },
+  "HintPopover": {
+    "hint": "רמז",
+    "hintTypes": {
+      "think": "חשבו",
+      "thinkDesc": "רמז אסטרטגי",
+      "visualize": "דמיינו",
+      "visualizeDesc": "רמז חזותי",
+      "steps": "צעדים",
+      "stepsDesc": "צעד אחר צעד",
+      "explain": "הסבר",
+      "explainDesc": "הסבר מלא"
+    },
+    "goToHint": "עבור לרמז {number}",
+    "previous": "הקודם",
+    "next": "הבא",
+    "revealAnswer": "גלה תשובה",
+    "showNextHint": "הצג רמז הבא",
+    "allHintsRevealed": "כל הרמזים נחשפו"
+  },
+  "Auth": {
+    "page": {
+      "signInTab": "התחברות",
+      "signUpTab": "הרשמה",
+      "signInTitle": "התחברות",
+      "signUpTitle": "הרשמה",
+      "verifyEmailTitle": "אמתו את האימייל",
+      "forgotPasswordTitle": "שכחתם סיסמה"
+    },
+    "signIn": {
+      "email": "אימייל",
+      "emailPlaceholder": "you@example.com",
+      "password": "סיסמה",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "שכחתם סיסמה?",
+      "signingIn": "מתחבר...",
+      "signIn": "התחברות",
+      "lastUsed": "שימוש אחרון"
+    },
+    "signUp": {
+      "name": "שם",
+      "namePlaceholder": "ישראל ישראלי",
+      "email": "אימייל",
+      "emailPlaceholder": "you@example.com",
+      "password": "סיסמה",
+      "passwordPlaceholder": "••••••••",
+      "creatingAccount": "יוצר חשבון...",
+      "signUp": "הרשמה"
+    },
+    "forgotPassword": {
+      "email": "אימייל",
+      "emailPlaceholder": "you@example.com",
+      "back": "חזרה",
+      "sending": "שולח...",
+      "sendResetEmail": "שלח אימייל לאיפוס"
+    },
+    "emailVerification": {
+      "description": "שלחנו לכם קישור אימות אל <strong>{email}</strong>. אנא בדקו את האימייל ולחצו על הקישור לאימות החשבון.",
+      "sending": "שולח...",
+      "resendEmail": "שלח שוב",
+      "resendEmailCountdown": "שלח שוב ({seconds})"
+    },
+    "socialAuth": {
+      "lastUsed": "שימוש אחרון",
+      "google": "המשך עם Google"
+    },
+    "accountLinking": {
+      "linkedAccounts": "חשבונות מקושרים",
+      "noLinkedAccounts": "לא נמצאו חשבונות מקושרים",
+      "linkOtherAccounts": "קישור חשבונות נוספים",
+      "connectFor": "חברו את חשבון ה-{provider} שלכם להתחברות קלה יותר",
+      "linkedOn": "קושר ב-{date}",
+      "link": "קשר",
+      "linking": "מקשר...",
+      "unlink": "נתק"
+    },
+    "sessions": {
+      "otherActiveSessions": "הפעלות פעילות אחרות",
+      "revokeOtherSessions": "בטל הפעלות אחרות",
+      "revoking": "מבטל...",
+      "noOtherSessions": "אין הפעלות פעילות אחרות",
+      "currentSession": "הפעלה נוכחית",
+      "unknownDevice": "מכשיר לא ידוע",
+      "created": "נוצר",
+      "expires": "פג תוקף"
+    },
+    "changePassword": {
+      "currentPassword": "סיסמה נוכחית",
+      "newPassword": "סיסמה חדשה",
+      "logOutOtherSessions": "התנתק מהפעלות אחרות",
+      "changing": "משנה...",
+      "changePassword": "שנה סיסמה"
+    },
+    "twoFactor": {
+      "password": "סיסמה",
+      "passwordPlaceholder": "הזינו את הסיסמה שלכם לאישור",
+      "disabling": "משבית...",
+      "enabling": "מפעיל...",
+      "disable2FA": "השבת אימות דו-שלבי",
+      "enable2FA": "הפעל אימות דו-שלבי",
+      "backupCodesInfo": "שמרו את קודי הגיבוי האלה במקום בטוח. תוכלו להשתמש בהם לגישה לחשבון שלכם.",
+      "done": "סיום",
+      "scanQRCode": "סרקו את קוד ה-QR באפליקציית האימות שלכם והזינו את הקוד למטה:",
+      "code": "קוד",
+      "verifying": "מאמת...",
+      "verifyCode": "אמת קוד"
+    },
+    "setPassword": {
+      "sending": "שולח...",
+      "sendEmail": "שלח אימייל לאיפוס סיסמה"
+    },
+    "accountDeletion": {
+      "deleteButton": "מחק חשבון לצמיתות",
+      "confirmTitle": "האם אתם בטוחים לחלוטין?",
+      "confirmDescription": "לא ניתן לבטל פעולה זו. פעולה זו תמחק לצמיתות את החשבון שלכם ותסיר את כל הנתונים שלכם מהשרתים שלנו.",
+      "cancel": "ביטול",
+      "deleting": "מוחק...",
+      "confirmDelete": "כן, מחק את החשבון שלי"
+    },
+    "profileUpdate": {
+      "name": "שם",
+      "email": "אימייל",
+      "updating": "מעדכן...",
+      "updateProfile": "עדכן פרופיל"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import type { Session } from "better-auth";
+import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Monitor, Smartphone, Trash2 } from "lucide-react";
@@ -21,6 +22,7 @@ export function SessionManagement({
 }) {
   const router = useRouter();
   const [isRevokingAll, setIsRevokingAll] = useState(false);
+  const t = useTranslations("Auth.sessions");
 
   const otherSessions = sessions.filter((s) => s.id !== currentSessionId);
   const currentSession = sessions.find((s) => s.id === currentSessionId);
@@ -47,7 +49,7 @@ export function SessionManagement({
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium">Other Active Sessions</h3>
+          <h3 className="text-lg font-medium">{t("otherActiveSessions")}</h3>
           {otherSessions.length > 0 && (
             <Button
               variant="destructive"
@@ -55,7 +57,7 @@ export function SessionManagement({
               onClick={handleRevokeOtherSessions}
               disabled={isRevokingAll}
             >
-              {isRevokingAll ? "Revoking..." : "Revoke Other Sessions"}
+              {isRevokingAll ? t("revoking") : t("revokeOtherSessions")}
             </Button>
           )}
         </div>
@@ -63,7 +65,7 @@ export function SessionManagement({
         {otherSessions.length === 0 ? (
           <Card>
             <CardContent className="text-muted-foreground py-8 text-center">
-              No other active sessions
+              {t("noOtherSessions")}
             </CardContent>
           </Card>
         ) : (
@@ -87,25 +89,20 @@ function SessionCard({
 }) {
   const router = useRouter();
   const [isRevoking, setIsRevoking] = useState(false);
+  const t = useTranslations("Auth.sessions");
+  const format = useFormatter();
   const userAgentInfo = session.userAgent ? UAParser(session.userAgent) : null;
 
   function getBrowserInformation() {
-    if (userAgentInfo == null) return "Unknown Device";
+    if (userAgentInfo == null) return t("unknownDevice");
     if (userAgentInfo.browser.name == null && userAgentInfo.os.name == null) {
-      return "Unknown Device";
+      return t("unknownDevice");
     }
 
     if (userAgentInfo.browser.name == null) return userAgentInfo.os.name;
     if (userAgentInfo.os.name == null) return userAgentInfo.browser.name;
 
     return `${userAgentInfo.browser.name}, ${userAgentInfo.os.name}`;
-  }
-
-  function formatDate(date: Date) {
-    return new Intl.DateTimeFormat(undefined, {
-      dateStyle: "medium",
-      timeStyle: "short",
-    }).format(new Date(date));
   }
 
   async function handleRevokeSession() {
@@ -130,7 +127,7 @@ function SessionCard({
     <Card>
       <CardHeader className="flex justify-between">
         <CardTitle>{getBrowserInformation()}</CardTitle>
-        {isCurrentSession && <Badge>Current Session</Badge>}
+        {isCurrentSession && <Badge>{t("currentSession")}</Badge>}
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between">
@@ -138,10 +135,18 @@ function SessionCard({
             {userAgentInfo?.device.type === "mobile" ? <Smartphone /> : <Monitor />}
             <div>
               <p className="text-muted-foreground text-sm">
-                Created: {formatDate(session.createdAt)}
+                {t("created")}:{" "}
+                {format.dateTime(new Date(session.createdAt), {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })}
               </p>
               <p className="text-muted-foreground text-sm">
-                Expires: {formatDate(session.expiresAt)}
+                {t("expires")}:{" "}
+                {format.dateTime(new Date(session.expiresAt), {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })}
               </p>
             </div>
           </div>

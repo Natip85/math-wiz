@@ -1,12 +1,15 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { authClient } from "@/lib/auth-client";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
+
 export default function Home() {
   const { data: session } = authClient.useSession();
+  const t = useTranslations("HomePage");
 
   return (
     <div className="relative container mx-auto h-screen overflow-hidden px-4 pt-20 pb-12">
@@ -24,20 +27,19 @@ export default function Home() {
         {/* Left content */}
         <div className="flex-1 text-center lg:text-left">
           <h1 className="text-foreground mb-6 text-4xl leading-tight font-extrabold tracking-tight text-balance md:text-5xl lg:text-6xl">
-            Math Adventures <span className="text-kids-green">Await!</span>
+            {t("title")} <span className="text-kids-green">{t("titleHighlight")}</span>
           </h1>
 
           <p className="text-muted-foreground mx-auto mb-8 max-w-xl text-lg leading-relaxed md:text-xl lg:mx-0">
-            Turn math practice into an exciting journey! Interactive games, colorful challenges, and
-            rewards that make your child love numbers.
+            {t("description")}
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
             <Button asChild size="lg" className="w-full sm:w-auto">
-              <Link href={session ? "/playground" : "/sign-in"}>Start Playing Free</Link>
+              <Link href={session ? "/playground" : "/sign-in"}>{t("startPlaying")}</Link>
             </Button>
             <Button size="lg" variant="outline" className="w-full sm:w-auto">
-              Watch Demo
+              {t("watchDemo")}
             </Button>
           </div>
         </div>
@@ -46,7 +48,7 @@ export default function Home() {
         <div className="flex flex-1 items-center justify-center">
           <Image
             src="/hero-image.png"
-            alt="Happy child learning math"
+            alt={t("heroImageAlt")}
             width={1536}
             height={1024}
             className="h-auto w-full max-w-xl rounded-3xl shadow-2xl"

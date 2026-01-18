@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Calculator } from "lucide-react";
@@ -26,6 +27,8 @@ export default async function Playground() {
     redirect("/sign-in");
   }
 
+  const t = await getTranslations("PlaygroundPage");
+
   return (
     <main className="min-h-screen">
       <section className="relative overflow-hidden px-4 py-2">
@@ -44,12 +47,10 @@ export default async function Playground() {
           {/* Header section */}
           <div className="mb-8 text-center">
             <h1 className="text-foreground mb-3 text-3xl leading-tight font-black md:text-4xl">
-              Ready for a <span className="text-primary">Challenge?</span>
+              {t("title")} <span className="text-primary">{t("titleHighlight")}</span>
             </h1>
 
-            <p className="text-muted-foreground mx-auto max-w-md">
-              Set up your quiz and put your math skills to the test!
-            </p>
+            <p className="text-muted-foreground mx-auto max-w-md">{t("description")}</p>
           </div>
 
           {/* Config card */}
@@ -61,8 +62,8 @@ export default async function Playground() {
                     <Calculator className="text-primary h-6 w-6" />
                   </div>
                   <div>
-                    <CardTitle className="text-xl font-black">Configure Quiz</CardTitle>
-                    <CardDescription>Choose your settings below</CardDescription>
+                    <CardTitle className="text-xl font-black">{t("configureQuiz")}</CardTitle>
+                    <CardDescription>{t("chooseSettings")}</CardDescription>
                   </div>
                 </div>
               </div>

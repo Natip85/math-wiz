@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -11,6 +12,8 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { authClient } from "@/lib/auth-client";
 
 export function ChangePasswordForm() {
+  const t = useTranslations("Auth.changePassword");
+
   const form = useForm({
     defaultValues: {
       currentPassword: "",
@@ -52,7 +55,7 @@ export function ChangePasswordForm() {
       <form.Field name="currentPassword">
         {(field) => (
           <div className="space-y-2">
-            <Label htmlFor="change-currentPassword">Current Password</Label>
+            <Label htmlFor="change-currentPassword">{t("currentPassword")}</Label>
             <PasswordInput
               id="change-currentPassword"
               name="change-currentPassword"
@@ -72,7 +75,7 @@ export function ChangePasswordForm() {
       <form.Field name="newPassword">
         {(field) => (
           <div className="space-y-2">
-            <Label htmlFor="change-newPassword">New Password</Label>
+            <Label htmlFor="change-newPassword">{t("newPassword")}</Label>
             <PasswordInput
               id="change-newPassword"
               name="change-newPassword"
@@ -97,7 +100,7 @@ export function ChangePasswordForm() {
               checked={field.state.value}
               onCheckedChange={(checked) => field.handleChange(checked === true)}
             />
-            <Label htmlFor="change-revokeOtherSessions">Log out other sessions</Label>
+            <Label htmlFor="change-revokeOtherSessions">{t("logOutOtherSessions")}</Label>
           </div>
         )}
       </form.Field>
@@ -109,7 +112,7 @@ export function ChangePasswordForm() {
             className="w-full"
             disabled={!state.canSubmit || state.isSubmitting}
           >
-            {state.isSubmitting ? "Changing..." : "Change Password"}
+            {state.isSubmitting ? t("changing") : t("changePassword")}
           </Button>
         )}
       </form.Subscribe>

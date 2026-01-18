@@ -1,14 +1,8 @@
 "use client";
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
 
-const emptySubscribe = () => () => {};
-const useIsMounted = () =>
-  useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
 import { motion, AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -19,22 +13,23 @@ import type { Route } from "next";
 import { authClient } from "@/lib/auth-client";
 import { NavUser } from "./nav-user";
 import { ThemeSwitch } from "@/components/theme-switch";
-
-const baseNavItems = [
-  { name: "Home", url: "/", icon: Home },
-  { name: "About", url: "/about", icon: Info },
-];
+import { LocaleSwitcher } from "@/components/locale-switcher";
 
 export function NavBar({ className }: React.ComponentProps<"div">) {
   const pathname = usePathname();
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
-  const mounted = useIsMounted();
   const { data: session } = authClient.useSession();
   const { resolvedTheme } = useTheme();
+  const t = useTranslations("Nav");
+
+  const baseNavItems = [
+    { name: t("home"), url: "/", icon: Home },
+    { name: t("about"), url: "/about", icon: Info },
+  ];
 
   const navItems = session
-    ? [...baseNavItems, { name: "Playground", url: "/playground", icon: Play }]
-    : [...baseNavItems, { name: "Sign in", url: "/sign-in", icon: LogIn }];
+    ? [...baseNavItems, { name: t("playground"), url: "/playground", icon: Play }]
+    : [...baseNavItems, { name: t("signIn"), url: "/sign-in", icon: LogIn }];
 
   return (
     <motion.div
@@ -53,8 +48,8 @@ export function NavBar({ className }: React.ComponentProps<"div">) {
       <div className="flex items-center justify-between gap-2">
         <Link href="/">
           <Image
-            src={mounted && resolvedTheme === "dark" ? "/dark-logo.png" : "/logo.png"}
-            alt="Math Wiz"
+            src={resolvedTheme === "dark" ? "/dark-logo.png" : "/logo.png"}
+            alt={t("logoAlt")}
             width={70}
             height={70}
             style={{ height: "auto" }}
@@ -138,6 +133,7 @@ export function NavBar({ className }: React.ComponentProps<"div">) {
           })}
         </div>
         <div className="flex items-center gap-3">
+          <LocaleSwitcher />
           <ThemeSwitch />
           {session && <NavUser />}
         </div>

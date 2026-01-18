@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -11,6 +12,7 @@ type EmailVerificationProps = {
 };
 
 export function EmailVerification({ email }: EmailVerificationProps) {
+  const t = useTranslations("Auth.emailVerification");
   const [timeToNextResend, setTimeToNextResend] = useState(30);
   const [isResending, setIsResending] = useState(false);
   const interval = useRef<NodeJS.Timeout>(undefined);
@@ -61,8 +63,10 @@ export function EmailVerification({ email }: EmailVerificationProps) {
   return (
     <div className="space-y-4">
       <p className="text-muted-foreground text-sm">
-        We sent you a verification link to <strong>{email}</strong>. Please check your email and
-        click the link to verify your account.
+        {t.rich("description", {
+          email,
+          strong: (chunks) => <strong>{chunks}</strong>,
+        })}
       </p>
 
       <Button
@@ -72,10 +76,10 @@ export function EmailVerification({ email }: EmailVerificationProps) {
         disabled={isDisabled}
       >
         {isResending
-          ? "Sending..."
+          ? t("sending")
           : timeToNextResend > 0
-            ? `Resend Email (${timeToNextResend})`
-            : "Resend Email"}
+            ? t("resendEmailCountdown", { seconds: timeToNextResend })
+            : t("resendEmail")}
       </Button>
     </div>
   );

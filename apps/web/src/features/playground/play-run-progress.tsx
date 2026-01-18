@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Pause, Clock } from "lucide-react";
@@ -51,6 +52,7 @@ export function PlayRunProgress({ runId }: { runId: string }) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
+  const t = useTranslations("PlayRunProgress");
 
   const { data } = useQuery(trpc.playground.getById.queryOptions(runId));
 
@@ -78,7 +80,10 @@ export function PlayRunProgress({ runId }: { runId: string }) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <span>
-            Question {(data?.progress.currentIndex ?? 0) + 1} of {data?.progress.total}
+            {t("questionOf", {
+              current: (data?.progress.currentIndex ?? 0) + 1,
+              total: data?.progress.total ?? 0,
+            })}
           </span>
           {isInProgress && currentQuestionId && <QuestionTimer key={currentQuestionId} />}
         </div>
@@ -87,21 +92,18 @@ export function PlayRunProgress({ runId }: { runId: string }) {
             <AlertDialogTrigger asChild>
               <Button variant="outline" size="sm" className="gap-2">
                 <Pause className="h-4 w-4" />
-                Pause
+                {t("pause")}
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Pause this session?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Your progress will be saved and you can resume this session later from the
-                  playground page.
-                </AlertDialogDescription>
+                <AlertDialogTitle>{t("pauseDialog.title")}</AlertDialogTitle>
+                <AlertDialogDescription>{t("pauseDialog.description")}</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Keep Playing</AlertDialogCancel>
+                <AlertDialogCancel>{t("pauseDialog.cancel")}</AlertDialogCancel>
                 <AlertDialogAction onClick={handlePause} disabled={isPending}>
-                  {isPending ? "Pausing..." : "Pause Session"}
+                  {isPending ? t("pauseDialog.confirming") : t("pauseDialog.confirm")}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
@@ -19,6 +20,7 @@ type ProfileUpdateFormProps = {
 
 export function ProfileUpdateForm({ user }: ProfileUpdateFormProps) {
   const router = useRouter();
+  const t = useTranslations("Auth.profileUpdate");
 
   const form = useForm({
     defaultValues: {
@@ -36,7 +38,7 @@ export function ProfileUpdateForm({ user }: ProfileUpdateFormProps) {
         promises.push(
           authClient.changeEmail({
             newEmail: value.email,
-            callbackURL: "/settings/profile",
+            callbackURL: "/profile",
           })
         );
       }
@@ -79,7 +81,7 @@ export function ProfileUpdateForm({ user }: ProfileUpdateFormProps) {
       <form.Field name="name">
         {(field) => (
           <div className="space-y-2">
-            <Label htmlFor="profile-name">Name</Label>
+            <Label htmlFor="profile-name">{t("name")}</Label>
             <Input
               id="profile-name"
               name="profile-name"
@@ -99,7 +101,7 @@ export function ProfileUpdateForm({ user }: ProfileUpdateFormProps) {
       <form.Field name="email">
         {(field) => (
           <div className="space-y-2">
-            <Label htmlFor="profile-email">Email</Label>
+            <Label htmlFor="profile-email">{t("email")}</Label>
             <Input
               id="profile-email"
               name="profile-email"
@@ -124,7 +126,7 @@ export function ProfileUpdateForm({ user }: ProfileUpdateFormProps) {
             className="w-full"
             disabled={!state.canSubmit || state.isSubmitting}
           >
-            {state.isSubmitting ? "Updating..." : "Update Profile"}
+            {state.isSubmitting ? t("updating") : t("updateProfile")}
           </Button>
         )}
       </form.Subscribe>

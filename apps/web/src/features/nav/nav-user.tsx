@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { History, LogOut, User } from "lucide-react";
 import Link from "next/link";
@@ -20,6 +21,7 @@ import { authClient } from "@/lib/auth-client";
 export function NavUser() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
+  const t = useTranslations("NavUser");
 
   if (isPending) {
     return <Skeleton className="size-10 rounded-full" />;
@@ -55,13 +57,13 @@ export function NavUser() {
           <DropdownMenuItem asChild>
             <Link href="/profile">
               <User />
-              Profile
+              {t("profile")}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/history">
               <History />
-              History
+              {t("history")}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -79,7 +81,7 @@ export function NavUser() {
           }}
         >
           <LogOut />
-          Log out
+          {t("logOut")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

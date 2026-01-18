@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -12,6 +13,7 @@ type SetPasswordButtonProps = {
 
 export function SetPasswordButton({ email }: SetPasswordButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations("Auth.setPassword");
 
   async function handleClick() {
     setIsLoading(true);
@@ -33,7 +35,7 @@ export function SetPasswordButton({ email }: SetPasswordButtonProps) {
 
   return (
     <Button variant="outline" onClick={handleClick} disabled={isLoading}>
-      {isLoading ? "Sending..." : "Send Password Reset Email"}
+      {isLoading ? t("sending") : t("sendEmail")}
     </Button>
   );
 }

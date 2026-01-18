@@ -1,0 +1,314 @@
+{
+  "Common": {
+    "appName": "Math Wiz",
+    "loading": "Chargement..."
+  },
+  "Nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "playground": "Aire de jeux",
+    "signIn": "Connexion",
+    "logoAlt": "Math Wiz"
+  },
+  "NavUser": {
+    "profile": "Profil",
+    "history": "Historique",
+    "logOut": "Déconnexion"
+  },
+  "Breadcrumbs": {
+    "home": "Accueil",
+    "about": "À propos",
+    "history": "Historique",
+    "playground": "Aire de jeux",
+    "profile": "Profil",
+    "learningSession": "Session d'apprentissage: {id}"
+  },
+  "HomePage": {
+    "title": "Les Aventures",
+    "titleHighlight": "Mathématiques!",
+    "description": "Transformez la pratique des maths en un voyage passionnant ! Jeux interactifs, défis colorés et récompenses qui feront aimer les nombres à votre enfant.",
+    "startPlaying": "Commencer Gratuitement",
+    "watchDemo": "Voir la Démo",
+    "heroImageAlt": "Enfant heureux apprenant les maths"
+  },
+  "AboutPage": {
+    "hero": {
+      "title": "Rendre les Maths",
+      "titleHighlight": "Amusantes!",
+      "description": "Math Quest est une façon amusante et engageante pour les enfants de pratiquer leurs compétences en mathématiques. Nous croyons que l'apprentissage devrait ressembler à une aventure !"
+    },
+    "features": {
+      "title": "Pourquoi les Enfants Adorent Math Quest",
+      "customQuizzes": {
+        "title": "Quiz Personnalisés",
+        "description": "Choisissez addition, soustraction, multiplication ou division. Sélectionnez le nombre de questions !"
+      },
+      "learnAtYourPace": {
+        "title": "Apprenez à Votre Rythme",
+        "description": "Pas de pression ! Prenez votre temps avec chaque question et construisez votre confiance étape par étape."
+      },
+      "trackProgress": {
+        "title": "Suivez Vos Progrès",
+        "description": "Regardez vos progrès grandir avec chaque quiz. Voyez combien d'étoiles vous pouvez collecter !"
+      }
+    },
+    "howItWorks": {
+      "title": "Comment Ça Marche",
+      "step1": {
+        "title": "Configurez Votre Quiz",
+        "description": "Choisissez le type de problèmes mathématiques et le nombre de questions que vous voulez pratiquer."
+      },
+      "step2": {
+        "title": "Résolvez les Problèmes",
+        "description": "Répondez à chaque question à votre rythme. Tapez votre réponse et appuyez sur envoyer !"
+      },
+      "step3": {
+        "title": "Voyez Vos Résultats",
+        "description": "Vérifiez combien vous avez réussi et célébrez vos victoires mathématiques !"
+      }
+    },
+    "mission": {
+      "title": "Notre Mission",
+      "description": "Nous voulons que chaque enfant se sente confiant en mathématiques. Math Quest transforme la pratique en jeu, aidant les enfants à construire des bases solides tout en s'amusant. Car quand apprendre ressemble à un jeu, tout le monde gagne !"
+    },
+    "cta": {
+      "title": "Prêt à Commencer ?",
+      "description": "Lancez-vous dans une aventure mathématique et découvrez comme la pratique peut être amusante !",
+      "button": "Commencer un Quiz"
+    },
+    "footer": "Fait avec <heart></heart> pour les jeunes mathématiciens du monde entier"
+  },
+  "PlaygroundPage": {
+    "title": "Prêt pour un",
+    "titleHighlight": "Défi ?",
+    "description": "Configurez votre quiz et mettez vos compétences mathématiques à l'épreuve !",
+    "configureQuiz": "Configurer le Quiz",
+    "chooseSettings": "Choisissez vos paramètres ci-dessous"
+  },
+  "PlaygroundConfigForm": {
+    "generating": "Génération de votre défi...",
+    "difficulty": {
+      "label": "Difficulté",
+      "easy": "Facile",
+      "medium": "Moyen",
+      "hard": "Difficile"
+    },
+    "topic": {
+      "label": "Sujet",
+      "placeholder": "Sélectionnez un sujet",
+      "addition": "Addition",
+      "subtraction": "Soustraction",
+      "multiplication": "Multiplication",
+      "division": "Division"
+    },
+    "maxNumber": {
+      "label": "Nombre Maximum",
+      "placeholder": "Sélectionnez le nombre max",
+      "description": "Le plus grand nombre qui peut apparaître dans les questions",
+      "upTo": "Jusqu'à {value}"
+    },
+    "questions": {
+      "label": "Questions"
+    },
+    "startQuiz": "Commencer le Quiz"
+  },
+  "PausedSessions": {
+    "title": "Sessions en Pause",
+    "description": "Continuez où vous vous êtes arrêté",
+    "resume": "Reprendre"
+  },
+  "ProfilePage": {
+    "title": "Profil Utilisateur",
+    "avatarAlt": "Avatar de l'Utilisateur",
+    "tabs": {
+      "profile": "Profil",
+      "security": "Sécurité",
+      "sessions": "Sessions",
+      "accounts": "Comptes",
+      "danger": "Danger"
+    },
+    "dangerZone": {
+      "title": "Zone de Danger"
+    },
+    "changePassword": {
+      "title": "Changer le Mot de Passe",
+      "description": "Mettez à jour votre mot de passe pour une meilleure sécurité."
+    },
+    "setPassword": {
+      "title": "Définir un Mot de Passe",
+      "description": "Nous vous enverrons un email de réinitialisation du mot de passe."
+    },
+    "twoFactor": {
+      "title": "Authentification à Deux Facteurs",
+      "enabled": "Activée",
+      "disabled": "Désactivée"
+    }
+  },
+  "HistoryPage": {
+    "title": "Historique de l'Aire de Jeux",
+    "description": "Consultez vos sessions passées et voyez comment vous vous en êtes sorti à chaque question."
+  },
+  "PlayRunProgress": {
+    "questionOf": "Question {current} sur {total}",
+    "pause": "Pause",
+    "pauseDialog": {
+      "title": "Mettre en pause cette session ?",
+      "description": "Votre progression sera sauvegardée et vous pourrez reprendre cette session plus tard depuis l'aire de jeux.",
+      "cancel": "Continuer à Jouer",
+      "confirm": "Mettre en Pause",
+      "confirming": "Mise en pause..."
+    }
+  },
+  "HistoryTable": {
+    "empty": {
+      "title": "Pas encore d'historique",
+      "description": "Complétez quelques sessions pour voir votre historique ici."
+    },
+    "status": {
+      "completed": "Terminé",
+      "paused": "En Pause",
+      "in_progress": "En Cours"
+    },
+    "questionType": {
+      "word_problem": "Problème Écrit",
+      "equation": "Équation",
+      "multiple_choice": "Choix Multiple"
+    },
+    "resume": "Reprendre",
+    "table": {
+      "number": "#",
+      "question": "Question",
+      "type": "Type",
+      "answer": "Réponse",
+      "correctAnswer": "Réponse correcte",
+      "time": "Temps",
+      "hints": "Indices",
+      "result": "Résultat"
+    }
+  },
+  "HintPopover": {
+    "hint": "Indice",
+    "hintTypes": {
+      "think": "Réfléchir",
+      "thinkDesc": "Indice de stratégie",
+      "visualize": "Visualiser",
+      "visualizeDesc": "Indice visuel",
+      "steps": "Étapes",
+      "stepsDesc": "Étape par étape",
+      "explain": "Expliquer",
+      "explainDesc": "Explication complète"
+    },
+    "goToHint": "Aller à l'indice {number}",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "revealAnswer": "Révéler la réponse",
+    "showNextHint": "Afficher l'indice suivant",
+    "allHintsRevealed": "Tous les indices révélés"
+  },
+  "Auth": {
+    "page": {
+      "signInTab": "Connexion",
+      "signUpTab": "Inscription",
+      "signInTitle": "Connexion",
+      "signUpTitle": "Inscription",
+      "verifyEmailTitle": "Vérifiez Votre Email",
+      "forgotPasswordTitle": "Mot de Passe Oublié"
+    },
+    "signIn": {
+      "email": "Email",
+      "emailPlaceholder": "vous@exemple.com",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "Mot de passe oublié ?",
+      "signingIn": "Connexion en cours...",
+      "signIn": "Se Connecter",
+      "lastUsed": "Dernière utilisation"
+    },
+    "signUp": {
+      "name": "Nom",
+      "namePlaceholder": "Jean Dupont",
+      "email": "Email",
+      "emailPlaceholder": "vous@exemple.com",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "••••••••",
+      "creatingAccount": "Création du compte...",
+      "signUp": "S'inscrire"
+    },
+    "forgotPassword": {
+      "email": "Email",
+      "emailPlaceholder": "vous@exemple.com",
+      "back": "Retour",
+      "sending": "Envoi en cours...",
+      "sendResetEmail": "Envoyer l'Email de Réinitialisation"
+    },
+    "emailVerification": {
+      "description": "Nous vous avons envoyé un lien de vérification à <strong>{email}</strong>. Veuillez vérifier votre email et cliquer sur le lien pour vérifier votre compte.",
+      "sending": "Envoi en cours...",
+      "resendEmail": "Renvoyer l'Email",
+      "resendEmailCountdown": "Renvoyer l'Email ({seconds})"
+    },
+    "socialAuth": {
+      "lastUsed": "Dernière utilisation",
+      "google": "Continuer avec Google"
+    },
+    "accountLinking": {
+      "linkedAccounts": "Comptes Liés",
+      "noLinkedAccounts": "Aucun compte lié trouvé",
+      "linkOtherAccounts": "Lier d'Autres Comptes",
+      "connectFor": "Connectez votre compte {provider} pour une connexion plus facile",
+      "linkedOn": "Lié le {date}",
+      "link": "Lier",
+      "linking": "Liaison en cours...",
+      "unlink": "Délier"
+    },
+    "sessions": {
+      "otherActiveSessions": "Autres Sessions Actives",
+      "revokeOtherSessions": "Révoquer les Autres Sessions",
+      "revoking": "Révocation...",
+      "noOtherSessions": "Aucune autre session active",
+      "currentSession": "Session Actuelle",
+      "unknownDevice": "Appareil Inconnu",
+      "created": "Créée",
+      "expires": "Expire"
+    },
+    "changePassword": {
+      "currentPassword": "Mot de Passe Actuel",
+      "newPassword": "Nouveau Mot de Passe",
+      "logOutOtherSessions": "Déconnecter les autres sessions",
+      "changing": "Modification...",
+      "changePassword": "Changer le Mot de Passe"
+    },
+    "twoFactor": {
+      "password": "Mot de passe",
+      "passwordPlaceholder": "Entrez votre mot de passe pour confirmer",
+      "disabling": "Désactivation...",
+      "enabling": "Activation...",
+      "disable2FA": "Désactiver 2FA",
+      "enable2FA": "Activer 2FA",
+      "backupCodesInfo": "Sauvegardez ces codes de secours dans un endroit sûr. Vous pouvez les utiliser pour accéder à votre compte.",
+      "done": "Terminé",
+      "scanQRCode": "Scannez ce code QR avec votre application d'authentification et entrez le code ci-dessous :",
+      "code": "Code",
+      "verifying": "Vérification...",
+      "verifyCode": "Vérifier le Code"
+    },
+    "setPassword": {
+      "sending": "Envoi en cours...",
+      "sendEmail": "Envoyer l'Email de Réinitialisation"
+    },
+    "accountDeletion": {
+      "deleteButton": "Supprimer le Compte Définitivement",
+      "confirmTitle": "Êtes-vous absolument sûr ?",
+      "confirmDescription": "Cette action est irréversible. Cela supprimera définitivement votre compte et toutes vos données de nos serveurs.",
+      "cancel": "Annuler",
+      "deleting": "Suppression...",
+      "confirmDelete": "Oui, supprimer mon compte"
+    },
+    "profileUpdate": {
+      "name": "Nom",
+      "email": "Email",
+      "updating": "Mise à jour...",
+      "updateProfile": "Mettre à Jour le Profil"
+    }
+  }
+}

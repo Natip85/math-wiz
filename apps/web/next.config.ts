@@ -1,5 +1,6 @@
 import "@math-wiz/env/web";
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   typedRoutes: true,
@@ -25,4 +26,10 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin({
+  experimental: {
+    // Creates TypeScript declaration for type-safe message keys
+    createMessagesDeclaration: "./messages/en.json",
+  },
+});
+export default withNextIntl(nextConfig);

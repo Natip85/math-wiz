@@ -1,5 +1,6 @@
 "use client";
 
+import { useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, XCircle, Lightbulb, Play, Clock } from "lucide-react";
@@ -23,13 +24,6 @@ import {
 } from "@/components/ui/table";
 import { useTRPC } from "@/utils/trpc-client";
 
-function formatDate(date: Date | string) {
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(date));
-}
-
 function formatTime(ms: number | null) {
   if (ms === null) return null;
   if (ms < 1000) return `${ms}ms`;
@@ -40,29 +34,26 @@ function formatTime(ms: number | null) {
   return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
 
-function QuestionTypeLabel({ type }: { type: string }) {
-  const labels: Record<string, string> = {
-    word_problem: "Word Problem",
-    equation: "Equation",
-    multiple_choice: "Multiple Choice",
-  };
-  return <span className="text-muted-foreground text-xs">{labels[type] ?? type}</span>;
+function QuestionTypeLabel({ type, t }: { type: string; t: (key: string) => string }) {
+  const key = `questionType.${type}`;
+  return <span className="text-muted-foreground text-xs">{t(key)}</span>;
 }
 
-function StatusBadge({ status }: { status: string }) {
+function StatusBadge({ status, t }: { status: string; t: (key: string) => string }) {
+  const label = t(`status.${status}`);
   switch (status) {
     case "completed":
-      return <Badge variant="default">Completed</Badge>;
+      return <Badge variant="default">{label}</Badge>;
     case "paused":
       return (
         <Badge variant="secondary" className="bg-amber-500/10 text-amber-600 dark:text-amber-400">
-          Paused
+          {label}
         </Badge>
       );
     case "in_progress":
       return (
         <Badge variant="secondary" className="bg-blue-500/10 text-blue-600 dark:text-blue-400">
-          In Progress
+          {label}
         </Badge>
       );
     default:
@@ -74,6 +65,9 @@ export function HistoryTable() {
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const t = useTranslations("HistoryTable");
+  const tConfig = useTranslations("PlaygroundConfigForm");
+  const format = useFormatter();
   const { data: history, isLoading } = useQuery(trpc.playground.getHistory.queryOptions());
 
   const { mutateAsync: resumeSession, isPending } = useMutation(
@@ -103,8 +97,8 @@ export function HistoryTable() {
   if (!history || history.length === 0) {
     return (
       <div className="text-muted-foreground py-12 text-center">
-        <p className="text-lg">No playground history yet</p>
-        <p className="text-sm">Complete some playground sessions to see your history here.</p>
+        <p className="text-lg">{t("empty.title")}</p>
+        <p className="text-sm">{t("empty.description")}</p>
       </div>
     );
   }
@@ -118,13 +112,18 @@ export function HistoryTable() {
           className="rounded-lg border px-4 last:border-b"
         >
           <AccordionTrigger className="cursor-pointer hover:no-underline">
-            <div className="flex flex-1 items-center justify-between pr-4">
-              <div className="space-y-1 text-left">
+            <div className="flex flex-1 items-center justify-between gap-4 pe-4">
+              <div className="space-y-1 text-start">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold capitalize">{session.topic}</span>
-                  <StatusBadge status={session.status} />
+                  <span className="font-semibold">{tConfig(`topic.${session.topic}`)}</span>
+                  <StatusBadge status={session.status} t={t} />
                 </div>
-                <p className="text-muted-foreground text-sm">{formatDate(session.startedAt)}</p>
+                <p className="text-muted-foreground text-sm">
+                  {format.dateTime(new Date(session.startedAt), {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </p>
               </div>
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
@@ -137,7 +136,7 @@ export function HistoryTable() {
                 </div>
                 <Badge variant="outline">{session.stats.accuracy}%</Badge>
                 {session.status === "paused" && (
-                  <Button asChild size="sm" variant="outline" className="ml-2 gap-1">
+                  <Button asChild size="sm" variant="outline" className="ms-2 gap-1">
                     <span
                       role="button"
                       tabIndex={isPending ? -1 : 0}
@@ -154,7 +153,7 @@ export function HistoryTable() {
                       }}
                     >
                       <Play className="size-3" />
-                      Resume
+                      {t("resume")}
                     </span>
                   </Button>
                 )}
@@ -165,14 +164,14 @@ export function HistoryTable() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-12">#</TableHead>
-                  <TableHead>Question</TableHead>
-                  <TableHead className="w-24">Type</TableHead>
-                  <TableHead className="w-24 text-center">Answer</TableHead>
-                  <TableHead className="w-24 text-center">Correct answer</TableHead>
-                  <TableHead className="w-20 text-center">Time</TableHead>
-                  <TableHead className="w-20 text-center">Hints</TableHead>
-                  <TableHead className="w-20 text-center">Result</TableHead>
+                  <TableHead className="w-12">{t("table.number")}</TableHead>
+                  <TableHead>{t("table.question")}</TableHead>
+                  <TableHead className="w-24">{t("table.type")}</TableHead>
+                  <TableHead className="w-24 text-center">{t("table.answer")}</TableHead>
+                  <TableHead className="w-24 text-center">{t("table.correctAnswer")}</TableHead>
+                  <TableHead className="w-20 text-center">{t("table.time")}</TableHead>
+                  <TableHead className="w-20 text-center">{t("table.hints")}</TableHead>
+                  <TableHead className="w-20 text-center">{t("table.result")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -181,7 +180,7 @@ export function HistoryTable() {
                     <TableCell className="font-medium">{question.questionIndex + 1}</TableCell>
                     <TableCell className="max-w-md truncate">{question.questionText}</TableCell>
                     <TableCell>
-                      <QuestionTypeLabel type={question.type} />
+                      <QuestionTypeLabel type={question.type} t={t} />
                     </TableCell>
                     <TableCell className="text-center">
                       {question.userAnswer !== null ? (

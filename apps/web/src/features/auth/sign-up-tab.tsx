@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -15,6 +16,8 @@ type SignUpTabProps = {
 };
 
 export function SignUpTab({ openEmailVerificationTab }: SignUpTabProps) {
+  const t = useTranslations("Auth.signUp");
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -56,11 +59,11 @@ export function SignUpTab({ openEmailVerificationTab }: SignUpTabProps) {
       <form.Field name="name">
         {(field) => (
           <div className="space-y-2">
-            <Label htmlFor={`signup-${field.name}`}>Name</Label>
+            <Label htmlFor={`signup-${field.name}`}>{t("name")}</Label>
             <Input
               id={`signup-${field.name}`}
               name={`signup-${field.name}`}
-              placeholder="John Doe"
+              placeholder={t("namePlaceholder")}
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -77,12 +80,12 @@ export function SignUpTab({ openEmailVerificationTab }: SignUpTabProps) {
       <form.Field name="email">
         {(field) => (
           <div className="space-y-2">
-            <Label htmlFor={`signup-${field.name}`}>Email</Label>
+            <Label htmlFor={`signup-${field.name}`}>{t("email")}</Label>
             <Input
               id={`signup-${field.name}`}
               name={`signup-${field.name}`}
               type="email"
-              placeholder="you@example.com"
+              placeholder={t("emailPlaceholder")}
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -99,11 +102,11 @@ export function SignUpTab({ openEmailVerificationTab }: SignUpTabProps) {
       <form.Field name="password">
         {(field) => (
           <div className="space-y-2">
-            <Label htmlFor={`signup-${field.name}`}>Password</Label>
+            <Label htmlFor={`signup-${field.name}`}>{t("password")}</Label>
             <PasswordInput
               id={`signup-${field.name}`}
               name={`signup-${field.name}`}
-              placeholder="••••••••"
+              placeholder={t("passwordPlaceholder")}
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -124,7 +127,7 @@ export function SignUpTab({ openEmailVerificationTab }: SignUpTabProps) {
             className="w-full"
             disabled={!state.canSubmit || state.isSubmitting}
           >
-            {state.isSubmitting ? "Creating account..." : "Sign Up"}
+            {state.isSubmitting ? t("creatingAccount") : t("signUp")}
           </Button>
         )}
       </form.Subscribe>

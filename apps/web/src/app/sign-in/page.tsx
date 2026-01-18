@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Activity, useState } from "react";
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +15,7 @@ import { ForgotPassword } from "@/features/auth/forgot-password";
 type Tab = "signin" | "signup" | "email-verification" | "forgot-password";
 
 export default function LoginPage() {
+  const t = useTranslations("Auth.page");
   const [email, setEmail] = useState("");
   const [selectedTab, setSelectedTab] = useState<Tab>("signin");
 
@@ -32,8 +34,8 @@ export default function LoginPage() {
     >
       {isAuthTab && (
         <TabsList className="w-fit">
-          <TabsTrigger value="signin">Sign In</TabsTrigger>
-          <TabsTrigger value="signup">Sign Up</TabsTrigger>
+          <TabsTrigger value="signin">{t("signInTab")}</TabsTrigger>
+          <TabsTrigger value="signup">{t("signUpTab")}</TabsTrigger>
         </TabsList>
       )}
 
@@ -42,7 +44,7 @@ export default function LoginPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl font-bold">
-              {selectedTab === "signin" ? "Sign In" : "Sign Up"}
+              {selectedTab === "signin" ? t("signInTitle") : t("signUpTitle")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -68,10 +70,9 @@ export default function LoginPage() {
       <TabsContent value="email-verification">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">Verify Your Email</CardTitle>
+            <CardTitle className="text-2xl font-bold">{t("verifyEmailTitle")}</CardTitle>
           </CardHeader>
           <CardContent>
-            EmailVerification
             <EmailVerification email={email} />
           </CardContent>
         </Card>
@@ -80,7 +81,7 @@ export default function LoginPage() {
       <TabsContent value="forgot-password">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">Forgot Password</CardTitle>
+            <CardTitle className="text-2xl font-bold">{t("forgotPasswordTitle")}</CardTitle>
           </CardHeader>
           <CardContent>
             <ForgotPassword openSignInTab={() => setSelectedTab("signin")} />

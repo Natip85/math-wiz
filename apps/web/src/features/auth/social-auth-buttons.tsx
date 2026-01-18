@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
@@ -9,10 +10,11 @@ import {
 } from "@/lib/o-auth-providers";
 
 export function SocialAuthButtons() {
+  const t = useTranslations("Auth.socialAuth");
   const lastMethod = authClient.getLastUsedLoginMethod();
 
   return SUPPORTED_OAUTH_PROVIDERS.map((provider) => {
-    const Icon = SUPPORTED_OAUTH_PROVIDER_DETAILS[provider].Icon;
+    const { Icon, nameKey } = SUPPORTED_OAUTH_PROVIDER_DETAILS[provider];
     const isLastUsed = lastMethod === provider;
 
     return (
@@ -28,10 +30,10 @@ export function SocialAuthButtons() {
         className="relative w-full"
       >
         <Icon />
-        {SUPPORTED_OAUTH_PROVIDER_DETAILS[provider].name}
+        {t(nameKey)}
         {isLastUsed && (
           <Badge variant="secondary" className="absolute -top-2 -right-2 ml-2">
-            Last used
+            {t("lastUsed")}
           </Badge>
         )}
       </Button>

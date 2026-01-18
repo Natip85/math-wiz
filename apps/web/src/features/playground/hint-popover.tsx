@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import {
   ChevronLeft,
@@ -15,12 +16,12 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-// Hint types with their icons and labels
+// Hint types with their icons and translation keys
 const HINT_CONFIG = [
-  { icon: Brain, label: "Think", description: "Strategy hint" },
-  { icon: Eye, label: "Visualize", description: "Visual hint" },
-  { icon: ListChecks, label: "Steps", description: "Step-by-step" },
-  { icon: BookOpen, label: "Explain", description: "Full explanation" },
+  { icon: Brain, labelKey: "think", descKey: "thinkDesc" },
+  { icon: Eye, labelKey: "visualize", descKey: "visualizeDesc" },
+  { icon: ListChecks, labelKey: "steps", descKey: "stepsDesc" },
+  { icon: BookOpen, labelKey: "explain", descKey: "explainDesc" },
 ] as const;
 
 interface HintPopoverProps {
@@ -29,6 +30,7 @@ interface HintPopoverProps {
 }
 
 export function HintPopover({ hints, onHintsUsedChange }: HintPopoverProps) {
+  const t = useTranslations("HintPopover");
   // Track the maximum hint index that has been revealed (0-based)
   const [maxRevealedIndex, setMaxRevealedIndex] = useState(-1);
   // Track current viewing index for navigation
@@ -83,7 +85,7 @@ export function HintPopover({ hints, onHintsUsedChange }: HintPopoverProps) {
       <PopoverTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2">
           <Lightbulb className="size-4" />
-          <span>Hint</span>
+          <span>{t("hint")}</span>
           {hintsUsed > 0 && (
             <span className="text-muted-foreground text-xs">
               ({hintsUsed}/{hintsCount})
@@ -100,8 +102,12 @@ export function HintPopover({ hints, onHintsUsedChange }: HintPopoverProps) {
                 <Icon className="size-4" />
               </div>
               <div>
-                <p className="text-sm font-medium">{currentConfig?.label}</p>
-                <p className="text-muted-foreground text-xs">{currentConfig?.description}</p>
+                <p className="text-sm font-medium">
+                  {currentConfig ? t(`hintTypes.${currentConfig.labelKey}`) : null}
+                </p>
+                <p className="text-muted-foreground text-xs">
+                  {currentConfig ? t(`hintTypes.${currentConfig.descKey}`) : null}
+                </p>
               </div>
             </div>
             <span className="text-muted-foreground text-sm">
@@ -129,7 +135,7 @@ export function HintPopover({ hints, onHintsUsedChange }: HintPopoverProps) {
                       ? "bg-primary/40 hover:bg-primary/60 cursor-pointer"
                       : "bg-muted-foreground/30"
                 )}
-                aria-label={`Go to hint ${index + 1}`}
+                aria-label={t("goToHint", { number: index + 1 })}
               />
             ))}
           </div>
@@ -143,14 +149,14 @@ export function HintPopover({ hints, onHintsUsedChange }: HintPopoverProps) {
               disabled={currentIndex === 0}
               className="gap-1"
             >
-              <ChevronLeft className="size-4" />
-              Previous
+              <ChevronLeft className="size-4 rtl:rotate-180" />
+              {t("previous")}
             </Button>
 
             {currentIndex < maxRevealedIndex ? (
               <Button variant="ghost" size="sm" onClick={goToNext} className="gap-1">
-                Next
-                <ChevronRight className="size-4" />
+                {t("next")}
+                <ChevronRight className="size-4 rtl:rotate-180" />
               </Button>
             ) : hasMoreHints ? (
               <Button
@@ -159,11 +165,11 @@ export function HintPopover({ hints, onHintsUsedChange }: HintPopoverProps) {
                 onClick={revealNextHint}
                 className="gap-1"
               >
-                {maxRevealedIndex === hintsCount - 2 ? "Reveal answer" : "Show next hint"}
-                <ChevronRight className="size-4" />
+                {maxRevealedIndex === hintsCount - 2 ? t("revealAnswer") : t("showNextHint")}
+                <ChevronRight className="size-4 rtl:rotate-180" />
               </Button>
             ) : (
-              <span className="text-muted-foreground text-xs">All hints revealed</span>
+              <span className="text-muted-foreground text-xs">{t("allHintsRevealed")}</span>
             )}
           </div>
         </div>

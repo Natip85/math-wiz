@@ -1,0 +1,314 @@
+{
+  "Common": {
+    "appName": "Math Wiz",
+    "loading": "Loading..."
+  },
+  "Nav": {
+    "home": "Home",
+    "about": "About",
+    "playground": "Playground",
+    "signIn": "Sign in",
+    "logoAlt": "Math Wiz"
+  },
+  "NavUser": {
+    "profile": "Profile",
+    "history": "History",
+    "logOut": "Log out"
+  },
+  "Breadcrumbs": {
+    "home": "Home",
+    "about": "About",
+    "history": "History",
+    "playground": "Playground",
+    "profile": "Profile",
+    "learningSession": "Learning session: {id}"
+  },
+  "HomePage": {
+    "title": "Math Adventures",
+    "titleHighlight": "Await!",
+    "description": "Turn math practice into an exciting journey! Interactive games, colorful challenges, and rewards that make your child love numbers.",
+    "startPlaying": "Start Playing Free",
+    "watchDemo": "Watch Demo",
+    "heroImageAlt": "Happy child learning math"
+  },
+  "AboutPage": {
+    "hero": {
+      "title": "Making Math Fun",
+      "titleHighlight": "One Problem at a Time!",
+      "description": "Math Quest is a fun and engaging way for kids to practice their math skills. We believe learning should feel like an adventure!"
+    },
+    "features": {
+      "title": "Why Kids Love Math Quest",
+      "customQuizzes": {
+        "title": "Custom Quizzes",
+        "description": "Choose addition, subtraction, multiplication, or division. Pick how many questions you want!"
+      },
+      "learnAtYourPace": {
+        "title": "Learn at Your Pace",
+        "description": "No pressure! Take your time with each question and build confidence step by step."
+      },
+      "trackProgress": {
+        "title": "Track Progress",
+        "description": "Watch your progress grow with each quiz. See how many stars you can collect!"
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "step1": {
+        "title": "Set Up Your Quiz",
+        "description": "Pick the type of math problems and how many questions you want to practice."
+      },
+      "step2": {
+        "title": "Solve Problems",
+        "description": "Answer each question at your own pace. Type in your answer and hit submit!"
+      },
+      "step3": {
+        "title": "See Your Results",
+        "description": "Check how many you got right and celebrate your math victories!"
+      }
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "We want every child to feel confident with math. Math Quest turns practice into play, helping kids build strong foundations while having fun. Because when learning feels like a game, everyone wins!"
+    },
+    "cta": {
+      "title": "Ready to Start?",
+      "description": "Jump into a math adventure and see how fun practice can be!",
+      "button": "Start a Quiz"
+    },
+    "footer": "Made with <heart></heart> for young mathematicians everywhere"
+  },
+  "PlaygroundPage": {
+    "title": "Ready for a",
+    "titleHighlight": "Challenge?",
+    "description": "Set up your quiz and put your math skills to the test!",
+    "configureQuiz": "Configure Quiz",
+    "chooseSettings": "Choose your settings below"
+  },
+  "PlaygroundConfigForm": {
+    "generating": "Generating your challenge...",
+    "difficulty": {
+      "label": "Difficulty",
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "topic": {
+      "label": "Topic",
+      "placeholder": "Select a topic",
+      "addition": "Addition",
+      "subtraction": "Subtraction",
+      "multiplication": "Multiplication",
+      "division": "Division"
+    },
+    "maxNumber": {
+      "label": "Max Number",
+      "placeholder": "Select max number",
+      "description": "The largest number that can appear in questions",
+      "upTo": "Up to {value}"
+    },
+    "questions": {
+      "label": "Questions"
+    },
+    "startQuiz": "Start Quiz"
+  },
+  "PausedSessions": {
+    "title": "Paused Sessions",
+    "description": "Continue where you left off",
+    "resume": "Resume"
+  },
+  "ProfilePage": {
+    "title": "User Profile",
+    "avatarAlt": "User Avatar",
+    "tabs": {
+      "profile": "Profile",
+      "security": "Security",
+      "sessions": "Sessions",
+      "accounts": "Accounts",
+      "danger": "Danger"
+    },
+    "dangerZone": {
+      "title": "Danger Zone"
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "description": "Update your password for improved security."
+    },
+    "setPassword": {
+      "title": "Set Password",
+      "description": "We will send you a password reset email to set up a password."
+    },
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    }
+  },
+  "HistoryPage": {
+    "title": "Playground History",
+    "description": "Review your past playground sessions and see how you did on each question."
+  },
+  "PlayRunProgress": {
+    "questionOf": "Question {current} of {total}",
+    "pause": "Pause",
+    "pauseDialog": {
+      "title": "Pause this session?",
+      "description": "Your progress will be saved and you can resume this session later from the playground page.",
+      "cancel": "Keep Playing",
+      "confirm": "Pause Session",
+      "confirming": "Pausing..."
+    }
+  },
+  "HistoryTable": {
+    "empty": {
+      "title": "No playground history yet",
+      "description": "Complete some playground sessions to see your history here."
+    },
+    "status": {
+      "completed": "Completed",
+      "paused": "Paused",
+      "in_progress": "In Progress"
+    },
+    "questionType": {
+      "word_problem": "Word Problem",
+      "equation": "Equation",
+      "multiple_choice": "Multiple Choice"
+    },
+    "resume": "Resume",
+    "table": {
+      "number": "#",
+      "question": "Question",
+      "type": "Type",
+      "answer": "Answer",
+      "correctAnswer": "Correct answer",
+      "time": "Time",
+      "hints": "Hints",
+      "result": "Result"
+    }
+  },
+  "HintPopover": {
+    "hint": "Hint",
+    "hintTypes": {
+      "think": "Think",
+      "thinkDesc": "Strategy hint",
+      "visualize": "Visualize",
+      "visualizeDesc": "Visual hint",
+      "steps": "Steps",
+      "stepsDesc": "Step-by-step",
+      "explain": "Explain",
+      "explainDesc": "Full explanation"
+    },
+    "goToHint": "Go to hint {number}",
+    "previous": "Previous",
+    "next": "Next",
+    "revealAnswer": "Reveal answer",
+    "showNextHint": "Show next hint",
+    "allHintsRevealed": "All hints revealed"
+  },
+  "Auth": {
+    "page": {
+      "signInTab": "Sign In",
+      "signUpTab": "Sign Up",
+      "signInTitle": "Sign In",
+      "signUpTitle": "Sign Up",
+      "verifyEmailTitle": "Verify Your Email",
+      "forgotPasswordTitle": "Forgot Password"
+    },
+    "signIn": {
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "Forgot password?",
+      "signingIn": "Signing in...",
+      "signIn": "Sign In",
+      "lastUsed": "Last used"
+    },
+    "signUp": {
+      "name": "Name",
+      "namePlaceholder": "John Doe",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "creatingAccount": "Creating account...",
+      "signUp": "Sign Up"
+    },
+    "forgotPassword": {
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "back": "Back",
+      "sending": "Sending...",
+      "sendResetEmail": "Send Reset Email"
+    },
+    "emailVerification": {
+      "description": "We sent you a verification link to <strong>{email}</strong>. Please check your email and click the link to verify your account.",
+      "sending": "Sending...",
+      "resendEmail": "Resend Email",
+      "resendEmailCountdown": "Resend Email ({seconds})"
+    },
+    "socialAuth": {
+      "lastUsed": "Last used",
+      "google": "Continue with Google"
+    },
+    "accountLinking": {
+      "linkedAccounts": "Linked Accounts",
+      "noLinkedAccounts": "No linked accounts found",
+      "linkOtherAccounts": "Link Other Accounts",
+      "connectFor": "Connect your {provider} account for easier sign-in",
+      "linkedOn": "Linked on {date}",
+      "link": "Link",
+      "linking": "Linking...",
+      "unlink": "Unlink"
+    },
+    "sessions": {
+      "otherActiveSessions": "Other Active Sessions",
+      "revokeOtherSessions": "Revoke Other Sessions",
+      "revoking": "Revoking...",
+      "noOtherSessions": "No other active sessions",
+      "currentSession": "Current Session",
+      "unknownDevice": "Unknown Device",
+      "created": "Created",
+      "expires": "Expires"
+    },
+    "changePassword": {
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "logOutOtherSessions": "Log out other sessions",
+      "changing": "Changing...",
+      "changePassword": "Change Password"
+    },
+    "twoFactor": {
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password to confirm",
+      "disabling": "Disabling...",
+      "enabling": "Enabling...",
+      "disable2FA": "Disable 2FA",
+      "enable2FA": "Enable 2FA",
+      "backupCodesInfo": "Save these backup codes in a safe place. You can use them to access your account.",
+      "done": "Done",
+      "scanQRCode": "Scan this QR code with your authenticator app and enter the code below:",
+      "code": "Code",
+      "verifying": "Verifying...",
+      "verifyCode": "Verify Code"
+    },
+    "setPassword": {
+      "sending": "Sending...",
+      "sendEmail": "Send Password Reset Email"
+    },
+    "accountDeletion": {
+      "deleteButton": "Delete Account Permanently",
+      "confirmTitle": "Are you absolutely sure?",
+      "confirmDescription": "This action cannot be undone. This will permanently delete your account and remove all your data from our servers.",
+      "cancel": "Cancel",
+      "deleting": "Deleting...",
+      "confirmDelete": "Yes, delete my account"
+    },
+    "profileUpdate": {
+      "name": "Name",
+      "email": "Email",
+      "updating": "Updating...",
+      "updateProfile": "Update Profile"
+    }
+  }
+}

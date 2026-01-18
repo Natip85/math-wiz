@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -21,6 +22,7 @@ type TwoFactorData = {
 export function TwoFactorAuth({ isEnabled }: { isEnabled: boolean }) {
   const [twoFactorData, setTwoFactorData] = useState<TwoFactorData | null>(null);
   const router = useRouter();
+  const t = useTranslations("Auth.twoFactor");
 
   const form = useForm({
     defaultValues: {
@@ -82,11 +84,11 @@ export function TwoFactorAuth({ isEnabled }: { isEnabled: boolean }) {
       <form.Field name="password">
         {(field) => (
           <div className="space-y-2">
-            <Label htmlFor="2fa-password">Password</Label>
+            <Label htmlFor="2fa-password">{t("password")}</Label>
             <PasswordInput
               id="2fa-password"
               name="2fa-password"
-              placeholder="Enter your password to confirm"
+              placeholder={t("passwordPlaceholder")}
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -110,11 +112,11 @@ export function TwoFactorAuth({ isEnabled }: { isEnabled: boolean }) {
           >
             {state.isSubmitting
               ? isEnabled
-                ? "Disabling..."
-                : "Enabling..."
+                ? t("disabling")
+                : t("enabling")
               : isEnabled
-                ? "Disable 2FA"
-                : "Enable 2FA"}
+                ? t("disable2FA")
+                : t("enable2FA")}
           </Button>
         )}
       </form.Subscribe>
@@ -125,6 +127,7 @@ export function TwoFactorAuth({ isEnabled }: { isEnabled: boolean }) {
 function QRCodeVerify({ totpURI, backupCodes, onDone }: TwoFactorData & { onDone: () => void }) {
   const [successfullyEnabled, setSuccessfullyEnabled] = useState(false);
   const router = useRouter();
+  const t = useTranslations("Auth.twoFactor");
 
   const form = useForm({
     defaultValues: {
@@ -153,9 +156,7 @@ function QRCodeVerify({ totpURI, backupCodes, onDone }: TwoFactorData & { onDone
   if (successfullyEnabled) {
     return (
       <div className="space-y-4">
-        <p className="text-muted-foreground text-sm">
-          Save these backup codes in a safe place. You can use them to access your account.
-        </p>
+        <p className="text-muted-foreground text-sm">{t("backupCodesInfo")}</p>
         <div className="grid grid-cols-2 gap-2">
           {backupCodes.map((code, index) => (
             <div key={index} className="font-mono text-sm">
@@ -164,7 +165,7 @@ function QRCodeVerify({ totpURI, backupCodes, onDone }: TwoFactorData & { onDone
           ))}
         </div>
         <Button variant="outline" onClick={onDone}>
-          Done
+          {t("done")}
         </Button>
       </div>
     );
@@ -176,9 +177,7 @@ function QRCodeVerify({ totpURI, backupCodes, onDone }: TwoFactorData & { onDone
         <QRCode size={256} value={totpURI} />
       </div>
 
-      <p className="text-muted-foreground text-sm">
-        Scan this QR code with your authenticator app and enter the code below:
-      </p>
+      <p className="text-muted-foreground text-sm">{t("scanQRCode")}</p>
 
       <form
         onSubmit={(e) => {
@@ -191,7 +190,7 @@ function QRCodeVerify({ totpURI, backupCodes, onDone }: TwoFactorData & { onDone
         <form.Field name="token">
           {(field) => (
             <div className="space-y-2">
-              <Label htmlFor="2fa-token">Code</Label>
+              <Label htmlFor="2fa-token">{t("code")}</Label>
               <Input
                 id="2fa-token"
                 name="2fa-token"
@@ -216,7 +215,7 @@ function QRCodeVerify({ totpURI, backupCodes, onDone }: TwoFactorData & { onDone
               className="w-full"
               disabled={!state.canSubmit || state.isSubmitting}
             >
-              {state.isSubmitting ? "Verifying..." : "Verify Code"}
+              {state.isSubmitting ? t("verifying") : t("verifyCode")}
             </Button>
           )}
         </form.Subscribe>

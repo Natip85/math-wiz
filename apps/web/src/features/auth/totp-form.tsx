@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -10,32 +10,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
 
-type ForgotPasswordProps = {
-  openSignInTab: () => void;
-};
-
-export function ForgotPassword({ openSignInTab }: ForgotPasswordProps) {
-  const t = useTranslations("Auth.forgotPassword");
+export function TotpForm() {
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
-      email: "",
+      code: "",
     },
     onSubmit: async ({ value }) => {
-      const res = await authClient.requestPasswordReset({
-        email: value.email,
-        redirectTo: "/auth/reset-password",
+      const res = await authClient.twoFactor.verifyTotp({
+        code: value.code,
       });
 
       if (res.error) {
-        toast.error(res.error.message ?? "Failed to send password reset email");
+        toast.error(res.error.message ?? "Failed to verify code");
       } else {
-        toast.success("Password reset email sent");
+        router.push("/");
       }
     },
     validators: {
       onSubmit: z.object({
-        email: z.email("Invalid email address"),
+        code: z.string().length(6, "Code must be 6 digits"),
       }),
     },
   });
@@ -49,15 +44,14 @@ export function ForgotPassword({ openSignInTab }: ForgotPasswordProps) {
       }}
       className="space-y-4"
     >
-      <form.Field name="email">
+      <form.Field name="code">
         {(field) => (
           <div className="space-y-2">
-            <Label htmlFor="forgot-email">{t("email")}</Label>
+            <Label htmlFor="totp-code">Code</Label>
             <Input
-              id="forgot-email"
-              name="forgot-email"
-              type="email"
-              placeholder={t("emailPlaceholder")}
+              id="totp-code"
+              name="totp-code"
+              placeholder="123456"
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -73,18 +67,13 @@ export function ForgotPassword({ openSignInTab }: ForgotPasswordProps) {
 
       <form.Subscribe>
         {(state) => (
-          <div className="flex gap-2">
-            <Button type="button" variant="outline" onClick={openSignInTab}>
-              {t("back")}
-            </Button>
-            <Button
-              type="submit"
-              disabled={!state.canSubmit || state.isSubmitting}
-              className="flex-1"
-            >
-              {state.isSubmitting ? t("sending") : t("sendResetEmail")}
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={!state.canSubmit || state.isSubmitting}
+          >
+            {state.isSubmitting ? "Verifying..." : "Verify"}
+          </Button>
         )}
       </form.Subscribe>
     </form>

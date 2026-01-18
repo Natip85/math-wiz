@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -17,6 +18,7 @@ type SignInTabProps = {
 };
 
 export function SignInTab({ openEmailVerificationTab, openForgotPassword }: SignInTabProps) {
+  const t = useTranslations("Auth.signIn");
   const lastMethod = authClient.getLastUsedLoginMethod();
   const isEmailLastUsed = lastMethod === "email";
 
@@ -62,12 +64,12 @@ export function SignInTab({ openEmailVerificationTab, openForgotPassword }: Sign
       <form.Field name="email">
         {(field) => (
           <div className="space-y-2">
-            <Label htmlFor={`signin-${field.name}`}>Email</Label>
+            <Label htmlFor={`signin-${field.name}`}>{t("email")}</Label>
             <Input
               id={`signin-${field.name}`}
               name={`signin-${field.name}`}
               type="email"
-              placeholder="you@example.com"
+              placeholder={t("emailPlaceholder")}
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -85,20 +87,20 @@ export function SignInTab({ openEmailVerificationTab, openForgotPassword }: Sign
         {(field) => (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor={`signin-${field.name}`}>Password</Label>
+              <Label htmlFor={`signin-${field.name}`}>{t("password")}</Label>
               <Button
                 type="button"
                 variant="link"
                 className="h-auto p-0 text-xs"
                 onClick={openForgotPassword}
               >
-                Forgot password?
+                {t("forgotPassword")}
               </Button>
             </div>
             <PasswordInput
               id={`signin-${field.name}`}
               name={`signin-${field.name}`}
-              placeholder="••••••••"
+              placeholder={t("passwordPlaceholder")}
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
@@ -119,10 +121,10 @@ export function SignInTab({ openEmailVerificationTab, openForgotPassword }: Sign
             className="relative w-full"
             disabled={!state.canSubmit || state.isSubmitting}
           >
-            {state.isSubmitting ? "Signing in..." : "Sign In"}
+            {state.isSubmitting ? t("signingIn") : t("signIn")}
             {isEmailLastUsed && (
               <Badge variant="secondary" className="absolute -top-2 -right-2 ml-2">
-                Last used
+                {t("lastUsed")}
               </Badge>
             )}
           </Button>

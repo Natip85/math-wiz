@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Play, Clock, CheckCircle } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,6 +16,8 @@ export function PausedSessions() {
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const t = useTranslations("PausedSessions");
+  const tConfig = useTranslations("PlaygroundConfigForm");
 
   const { data: pausedSessions, isLoading } = useQuery(
     trpc.playground.getPausedSessions.queryOptions()
@@ -42,14 +45,14 @@ export function PausedSessions() {
             <Clock className="h-5 w-5 text-amber-500" />
           </div>
           <div>
-            <CardTitle className="text-lg font-black">Paused Sessions</CardTitle>
-            <CardDescription>Continue where you left off</CardDescription>
+            <CardTitle className="text-lg font-black">{t("title")}</CardTitle>
+            <CardDescription>{t("description")}</CardDescription>
           </div>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         {pausedSessions.map((session) => {
-          const topic = topics.find((t) => t.value === session.topic);
+          const topic = topics.find((topicItem) => topicItem.value === session.topic);
           const TopicIcon = topic?.icon;
           const progressPercent = Math.round(
             (session.answeredCount / session.totalQuestions) * 100
@@ -63,7 +66,7 @@ export function PausedSessions() {
               <div className="flex flex-1 flex-col gap-2">
                 <div className="flex items-center gap-2">
                   {TopicIcon && <TopicIcon className="text-muted-foreground h-4 w-4" />}
-                  <span className="font-medium capitalize">{session.topic}</span>
+                  <span className="font-medium">{tConfig(`topic.${session.topic}`)}</span>
                   <span className="text-muted-foreground text-sm">
                     {formatDistanceToNow(new Date(session.startedAt), { addSuffix: true })}
                   </span>
@@ -85,7 +88,7 @@ export function PausedSessions() {
                 className="gap-2"
               >
                 <Play className="h-4 w-4" />
-                Resume
+                {t("resume")}
               </Button>
             </div>
           );
