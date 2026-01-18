@@ -29,17 +29,18 @@ export function Equation({ question, sessionId, isFetching }: QuestionComponentP
   const { showConfetti, completeSession } = useSessionCompletion();
   const [startTime, setStartTime] = useState(Date.now);
 
-  // Reset timer when question changes
-  useEffect(() => {
-    setStartTime(Date.now());
-  }, [question.id]);
-
   const form = useForm<AnswerFormValues>({
     resolver: zodResolver(answerSchema),
     defaultValues: {
       answer: undefined,
     },
   });
+
+  // Reset timer and focus input when question changes
+  useEffect(() => {
+    setStartTime(Date.now());
+    form.setFocus("answer");
+  }, [question.id, form]);
 
   const { mutateAsync: submitAnswer, isPending } = useMutation(
     trpc.playground.submitAnswer.mutationOptions({
@@ -95,6 +96,7 @@ export function Equation({ question, sessionId, isFetching }: QuestionComponentP
                     <Input
                       type="number"
                       placeholder="Enter your answer"
+                      autoFocus
                       {...field}
                       onChange={(e) => {
                         const value = e.target.value;
