@@ -7,6 +7,7 @@ import { auth } from "@math-wiz/auth";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { HistoryButton } from "@/features/playground/history-button";
+import { PausedSessions } from "@/features/playground/paused-sessions";
 import { PlaygroundConfigForm } from "@/features/playground/playground-config-form";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { playgroundBreadcrumbs } from "@/lib/breadcrumbs";
@@ -53,6 +54,11 @@ export default async function Playground() {
             <p className="text-muted-foreground mx-auto max-w-md">
               Set up your quiz and put your math skills to the test!
             </p>
+          </div>
+
+          {/* Paused sessions */}
+          <div className="mb-6">
+            <PausedSessions />
           </div>
 
           {/* Config card */}

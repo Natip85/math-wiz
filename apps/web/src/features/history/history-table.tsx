@@ -1,9 +1,11 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { CheckCircle2, XCircle, Lightbulb } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { CheckCircle2, XCircle, Lightbulb, Play } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Accordion,
@@ -37,9 +39,43 @@ function QuestionTypeLabel({ type }: { type: string }) {
   return <span className="text-muted-foreground text-xs">{labels[type] ?? type}</span>;
 }
 
+function StatusBadge({ status }: { status: string }) {
+  switch (status) {
+    case "completed":
+      return <Badge variant="default">Completed</Badge>;
+    case "paused":
+      return (
+        <Badge variant="secondary" className="bg-amber-500/10 text-amber-600 dark:text-amber-400">
+          Paused
+        </Badge>
+      );
+    case "in_progress":
+      return (
+        <Badge variant="secondary" className="bg-blue-500/10 text-blue-600 dark:text-blue-400">
+          In Progress
+        </Badge>
+      );
+    default:
+      return <Badge variant="outline">{status}</Badge>;
+  }
+}
+
 export function HistoryTable() {
+  const router = useRouter();
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const { data: history, isLoading } = useQuery(trpc.playground.getHistory.queryOptions());
+
+  const { mutateAsync: resumeSession, isPending } = useMutation(
+    trpc.playground.resumeSession.mutationOptions({
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({ queryKey: trpc.playground.getActiveSession.queryKey() });
+        queryClient.invalidateQueries({ queryKey: trpc.playground.getPausedSessions.queryKey() });
+        queryClient.invalidateQueries({ queryKey: trpc.playground.getHistory.queryKey() });
+        router.push(`/playground/${data.sessionId}`);
+      },
+    })
+  );
 
   if (isLoading) {
     return (
@@ -71,14 +107,12 @@ export function HistoryTable() {
           value={session.id}
           className="rounded-lg border px-4 last:border-b"
         >
-          <AccordionTrigger className="hover:no-underline">
+          <AccordionTrigger className="cursor-pointer hover:no-underline">
             <div className="flex flex-1 items-center justify-between pr-4">
               <div className="space-y-1 text-left">
                 <div className="flex items-center gap-2">
                   <span className="font-semibold capitalize">{session.topic}</span>
-                  <Badge variant={session.endedAt ? "default" : "secondary"}>
-                    {session.endedAt ? "Completed" : "In Progress"}
-                  </Badge>
+                  <StatusBadge status={session.status} />
                 </div>
                 <p className="text-muted-foreground text-sm">{formatDate(session.startedAt)}</p>
               </div>
@@ -92,6 +126,28 @@ export function HistoryTable() {
                   <span>{session.stats.incorrectCount}</span>
                 </div>
                 <Badge variant="outline">{session.stats.accuracy}%</Badge>
+                {session.status === "paused" && (
+                  <Button asChild size="sm" variant="outline" className="ml-2 gap-1">
+                    <span
+                      role="button"
+                      tabIndex={isPending ? -1 : 0}
+                      className={isPending ? "pointer-events-none opacity-50" : ""}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!isPending) resumeSession({ sessionId: session.id });
+                      }}
+                      onKeyDown={(e) => {
+                        if (!isPending && (e.key === "Enter" || e.key === " ")) {
+                          e.stopPropagation();
+                          resumeSession({ sessionId: session.id });
+                        }
+                      }}
+                    >
+                      <Play className="size-3" />
+                      Resume
+                    </span>
+                  </Button>
+                )}
               </div>
             </div>
           </AccordionTrigger>

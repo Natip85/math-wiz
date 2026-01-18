@@ -16,6 +16,10 @@ export const mode = ["playground", "quiz"] as const;
 export type Mode = (typeof mode)[number];
 export const modeEnum = pgEnum("mode", mode);
 
+export const sessionStatus = ["in_progress", "completed", "paused"] as const;
+export type SessionStatus = (typeof sessionStatus)[number];
+export const sessionStatusEnum = pgEnum("session_status", sessionStatus);
+
 export const questionType = ["word_problem", "equation", "multiple_choice"] as const;
 export type QuestionType = (typeof questionType)[number];
 
@@ -28,6 +32,7 @@ export const learningSessions = pgTable(
       .notNull(),
     mode: modeEnum("mode").$type<Mode | null>().default(null),
     topic: text("topic").notNull(), // addition, subtraction, etc.
+    status: sessionStatusEnum("status").$type<SessionStatus>().default("in_progress").notNull(),
 
     totalQuestions: integer("total_questions").default(10),
     currentQuestionIndex: integer("current_question_index").default(0), // 0-based

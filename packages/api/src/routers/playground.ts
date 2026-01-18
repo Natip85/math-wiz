@@ -135,9 +135,13 @@ export const playgroundRouter = router({
       const totalAnswered = session.answers.length;
       const correctCount = session.answers.filter((a) => a.isCorrect).length;
 
+      // Derive effective status: if endedAt is set, it's completed (handles legacy data)
+      const effectiveStatus = session.endedAt ? "completed" : session.status;
+
       return {
         id: session.id,
         topic: session.topic,
+        status: effectiveStatus,
         startedAt: session.startedAt,
         endedAt: session.endedAt,
         totalQuestions: session.totalQuestions ?? session.questions.length,
@@ -156,7 +160,11 @@ export const playgroundRouter = router({
     const userId = ctx.session.user.id;
 
     const activeSession = await db.query.learningSessions.findFirst({
-      where: and(eq(learningSessions.userId, userId), eq(learningSessions.mode, "playground")),
+      where: and(
+        eq(learningSessions.userId, userId),
+        eq(learningSessions.mode, "playground"),
+        eq(learningSessions.status, "in_progress")
+      ),
       orderBy: (sessions, { desc }) => [desc(sessions.startedAt)],
     });
 
@@ -169,6 +177,32 @@ export const playgroundRouter = router({
     }
 
     return null;
+  }),
+
+  getPausedSessions: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+
+    const pausedSessions = await db.query.learningSessions.findMany({
+      where: and(
+        eq(learningSessions.userId, userId),
+        eq(learningSessions.mode, "playground"),
+        eq(learningSessions.status, "paused")
+      ),
+      orderBy: (sessions, { desc }) => [desc(sessions.startedAt)],
+      with: {
+        answers: true,
+      },
+    });
+
+    return pausedSessions.map((session) => ({
+      id: session.id,
+      topic: session.topic,
+      startedAt: session.startedAt,
+      totalQuestions: session.totalQuestions ?? 0,
+      currentQuestionIndex: session.currentQuestionIndex ?? 0,
+      answeredCount: session.answers.length,
+      correctCount: session.answers.filter((a) => a.isCorrect).length,
+    }));
   }),
 
   createPlaygroundRun: protectedProcedure
@@ -376,6 +410,7 @@ Important:
         id: session.id,
         mode: session.mode,
         topic: session.topic,
+        status: session.status,
         startedAt: session.startedAt,
         endedAt: session.endedAt,
       },
@@ -447,12 +482,15 @@ Important:
     const totalQuestions = session.totalQuestions ?? 0;
     const isSessionComplete = nextIndex >= totalQuestions;
 
-    // Update session: set next index and endedAt if complete
+    // Update session: set next index and endedAt/status if complete
     await db
       .update(learningSessions)
       .set({
         currentQuestionIndex: nextIndex,
-        ...(isSessionComplete && { endedAt: new Date() }),
+        ...(isSessionComplete && {
+          endedAt: new Date(),
+          status: "completed",
+        }),
       })
       .where(eq(learningSessions.id, sessionId));
 
@@ -464,4 +502,58 @@ Important:
       isSessionComplete,
     };
   }),
+
+  pauseSession: protectedProcedure
+    .input(z.object({ sessionId: z.string().uuid() }))
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.session.user.id;
+
+      // Verify the session belongs to the user and is in progress
+      const session = await db.query.learningSessions.findFirst({
+        where: and(
+          eq(learningSessions.id, input.sessionId),
+          eq(learningSessions.userId, userId),
+          eq(learningSessions.status, "in_progress")
+        ),
+      });
+
+      if (!session) {
+        throw new Error("Session not found or already completed");
+      }
+
+      // Update status to paused
+      await db
+        .update(learningSessions)
+        .set({ status: "paused" })
+        .where(eq(learningSessions.id, input.sessionId));
+
+      return { success: true };
+    }),
+
+  resumeSession: protectedProcedure
+    .input(z.object({ sessionId: z.string().uuid() }))
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.session.user.id;
+
+      // Verify the session belongs to the user and is paused
+      const session = await db.query.learningSessions.findFirst({
+        where: and(
+          eq(learningSessions.id, input.sessionId),
+          eq(learningSessions.userId, userId),
+          eq(learningSessions.status, "paused")
+        ),
+      });
+
+      if (!session) {
+        throw new Error("Session not found or not paused");
+      }
+
+      // Update status back to in_progress
+      await db
+        .update(learningSessions)
+        .set({ status: "in_progress" })
+        .where(eq(learningSessions.id, input.sessionId));
+
+      return { sessionId: input.sessionId };
+    }),
 });
