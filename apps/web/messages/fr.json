@@ -8,7 +8,10 @@
     "about": "À propos",
     "playground": "Aire de jeux",
     "signIn": "Connexion",
-    "logoAlt": "Math Wiz"
+    "logoAlt": "Math Wiz",
+    "chat": "Chat",
+    "menu": "Menu",
+    "openMenu": "Ouvrir le menu"
   },
   "NavUser": {
     "profile": "Profil",

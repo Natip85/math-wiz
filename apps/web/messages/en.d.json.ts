@@ -12,6 +12,9 @@ declare const messages: {
     playground: "Playground";
     signIn: "Sign in";
     logoAlt: "Math Wiz";
+    chat: "Chat";
+    menu: "Menu";
+    openMenu: "Open menu";
   };
   NavUser: {
     profile: "Profile";

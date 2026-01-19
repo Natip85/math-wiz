@@ -24,6 +24,7 @@ export default function AboutPage() {
           <div className="bg-primary/10 absolute top-10 left-10 h-20 w-20 rounded-full" />
           <div className="bg-accent/10 absolute top-32 right-20 h-16 w-16 rounded-full" />
           <div className="bg-secondary absolute bottom-10 left-1/4 h-12 w-12 rounded-full" />
+
           <div className="bg-primary/5 absolute right-1/3 bottom-32 h-24 w-24 rounded-full" />
         </div>
 

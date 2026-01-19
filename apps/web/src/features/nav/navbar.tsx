@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Home, Info, LogIn, Play } from "lucide-react";
+import { Home, Info, LogIn, Menu, MessageCircle, Play } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Route } from "next";
@@ -14,10 +14,12 @@ import { authClient } from "@/lib/auth-client";
 import { NavUser } from "./nav-user";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 export function NavBar({ className }: React.ComponentProps<"div">) {
   const pathname = usePathname();
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session } = authClient.useSession();
   const { resolvedTheme } = useTheme();
   const t = useTranslations("Nav");
@@ -25,6 +27,7 @@ export function NavBar({ className }: React.ComponentProps<"div">) {
   const baseNavItems = [
     { name: t("home"), url: "/", icon: Home },
     { name: t("about"), url: "/about", icon: Info },
+    { name: t("chat"), url: "/chat", icon: MessageCircle },
   ];
 
   const navItems = session
@@ -46,18 +49,29 @@ export function NavBar({ className }: React.ComponentProps<"div">) {
       }}
     >
       <div className="flex items-center justify-between gap-2">
-        <Link href="/">
+        {/* Mobile hamburger menu (left on mobile) */}
+        <button
+          className="hover:bg-foreground/10 flex shrink-0 items-center justify-center rounded-full p-2 transition-colors md:hidden"
+          onClick={() => setMobileMenuOpen(true)}
+          aria-label={t("openMenu")}
+        >
+          <Menu size={24} />
+        </button>
+
+        {/* Desktop logo (left on desktop) */}
+        <Link href="/" className="hidden shrink-0 md:block">
           <Image
-            src={resolvedTheme === "dark" ? "/dark-logo.png" : "/logo.png"}
+            src={resolvedTheme === "light" ? "/logo.png" : "/dark-logo.png"}
             alt={t("logoAlt")}
             width={70}
             height={70}
             style={{ height: "auto" }}
           />
         </Link>
-        <div className="relative flex items-center gap-3">
+
+        {/* Desktop navigation */}
+        <div className="relative hidden items-center gap-3 md:flex">
           {navItems.map((item) => {
-            const Icon = item.icon;
             const isActive =
               pathname === item.url || (item.url !== "/" && pathname.startsWith(item.url + "/"));
             const isHovered = hoveredTab === item.name;
@@ -103,19 +117,12 @@ export function NavBar({ className }: React.ComponentProps<"div">) {
                 )}
 
                 <motion.span
-                  className="relative z-10 hidden md:inline"
+                  className="relative z-10"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.2 }}
                 >
                   {item.name}
-                </motion.span>
-                <motion.span
-                  className="relative z-10 md:hidden"
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Icon size={18} strokeWidth={2.5} />
                 </motion.span>
 
                 <AnimatePresence>
@@ -132,6 +139,39 @@ export function NavBar({ className }: React.ComponentProps<"div">) {
             );
           })}
         </div>
+
+        {/* Mobile menu sheet */}
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <SheetContent side="left" className="w-[280px]">
+            <SheetHeader>
+              <SheetTitle>{t("menu")}</SheetTitle>
+            </SheetHeader>
+            <nav className="flex flex-col gap-2 px-4">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive =
+                  pathname === item.url ||
+                  (item.url !== "/" && pathname.startsWith(item.url + "/"));
+
+                return (
+                  <SheetClose asChild key={item.name}>
+                    <Link
+                      href={item.url as Route}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors",
+                        isActive ? "bg-primary/10 text-primary" : "hover:bg-foreground/10"
+                      )}
+                    >
+                      <Icon size={20} />
+                      {item.name}
+                    </Link>
+                  </SheetClose>
+                );
+              })}
+            </nav>
+          </SheetContent>
+        </Sheet>
+
         <div className="flex items-center gap-3">
           <LocaleSwitcher />
           <ThemeSwitch />

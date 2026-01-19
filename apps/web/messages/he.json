@@ -8,7 +8,10 @@
     "about": "אודות",
     "playground": "משחק",
     "signIn": "התחברות",
-    "logoAlt": "מתמטיקאי"
+    "logoAlt": "מתמטיקאי",
+    "chat": "צ'אט",
+    "menu": "תפריט",
+    "openMenu": "פתח תפריט"
   },
   "NavUser": {
     "profile": "פרופיל",

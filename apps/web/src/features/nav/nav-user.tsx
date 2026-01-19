@@ -34,7 +34,7 @@ export function NavUser() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Avatar className="size-12">
+        <Avatar className="size-10">
           <AvatarImage src={session.user.image ?? undefined} alt={session.user.name ?? ""} />
           <AvatarFallback>{session.user.name?.slice(0, 2).toUpperCase() ?? "U"}</AvatarFallback>
         </Avatar>

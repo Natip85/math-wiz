@@ -15,7 +15,7 @@ export default async function PlaygroundRunPage({ params }: PlaygroundRunPagePro
   return (
     <div className="flex flex-col gap-6 p-3">
       <Breadcrumbs pages={createPlaygroundDetailBreadcrumbs(runId)} />
-      <div className="mx-auto flex w-[50%] flex-col gap-4">
+      <div className="mx-auto flex w-full flex-col gap-4 pb-20 md:w-[50%]">
         <PlayRunProgress runId={runId} />
         <CurrentQuestion runId={runId} />
       </div>
