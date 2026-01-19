@@ -27,7 +27,6 @@ export function NavBar({ className }: React.ComponentProps<"div">) {
   const baseNavItems = [
     { name: t("home"), url: "/", icon: Home },
     { name: t("about"), url: "/about", icon: Info },
-    { name: t("chat"), url: "/chat", icon: MessageCircle },
   ];
 
   const navItems = session
