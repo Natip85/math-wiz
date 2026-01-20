@@ -291,7 +291,12 @@ Requirements:
 - Topic: ${topic} (e.g., addition, subtraction, multiplication, division)
 - Difficulty: ${difficulty} (easy, medium, hard)
 - Number of questions: ${questionCount}
-- The numbers used should not exceed ${maxNumber}
+- Each operand (number) in the math problem must be between 1 and ${maxNumber}
+- **CRITICAL: Generate DIVERSE questions with DIFFERENT number combinations!**
+  - Do NOT make all questions have the same answer
+  - Use a wide variety of operands throughout the range (1 to ${maxNumber})
+  - For example with maxNumber=20 and addition: use combinations like 7+5, 13+4, 9+8, 3+11 (varied operands, varied answers)
+  - Avoid repetitive patterns like all sums equaling ${maxNumber}
 
 **Question Type Distribution (mix it up, don't group by type):**
 1. ${wordProblemCount} "word_problem" questions - Fun story problems (e.g., "Emma has 5 stickers. Her friend gives her 3 more. How many stickers does Emma have now?")
