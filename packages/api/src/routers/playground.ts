@@ -13,6 +13,39 @@ import {
 
 import { protectedProcedure, router } from "../index";
 
+// Brainrot characters for visual math problems
+const BRAINROT_CHARACTERS = [
+  // Common
+  "Noobini Pizzanini",
+  "Lirili Larila",
+  "Tim Cheese",
+  "FluriFlura",
+  "Talpa Di Fero",
+  "Svinina Bombardino",
+  "Pipi Kiwi",
+  // Rare
+  "Trippi Troppi",
+  "Tung Tung Tung Sahur",
+  "Gangster Footera",
+  "Bandito Bobritto",
+  "Boneca Ambalabu",
+  "Cacto Hipopotamo",
+  "Ta Ta Ta Ta Sahur",
+  "Tric Trac Baraboom",
+  // Epic
+  "Cappuccino Assassino",
+  "Brr Brr Patapim",
+  "Trulimero Trulicina",
+  "Bambini Crostini",
+  "Bananita Dolphinita",
+  "Perochello Lemonchello",
+  "Brri Brri Bicus Dicus Bombicus",
+  "Avocadini Guffo",
+  "Salamino Penguino",
+  // Legendary
+  "Burbaloni Loliloli",
+];
+
 async function generateImageFromDescription(visualDescription: string): Promise<string | null> {
   try {
     const prompt = `Create a simple, colorful, child-friendly educational illustration for a 9-year-old math student.
@@ -24,8 +57,10 @@ Requirements:
 - Simple and clear shapes
 - No text or numbers in the image
 - Cartoon/illustration style appropriate for children
-- Objects should be clearly countable
-- White or light background`;
+- Characters should be clearly countable
+- White or light background
+- Style: Fun, quirky Italian Brainrot meme characters (cute, silly, exaggerated features)
+- Each character should look distinct and whimsical`;
 
     const result = await generateText({
       model: "google/gemini-2.5-flash-image",
@@ -299,9 +334,10 @@ Requirements:
   - Avoid repetitive patterns like all sums equaling ${maxNumber}
 
 **Question Type Distribution (mix it up, don't group by type):**
-1. ${wordProblemCount} "word_problem" questions - Fun story problems (e.g., "Emma has 5 stickers. Her friend gives her 3 more. How many stickers does Emma have now?")
+1. ${wordProblemCount} "word_problem" questions - Fun story problems featuring BRAINROT CHARACTERS (e.g., "Trippi Troppi has 5 magic coins. Brr Brr Patapim gives him 3 more. How many coins does Trippi Troppi have now?")
    - Set options to null
    - ALL word problems MUST have a visualDescription for drag-and-drop interaction
+   - Use the Brainrot characters in the stories: ${BRAINROT_CHARACTERS.slice(0, 10).join(", ")}, etc.
 
 2. ${equationCount} "equation" questions - Simple math equations (e.g., "What is 7 + 4?", "Calculate: 12 - 5 = ?")
    - Set options to null
@@ -325,8 +361,11 @@ Requirements:
 
 **For word problems with visuals:**
 - Visual descriptions should be detailed enough to create an illustration (ALWAYS in English)
-- Example: "5 red apples on the left and 3 green apples on the right"
-- Use colorful, kid-friendly objects (apples, stars, balloons, toys, animals)
+- **USE THESE BRAINROT CHARACTERS instead of regular objects:** ${BRAINROT_CHARACTERS.join(", ")}
+- Example: "5 Trippi Troppi characters on the left and 3 Brr Brr Patapim characters on the right"
+- Example: "A group of 7 Cappuccino Assassino characters, with 2 walking away"
+- Make the characters look fun, quirky, and silly - Italian Brainrot meme style
+- Each character type should be visually distinct in the illustration
 
 Important: 
 - The correctAnswer should be the numerical answer to the math problem
