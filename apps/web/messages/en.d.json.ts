@@ -11,6 +11,7 @@ declare const messages: {
     about: "About";
     playground: "Playground";
     signIn: "Sign in";
+    admin: "Admin";
     logoAlt: "Math Wiz";
     chat: "Chat";
     menu: "Menu";

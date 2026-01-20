@@ -3,6 +3,7 @@ import { env } from "@math-wiz/env/server";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 // import {createAuthMiddleware} from 'better-auth/api'
+import { admin as adminPlugin } from "better-auth/plugins/admin";
 import { nextCookies } from "better-auth/next-js";
 import { lastLoginMethod } from "better-auth/plugins";
 import { twoFactor } from "better-auth/plugins/two-factor";
@@ -91,13 +92,13 @@ export const auth = betterAuth({
   plugins: [
     nextCookies(),
     twoFactor(),
-    // adminPlugin({
-    //   ac,
-    //   roles: {
-    //     admin,
-    //     user,
-    //   },
-    // }),
+    adminPlugin({
+      // ac,
+      // roles: {
+      //   admin,
+      //   user,
+      // },
+    }),
     // organization({
     //   ac: organizationAc,
     //   roles: {

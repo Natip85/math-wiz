@@ -1,6 +1,6 @@
 import type { auth } from "@math-wiz/auth";
 import {
-  // adminClient,
+  adminClient,
   inferAdditionalFields,
   lastLoginMethodClient,
   // organizationClient,
@@ -16,13 +16,13 @@ export const authClient = createAuthClient({
         window.location.href = "/2fa";
       },
     }),
-    //   adminClient({
-    //     ac,
-    //     roles: {
-    //       admin,
-    //       user,
-    //     },
-    //   }),
+    adminClient({
+      // ac,
+      // roles: {
+      //   admin,
+      //   user,
+      // },
+    }),
     //   organizationClient({
     //     ac: organizationAc,
     //     roles: {

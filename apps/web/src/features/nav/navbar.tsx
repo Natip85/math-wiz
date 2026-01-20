@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Home, Info, LogIn, Menu, MessageCircle, Play } from "lucide-react";
+import { Home, Info, LogIn, Menu, Play, Shield } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Route } from "next";
@@ -29,8 +29,14 @@ export function NavBar({ className }: React.ComponentProps<"div">) {
     { name: t("about"), url: "/about", icon: Info },
   ];
 
+  const isAdmin = session?.user?.role === "admin";
+
   const navItems = session
-    ? [...baseNavItems, { name: t("playground"), url: "/playground", icon: Play }]
+    ? [
+        ...baseNavItems,
+        { name: t("playground"), url: "/playground", icon: Play },
+        ...(isAdmin ? [{ name: t("admin"), url: "/admin", icon: Shield }] : []),
+      ]
     : [...baseNavItems, { name: t("signIn"), url: "/sign-in", icon: LogIn }];
 
   return (

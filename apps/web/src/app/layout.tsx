@@ -5,7 +5,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import "../index.css";
 import Providers from "@/components/providers";
-import { NavBar } from "@/features/nav/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,10 +39,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground selection:bg-primary/50 selection:text-primary-foreground antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
-          <Providers>
-            <NavBar />
-            {children}
-          </Providers>
+          <Providers>{children}</Providers>
         </NextIntlClientProvider>
       </body>
     </html>
