@@ -7,6 +7,7 @@ import { CheckCircle2, XCircle, Lightbulb, Play, Clock } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ScoreBadge } from "@/components/ui/score-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Accordion,
@@ -135,6 +136,7 @@ export function HistoryTable() {
                   <span>{session.stats.incorrectCount}</span>
                 </div>
                 <Badge variant="outline">{session.stats.accuracy}%</Badge>
+                <ScoreBadge score={session.score} label={t("points")} size="sm" />
                 {session.status === "paused" && (
                   <Button asChild size="sm" variant="outline" className="ms-2 gap-1">
                     <span

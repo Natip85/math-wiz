@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 
-const CONFETTI_DURATION_MS = 8000;
+const CONFETTI_DURATION_MS = 6000;
 
 export function useSessionCompletion() {
   const router = useRouter();
@@ -16,6 +16,7 @@ export function useSessionCompletion() {
 
     setTimeout(() => {
       setShowConfetti(false);
+      router.refresh();
       router.push("/playground");
     }, CONFETTI_DURATION_MS);
   }, [router]);

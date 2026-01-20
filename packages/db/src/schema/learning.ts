@@ -36,6 +36,7 @@ export const learningSessions = pgTable(
 
     totalQuestions: integer("total_questions").default(10),
     currentQuestionIndex: integer("current_question_index").default(0), // 0-based
+    score: integer("score").default(0), // points earned this session
 
     startedAt: timestamp("started_at").defaultNow().notNull(),
     endedAt: timestamp("ended_at"),
@@ -165,3 +166,22 @@ export const skillsProgressRelations = relations(skillsProgress, ({ one }) => ({
 
 export type SkillsProgress = typeof skillsProgress.$inferSelect;
 export type NewSkillsProgress = typeof skillsProgress.$inferInsert;
+
+// User score tracking (one-to-one with user)
+export const userScore = pgTable("user_score", {
+  userId: text("user_id")
+    .references(() => user.id, { onDelete: "cascade" })
+    .primaryKey(),
+  totalScore: integer("total_score").default(0).notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const userScoreRelations = relations(userScore, ({ one }) => ({
+  user: one(user, {
+    fields: [userScore.userId],
+    references: [user.id],
+  }),
+}));
+
+export type UserScore = typeof userScore.$inferSelect;
+export type NewUserScore = typeof userScore.$inferInsert;

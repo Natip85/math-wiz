@@ -86,7 +86,14 @@
     "titleHighlight": "אתגר?",
     "description": "הגדירו את החידון ובחנו את כישורי המתמטיקה שלכם!",
     "configureQuiz": "הגדרות חידון",
-    "chooseSettings": "בחרו את ההגדרות למטה"
+    "chooseSettings": "בחרו את ההגדרות למטה",
+    "startQuiz": "התחל חידון"
+  },
+  "Leaderboard": {
+    "title": "טבלת מובילים",
+    "description": "המתמטיקאים המובילים השבוע",
+    "empty": "אין תוצאות עדיין. היו הראשונים לשחק!",
+    "you": "אתה"
   },
   "PlaygroundConfigForm": {
     "generating": "מייצר את האתגר שלך...",
@@ -153,6 +160,7 @@
   },
   "PlayRunProgress": {
     "questionOf": "שאלה {current} מתוך {total}",
+    "points": "נק׳",
     "pause": "השהה",
     "pauseDialog": {
       "title": "להשהות את המשחק?",
@@ -177,6 +185,7 @@
       "equation": "משוואה",
       "multiple_choice": "בחירה מרובה"
     },
+    "points": "נק׳",
     "resume": "המשך",
     "table": {
       "number": "#",

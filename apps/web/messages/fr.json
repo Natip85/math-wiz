@@ -86,7 +86,14 @@
     "titleHighlight": "Défi ?",
     "description": "Configurez votre quiz et mettez vos compétences mathématiques à l'épreuve !",
     "configureQuiz": "Configurer le Quiz",
-    "chooseSettings": "Choisissez vos paramètres ci-dessous"
+    "chooseSettings": "Choisissez vos paramètres ci-dessous",
+    "startQuiz": "Commencer le Quiz"
+  },
+  "Leaderboard": {
+    "title": "Classement",
+    "description": "Les meilleurs mathématiciens cette semaine",
+    "empty": "Pas encore de scores. Soyez le premier à jouer !",
+    "you": "Vous"
   },
   "PlaygroundConfigForm": {
     "generating": "Génération de votre défi...",
@@ -153,6 +160,7 @@
   },
   "PlayRunProgress": {
     "questionOf": "Question {current} sur {total}",
+    "points": "pts",
     "pause": "Pause",
     "pauseDialog": {
       "title": "Mettre en pause cette session ?",
@@ -177,6 +185,7 @@
       "equation": "Équation",
       "multiple_choice": "Choix Multiple"
     },
+    "points": "pts",
     "resume": "Reprendre",
     "table": {
       "number": "#",

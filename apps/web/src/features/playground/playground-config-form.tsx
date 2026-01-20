@@ -1,14 +1,12 @@
 "use client";
 "use no memo";
 
-import { useLocale, useTranslations } from "next-intl";
-import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Brain, Divide, Minus, X, Play, Plus, Zap, Rocket } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod/v4";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +27,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { trpc } from "@/utils/trpc-client";
 
 export const topics = [
   { value: "addition", icon: Plus },
@@ -58,7 +55,6 @@ export type PlaygroundConfig = z.infer<typeof playgroundConfigSchema>;
 export function PlaygroundConfigForm() {
   const router = useRouter();
   const t = useTranslations("PlaygroundConfigForm");
-  const locale = useLocale();
 
   const form = useForm<PlaygroundConfig>({
     resolver: zodResolver(playgroundConfigSchema),
@@ -71,35 +67,14 @@ export function PlaygroundConfigForm() {
     },
   });
 
-  const { mutateAsync: createPlaygroundRun, isPending } = useMutation(
-    trpc.playground.createPlaygroundRun.mutationOptions({
-      onSuccess: (data) => {
-        router.push(`/playground/${data.sessionId}`);
-      },
-    })
-  );
-
-  async function onSubmit(data: PlaygroundConfig) {
-    // Pass the current locale so the LLM generates content in the correct language
-    await createPlaygroundRun({ ...data, locale });
-  }
-
-  if (isPending) {
-    return (
-      <div className="bg-background fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col items-center justify-center gap-6">
-        <Image
-          src="/brain-loader.gif"
-          alt={t("generating")}
-          width={500}
-          height={500}
-          unoptimized
-          className="rounded-3xl"
-        />
-        <h2 className="text-muted-foreground text-2xl font-medium tracking-wide">
-          {t("generating")}
-        </h2>
-      </div>
-    );
+  function onSubmit(data: PlaygroundConfig) {
+    const params = new URLSearchParams({
+      topic: data.topic,
+      difficulty: data.difficulty,
+      questionCount: String(data.questionCount),
+      maxNumber: String(data.maxNumber),
+    });
+    router.push(`/playground/generating?${params.toString()}`);
   }
 
   return (

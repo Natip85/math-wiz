@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { ScoreBadge } from "@/components/ui/score-badge";
 import { useTRPC } from "@/utils/trpc-client";
 
 function formatElapsedTime(seconds: number): string {
@@ -86,6 +87,7 @@ export function PlayRunProgress({ runId }: { runId: string }) {
             })}
           </span>
           {isInProgress && currentQuestionId && <QuestionTimer key={currentQuestionId} />}
+          <ScoreBadge score={data?.progress.score ?? 0} label={t("points")} />
         </div>
         {isInProgress && (
           <AlertDialog open={open} onOpenChange={setOpen}>

@@ -1,5 +1,5 @@
 import { generateObject, generateText, zodSchema } from "ai";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@math-wiz/db";
@@ -8,6 +8,7 @@ import {
   learningSessions,
   questions as questionsTable,
   questionType,
+  userScore,
 } from "@math-wiz/db/schema/learning";
 
 import { protectedProcedure, router } from "../index";
@@ -44,6 +45,40 @@ Requirements:
     console.error("Failed to generate image:", error);
     return null;
   }
+}
+
+// Scoring helper functions
+function calculateQuestionScore({
+  isCorrect,
+  hintsUsed,
+  difficulty,
+}: {
+  isCorrect: boolean;
+  hintsUsed: number;
+  difficulty: string | null;
+}): number {
+  if (!isCorrect) return 0;
+
+  // Base points by difficulty
+  const basePoints: Record<string, number> = {
+    easy: 10,
+    medium: 20,
+    hard: 30,
+  };
+
+  let score = basePoints[difficulty ?? "easy"] ?? 10;
+
+  // Hint penalty: -2 points per hint used (max 4 hints)
+  score -= hintsUsed * 2;
+
+  return Math.max(score, 1); // Minimum 1 point for correct answer
+}
+
+function getAccuracyMultiplier(accuracy: number): number {
+  if (accuracy >= 90) return 1.5;
+  if (accuracy >= 70) return 1.2;
+  if (accuracy >= 50) return 1.0;
+  return 0.8;
 }
 
 const questionSchema = z.object({
@@ -147,6 +182,7 @@ export const playgroundRouter = router({
         startedAt: session.startedAt,
         endedAt: session.endedAt,
         totalQuestions: session.totalQuestions ?? session.questions.length,
+        score: session.score ?? 0,
         questions: questionsWithAnswers,
         stats: {
           totalAnswered,
@@ -212,6 +248,20 @@ export const playgroundRouter = router({
     .mutation(async ({ input, ctx }) => {
       const { topic, difficulty, questionCount, maxNumber, locale } = input;
       const userId = ctx.session.user.id;
+
+      // Check if there's already an active session - if so, return it instead of creating a new one
+      const existingActiveSession = await db.query.learningSessions.findFirst({
+        where: and(
+          eq(learningSessions.userId, userId),
+          eq(learningSessions.mode, "playground"),
+          eq(learningSessions.status, "in_progress")
+        ),
+      });
+
+      if (existingActiveSession) {
+        // Return existing session instead of creating a duplicate
+        return { sessionId: existingActiveSession.id };
+      }
 
       // Distribute questions across types (roughly equal, with remainder going to word problems)
       const equationCount = Math.floor(questionCount / 3);
@@ -432,6 +482,7 @@ Important:
         status: session.status,
         startedAt: session.startedAt,
         endedAt: session.endedAt,
+        score: session.score ?? 0,
       },
       // Current question for display
       currentQuestion: currentQuestionData,
@@ -447,6 +498,7 @@ Important:
         remaining: totalQuestions - answeredCount,
         percentComplete: Math.round((answeredCount / totalQuestions) * 100),
         isComplete: answeredCount >= totalQuestions,
+        score: session.score ?? 0,
       },
       // Stats for summary/review
       stats: {
@@ -463,9 +515,12 @@ Important:
     const { sessionId, questionId, userAnswer, hintsUsed, timeMs } = input;
     const userId = ctx.session.user.id;
 
-    // Verify the session belongs to the user
+    // Verify the session belongs to the user and get current score
     const session = await db.query.learningSessions.findFirst({
       where: and(eq(learningSessions.id, sessionId), eq(learningSessions.userId, userId)),
+      with: {
+        answers: true,
+      },
     });
 
     if (!session) {
@@ -483,6 +538,13 @@ Important:
 
     const isCorrect = userAnswer === question.correctAnswer;
 
+    // Calculate score for this question
+    const questionScore = calculateQuestionScore({
+      isCorrect,
+      hintsUsed,
+      difficulty: question.difficulty,
+    });
+
     // Insert the answer
     const [answer] = await db
       .insert(answersTable)
@@ -496,22 +558,60 @@ Important:
       })
       .returning();
 
-    // Update the session's current question index to the next question
+    // Update the session's current question index and accumulate score
     const nextIndex = (session.currentQuestionIndex ?? 0) + 1;
     const totalQuestions = session.totalQuestions ?? 0;
     const isSessionComplete = nextIndex >= totalQuestions;
+    const currentSessionScore = (session.score ?? 0) + questionScore;
 
-    // Update session: set next index and endedAt/status if complete
-    await db
-      .update(learningSessions)
-      .set({
-        currentQuestionIndex: nextIndex,
-        ...(isSessionComplete && {
+    // Calculate final session score with accuracy multiplier if complete
+    let finalSessionScore = currentSessionScore;
+    if (isSessionComplete) {
+      // Calculate accuracy including this answer
+      const allAnswers = [...session.answers, { isCorrect }];
+      const correctCount = allAnswers.filter((a) => a.isCorrect).length;
+      const accuracy = Math.round((correctCount / allAnswers.length) * 100);
+      const multiplier = getAccuracyMultiplier(accuracy);
+      finalSessionScore = Math.round(currentSessionScore * multiplier);
+    }
+
+    // Update session: set next index, score, and endedAt/status if complete
+    if (isSessionComplete) {
+      await db
+        .update(learningSessions)
+        .set({
+          currentQuestionIndex: nextIndex,
+          score: finalSessionScore,
           endedAt: new Date(),
           status: "completed",
-        }),
-      })
-      .where(eq(learningSessions.id, sessionId));
+        })
+        .where(eq(learningSessions.id, sessionId));
+    } else {
+      await db
+        .update(learningSessions)
+        .set({
+          currentQuestionIndex: nextIndex,
+          score: finalSessionScore,
+        })
+        .where(eq(learningSessions.id, sessionId));
+    }
+
+    // If session is complete, update user's total score
+    if (isSessionComplete) {
+      await db
+        .insert(userScore)
+        .values({
+          userId,
+          totalScore: finalSessionScore,
+        })
+        .onConflictDoUpdate({
+          target: userScore.userId,
+          set: {
+            totalScore: sql`${userScore.totalScore} + ${finalSessionScore}`,
+            updatedAt: new Date(),
+          },
+        });
+    }
 
     return {
       answerId: answer?.id,
@@ -519,6 +619,21 @@ Important:
       correctAnswer: question.correctAnswer,
       nextQuestionIndex: nextIndex,
       isSessionComplete,
+      questionScore,
+      sessionScore: finalSessionScore,
+    };
+  }),
+
+  getUserScore: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+
+    const score = await db.query.userScore.findFirst({
+      where: eq(userScore.userId, userId),
+    });
+
+    return {
+      totalScore: score?.totalScore ?? 0,
+      updatedAt: score?.updatedAt ?? null,
     };
   }),
 
@@ -575,4 +690,24 @@ Important:
 
       return { sessionId: input.sessionId };
     }),
+
+  getLeaderboard: protectedProcedure.query(async () => {
+    const scores = await db.query.userScore.findMany({
+      orderBy: (us, { desc }) => [desc(us.totalScore)],
+      limit: 10,
+      with: {
+        user: {
+          columns: { id: true, name: true, image: true },
+        },
+      },
+    });
+
+    return scores.map((s, i) => ({
+      rank: i + 1,
+      userId: s.userId,
+      name: s.user.name,
+      image: s.user.image,
+      totalScore: s.totalScore,
+    }));
+  }),
 });

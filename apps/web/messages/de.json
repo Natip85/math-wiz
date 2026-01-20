@@ -86,7 +86,14 @@
     "titleHighlight": "Herausforderung?",
     "description": "Richte dein Quiz ein und stelle deine Mathefähigkeiten auf die Probe!",
     "configureQuiz": "Quiz Konfigurieren",
-    "chooseSettings": "Wähle unten deine Einstellungen"
+    "chooseSettings": "Wähle unten deine Einstellungen",
+    "startQuiz": "Quiz Starten"
+  },
+  "Leaderboard": {
+    "title": "Bestenliste",
+    "description": "Top-Mathematiker diese Woche",
+    "empty": "Noch keine Punkte. Sei der Erste, der spielt!",
+    "you": "Du"
   },
   "PlaygroundConfigForm": {
     "generating": "Deine Herausforderung wird erstellt...",
@@ -153,6 +160,7 @@
   },
   "PlayRunProgress": {
     "questionOf": "Frage {current} von {total}",
+    "points": "Pkt",
     "pause": "Pause",
     "pauseDialog": {
       "title": "Diese Sitzung pausieren?",
@@ -177,6 +185,7 @@
       "equation": "Gleichung",
       "multiple_choice": "Multiple Choice"
     },
+    "points": "Pkt",
     "resume": "Fortsetzen",
     "table": {
       "number": "#",

@@ -28,7 +28,7 @@ export function ChatWidget() {
               onClick={() => setIsOpen(true)}
             >
               <SparklesIcon className="size-5" />
-              <span className="font-medium">Need Help?</span>
+              <span className="font-medium">Ask AI</span>
             </Button>
           </motion.div>
         )}

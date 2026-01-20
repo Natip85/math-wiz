@@ -87,9 +87,16 @@ declare const messages: {
   PlaygroundPage: {
     title: "Ready for a";
     titleHighlight: "Challenge?";
-    description: "Set up your quiz and put your math skills to the test!";
+    description: "Configure your quiz and put your math skills to the test!";
     configureQuiz: "Configure Quiz";
     chooseSettings: "Choose your settings below";
+    startQuiz: "Start Quiz";
+  };
+  Leaderboard: {
+    title: "Leaderboard";
+    description: "Top mathematicians this week";
+    empty: "No scores yet. Be the first to play!";
+    you: "You";
   };
   PlaygroundConfigForm: {
     generating: "Generating your challenge...";
@@ -156,6 +163,7 @@ declare const messages: {
   };
   PlayRunProgress: {
     questionOf: "Question {current} of {total}";
+    points: "pts";
     pause: "Pause";
     pauseDialog: {
       title: "Pause this session?";
@@ -180,6 +188,7 @@ declare const messages: {
       equation: "Equation";
       multiple_choice: "Multiple Choice";
     };
+    points: "pts";
     resume: "Resume";
     table: {
       number: "#";

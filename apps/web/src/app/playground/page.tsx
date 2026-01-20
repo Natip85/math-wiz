@@ -1,16 +1,15 @@
 import { getTranslations } from "next-intl/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { Calculator } from "lucide-react";
 
 import { appRouter } from "@math-wiz/api/routers/index";
 import { auth } from "@math-wiz/auth";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PausedSessions } from "@/features/playground/paused-sessions";
-import { PlaygroundConfigForm } from "@/features/playground/playground-config-form";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { playgroundBreadcrumbs } from "@/lib/breadcrumbs";
+import { PausedSessions } from "@/features/playground/paused-sessions";
+import { PlaygroundConfigDialog } from "@/features/playground/playground-config-dialog";
+import { Leaderboard } from "@/features/playground/leaderboard";
 
 export default async function Playground() {
   const reqHeaders = await headers();
@@ -31,7 +30,7 @@ export default async function Playground() {
 
   return (
     <main className="min-h-screen">
-      <section className="relative overflow-hidden px-4 py-2">
+      <section className="relative overflow-hidden p-4">
         {/* Top navigation row */}
         <Breadcrumbs pages={playgroundBreadcrumbs} />
 
@@ -43,40 +42,20 @@ export default async function Playground() {
           <div className="bg-primary/5 absolute right-1/3 bottom-32 h-24 w-24 rounded-full" />
         </div>
 
-        <div className="relative mx-auto max-w-lg">
+        <div className="relative mx-auto max-w-lg space-y-6">
           {/* Header section */}
           <div className="mb-8 text-center">
             <h1 className="text-foreground mb-3 text-3xl leading-tight font-black md:text-4xl">
               {t("title")} <span className="text-primary">{t("titleHighlight")}</span>
             </h1>
 
-            <p className="text-muted-foreground mx-auto max-w-md">{t("description")}</p>
+            <p className="text-muted-foreground mx-auto mb-6 max-w-md">{t("description")}</p>
           </div>
-
-          {/* Config card */}
-          <Card className="border-border shadow-border/50 bg-card border-4 shadow-[6px_6px_0px_0px]">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-xl">
-                    <Calculator className="text-primary h-6 w-6" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-xl font-black">{t("configureQuiz")}</CardTitle>
-                    <CardDescription>{t("chooseSettings")}</CardDescription>
-                  </div>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <PlaygroundConfigForm />
-            </CardContent>
-          </Card>
-
+          {/* Leaderboard */}
+          <Leaderboard />
+          <PlaygroundConfigDialog />
           {/* Paused sessions */}
-          <div className="mt-6">
-            <PausedSessions />
-          </div>
+          <PausedSessions />
         </div>
       </section>
     </main>
