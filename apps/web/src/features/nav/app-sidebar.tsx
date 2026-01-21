@@ -18,15 +18,20 @@ import { cn } from "@/lib/utils";
 
 import type { NavigationItems } from "./nav-types";
 import { NavMain } from "./nav-main";
-import { ChevronLeft, ChevronRight, LayoutDashboard } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, LayoutDashboard, User2 } from "lucide-react";
 import { AdminNavUser } from "./admin-nav-user";
 
 const data: NavigationItems = {
   items: [
     {
       title: "Dashboard",
-      url: "/dashboard",
+      url: "/admin/dashboard",
       icon: LayoutDashboard as React.ComponentType,
+    },
+    {
+      title: "Users",
+      url: "/admin/users",
+      icon: User2 as React.ComponentType,
     },
   ],
   footerItems: [
@@ -50,7 +55,7 @@ function CustomSidebarTrigger() {
       variant="ghost"
       size="icon"
     >
-      {state === "collapsed" ? <ChevronRight /> : <ChevronLeft />}
+      {state === "collapsed" ? <ChevronsRight /> : <ChevronsLeft />}
     </SidebarTrigger>
   );
 }

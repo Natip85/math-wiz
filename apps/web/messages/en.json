@@ -124,7 +124,7 @@
     "startQuiz": "Start Quiz"
   },
   "PausedSessions": {
-    "title": "Paused Sessions",
+    "title": "Paused Learning Sessions",
     "description": "Continue where you left off",
     "resume": "Resume"
   },
@@ -157,24 +157,24 @@
   },
   "HistoryPage": {
     "title": "Playground History",
-    "description": "Review your past playground sessions and see how you did on each question."
+    "description": "Review your past learning sessions and see how you did on each question."
   },
   "PlayRunProgress": {
     "questionOf": "Question {current} of {total}",
     "points": "pts",
     "pause": "Pause",
     "pauseDialog": {
-      "title": "Pause this session?",
-      "description": "Your progress will be saved and you can resume this session later from the playground page.",
+      "title": "Pause this learning session?",
+      "description": "Your progress will be saved and you can resume this learning session later from the playground page.",
       "cancel": "Keep Playing",
-      "confirm": "Pause Session",
+      "confirm": "Pause Learning Session",
       "confirming": "Pausing..."
     }
   },
   "HistoryTable": {
     "empty": {
       "title": "No playground history yet",
-      "description": "Complete some playground sessions to see your history here."
+      "description": "Complete some learning sessions to see your history here."
     },
     "status": {
       "completed": "Completed",

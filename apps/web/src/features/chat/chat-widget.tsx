@@ -43,7 +43,7 @@ export function ChatWidget() {
           y: isOpen ? 0 : 20,
         }}
         transition={{ duration: 0.2, ease: "easeOut" }}
-        className="bg-background border-border fixed right-4 bottom-4 z-50 flex h-[600px] w-[400px] flex-col overflow-hidden rounded-2xl border shadow-2xl sm:h-[700px] sm:w-[450px]"
+        className="bg-background border-border fixed inset-4 z-50 flex flex-col overflow-hidden rounded-2xl border shadow-2xl sm:inset-auto sm:right-4 sm:bottom-4 sm:h-[700px] sm:w-[450px]"
         style={{ pointerEvents: isOpen ? "auto" : "none" }}
       >
         {/* Header */}

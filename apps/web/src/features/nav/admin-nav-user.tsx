@@ -80,9 +80,9 @@ export const AdminNavUser = () => {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="#">
+                <Link href="/profile">
                   <User />
-                  User settings
+                  Profile
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>

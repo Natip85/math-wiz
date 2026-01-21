@@ -113,7 +113,7 @@ export function NavMain({ items, footerItems, children, ...props }: NavMainProps
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton isActive={isActive} asChild size="lg" tooltip={item.title}>
                   <Link href={item.url as Route} className={cn(isActive && "bg-(--color-primary)")}>
-                    <item.icon />
+                    <item.icon className="size-5" />
                     <span>{item.title}</span>
                     {item.hasDropdown && <ChevronDown className="ml-auto" />}
                   </Link>
@@ -134,7 +134,7 @@ export function NavMain({ items, footerItems, children, ...props }: NavMainProps
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton isActive={isActive} size="lg" asChild tooltip={item.title}>
                   <Link href={item.url as Route}>
-                    <item.icon />
+                    <item.icon className="size-5" />
                     <span>{item.title}</span>
                   </Link>
                 </SidebarMenuButton>
