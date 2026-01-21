@@ -1,19 +1,20 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { useTRPC } from "@/utils/trpc-client";
 
 export function DifficultyBars() {
   const trpc = useTRPC();
-  const { data: difficulties = [] } = useQuery(trpc.admin.getDifficultyStats.queryOptions());
+  const { data: difficulties } = useSuspenseQuery(trpc.admin.getDifficultyStats.queryOptions());
   return (
-    <div className="bg-card border-border h-full rounded-3xl border p-6">
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold">Difficulty Split</h3>
-        <p className="text-muted-foreground text-sm">Questions by level</p>
-      </div>
-      <div className="space-y-5">
+    <Card className="h-full rounded-3xl border p-6">
+      <CardHeader className="mb-6 p-0">
+        <CardTitle className="text-lg font-semibold">Difficulty Split</CardTitle>
+        <CardDescription>Questions by level</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-5 p-0">
         {difficulties.map((diff) => (
           <div key={diff.level}>
             <div className="mb-2 flex items-center justify-between">
@@ -33,7 +34,7 @@ export function DifficultyBars() {
             </div>
           </div>
         ))}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

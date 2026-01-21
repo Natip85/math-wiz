@@ -1,5 +1,7 @@
 "use client";
+
 import type { ReactNode } from "react";
+import { Suspense } from "react";
 import { parseAsString, useQueryState } from "nuqs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HeroStats } from "./hero-stats";
@@ -10,6 +12,16 @@ import { PeakHours } from "./peak-hours";
 import { DifficultyBars } from "./difficulty-bars";
 import { LiveFeed } from "./live-feed";
 import { TopLearners } from "./top-learners";
+import {
+  HeroStatsSkeleton,
+  ActivityChartSkeleton,
+  QuestionDonutSkeleton,
+  TopicGridSkeleton,
+  PeakHoursSkeleton,
+  DifficultyBarsSkeleton,
+  LiveFeedSkeleton,
+  TopLearnersSkeleton,
+} from "./skeletons";
 
 const tabs = [
   { id: "overview", label: "Overview" },
@@ -23,12 +35,18 @@ type TabId = (typeof tabs)[number]["id"];
 const tabContent: Record<TabId, ReactNode> = {
   overview: (
     <>
-      <HeroStats />
+      <Suspense fallback={<HeroStatsSkeleton />}>
+        <HeroStats />
+      </Suspense>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <ActivityChart />
+          <Suspense fallback={<ActivityChartSkeleton />}>
+            <ActivityChart />
+          </Suspense>
         </div>
-        <QuestionDonut />
+        <Suspense fallback={<QuestionDonutSkeleton />}>
+          <QuestionDonut />
+        </Suspense>
       </div>
     </>
   ),
@@ -36,28 +54,44 @@ const tabContent: Record<TabId, ReactNode> = {
     <>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <ActivityChart />
+          <Suspense fallback={<ActivityChartSkeleton />}>
+            <ActivityChart />
+          </Suspense>
         </div>
-        <PeakHours />
+        <Suspense fallback={<PeakHoursSkeleton />}>
+          <PeakHours />
+        </Suspense>
       </div>
-      <LiveFeed />
+      <Suspense fallback={<LiveFeedSkeleton />}>
+        <LiveFeed />
+      </Suspense>
     </>
   ),
   performance: (
     <>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <TopicGrid />
+          <Suspense fallback={<TopicGridSkeleton />}>
+            <TopicGrid />
+          </Suspense>
         </div>
-        <QuestionDonut />
+        <Suspense fallback={<QuestionDonutSkeleton />}>
+          <QuestionDonut />
+        </Suspense>
       </div>
-      <DifficultyBars />
+      <Suspense fallback={<DifficultyBarsSkeleton />}>
+        <DifficultyBars />
+      </Suspense>
     </>
   ),
   users: (
     <>
-      <HeroStats />
-      <TopLearners />
+      <Suspense fallback={<HeroStatsSkeleton />}>
+        <HeroStats />
+      </Suspense>
+      <Suspense fallback={<TopLearnersSkeleton />}>
+        <TopLearners />
+      </Suspense>
     </>
   ),
 };

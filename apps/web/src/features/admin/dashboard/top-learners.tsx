@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Trophy } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -9,22 +9,25 @@ import { useTRPC } from "@/utils/trpc-client";
 
 export function TopLearners() {
   const trpc = useTRPC();
-  const { data: learners = [] } = useQuery(trpc.admin.getTopLearners.queryOptions());
+  const { data: learners } = useSuspenseQuery(trpc.admin.getTopLearners.queryOptions());
 
   return (
-    <Card className="from-card to-secondary/50 h-full bg-linear-to-br">
-      <CardHeader className="flex-row items-center gap-3">
+    <Card className="h-full rounded-3xl border p-6">
+      <CardHeader className="mb-6 flex-row items-center gap-3 p-0">
         <div className="bg-warning/20 flex size-10 items-center justify-center rounded-xl">
           <Trophy className="text-warning size-5" />
         </div>
         <div>
-          <CardTitle className="text-lg">Top Learners</CardTitle>
+          <CardTitle className="text-lg font-semibold">Top Learners</CardTitle>
           <CardDescription>This month</CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3 p-0">
         {learners.map((learner, idx) => (
-          <div key={idx} className="flex items-center gap-4">
+          <Card
+            key={idx}
+            className="bg-secondary/30 hover:bg-secondary/50 flex-row items-center gap-4 rounded-2xl border-0 p-3 transition-colors"
+          >
             <div className="relative">
               <Avatar className="border-border size-12 border-2">
                 <AvatarFallback className="bg-muted text-sm font-semibold">
@@ -43,12 +46,12 @@ export function TopLearners() {
                 {idx + 1}
               </div>
             </div>
-            <div className="flex-1">
+            <CardContent className="flex-1 p-0">
               <p className="text-sm font-semibold">{learner.name}</p>
               <p className="text-muted-foreground text-xs">{learner.streak} day streak</p>
-            </div>
+            </CardContent>
             <p className="font-mono text-lg font-bold">{(learner.score / 1000).toFixed(1)}K</p>
-          </div>
+          </Card>
         ))}
       </CardContent>
     </Card>

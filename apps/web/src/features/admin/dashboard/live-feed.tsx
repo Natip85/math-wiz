@@ -1,32 +1,40 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardAction,
+  CardContent,
+} from "@/components/ui/card";
 import { useTRPC } from "@/utils/trpc-client";
 
 export function LiveFeed() {
   const trpc = useTRPC();
-  const { data: sessions = [] } = useQuery({
+  const { data: sessions } = useSuspenseQuery({
     ...trpc.admin.getLiveFeed.queryOptions(),
     refetchInterval: 10000, // Refresh every 10 seconds
   });
   return (
-    <div className="bg-card border-border h-full rounded-3xl border p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-semibold">Live Activity</h3>
-          <p className="text-muted-foreground text-sm">Real-time learning session feed</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="relative flex size-2">
-            <span className="bg-success absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" />
-            <span className="bg-success relative inline-flex size-2 rounded-full" />
-          </span>
-          <span className="text-muted-foreground text-xs">Live</span>
-        </div>
-      </div>
-      <div className="space-y-4">
+    <Card className="h-full rounded-3xl border p-6">
+      <CardHeader className="mb-6 p-0">
+        <CardTitle className="text-lg font-semibold">Live Activity</CardTitle>
+        <CardDescription>Real-time learning session feed</CardDescription>
+        <CardAction>
+          <div className="flex items-center gap-2">
+            <span className="relative flex size-2">
+              <span className="bg-success absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" />
+              <span className="bg-success relative inline-flex size-2 rounded-full" />
+            </span>
+            <span className="text-muted-foreground text-xs">Live</span>
+          </div>
+        </CardAction>
+      </CardHeader>
+      <CardContent className="space-y-4 p-0">
         {sessions.map((session, idx) => (
           <div
             key={idx}
@@ -54,7 +62,7 @@ export function LiveFeed() {
             </div>
           </div>
         ))}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

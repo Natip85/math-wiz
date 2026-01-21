@@ -1,8 +1,16 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { useTRPC } from "@/utils/trpc-client";
 
@@ -14,16 +22,16 @@ const chartConfig = {
 
 export function QuestionDonut() {
   const trpc = useTRPC();
-  const { data = [] } = useQuery(trpc.admin.getQuestionTypeStats.queryOptions());
+  const { data } = useSuspenseQuery(trpc.admin.getQuestionTypeStats.queryOptions());
 
   const total = data.reduce((sum, item) => sum + item.value, 0);
   return (
-    <div className="bg-card border-border flex h-full flex-col rounded-3xl border p-6">
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold">Question Types</h3>
-        <p className="text-muted-foreground text-sm">Distribution breakdown</p>
-      </div>
-      <div className="relative flex flex-1 items-center justify-center">
+    <Card className="h-full rounded-3xl border p-6">
+      <CardHeader className="mb-4 p-0">
+        <CardTitle className="text-lg font-semibold">Question Types</CardTitle>
+        <CardDescription>Distribution breakdown</CardDescription>
+      </CardHeader>
+      <CardContent className="relative flex flex-1 items-center justify-center p-0">
         <ChartContainer config={chartConfig} className="h-[180px] w-[180px]">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -64,15 +72,15 @@ export function QuestionDonut() {
             <p className="text-muted-foreground text-xs">Total</p>
           </div>
         </div>
-      </div>
-      <div className="mt-4 flex justify-center gap-4">
+      </CardContent>
+      <CardFooter className="mt-4 flex justify-center gap-4 p-0">
         {data.map((item) => (
           <div key={item.name} className="flex items-center gap-2">
             <div className="size-2 rounded-full" style={{ backgroundColor: item.color }} />
             <span className="text-muted-foreground text-xs">{item.name}</span>
           </div>
         ))}
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }

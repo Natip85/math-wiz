@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { Bar, BarChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell } from "recharts";
 
 const topicData = [
@@ -30,14 +30,12 @@ const getBarColor = (accuracy: number) => {
 
 export function TopicPerformance() {
   return (
-    <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-      <CardHeader>
-        <CardTitle className="text-foreground">Topic Performance</CardTitle>
-        <CardDescription className="text-muted-foreground">
-          Accuracy rates across different math topics
-        </CardDescription>
+    <Card className="h-full rounded-3xl border p-6">
+      <CardHeader className="p-0">
+        <CardTitle className="text-lg font-semibold">Topic Performance</CardTitle>
+        <CardDescription>Accuracy rates across different math topics</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         <ChartContainer config={chartConfig} className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart

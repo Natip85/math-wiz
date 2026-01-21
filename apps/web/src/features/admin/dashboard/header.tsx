@@ -18,7 +18,7 @@ export function DashboardHeader() {
       actions={
         <>
           <Select defaultValue="7d">
-            <SelectTrigger className="bg-card/50 border-border/50 w-[160px]">
+            <SelectTrigger disabled className="bg-card/50 border-border/50 w-[160px]">
               <CalendarIcon className="text-muted-foreground mr-2 size-4" />
               <SelectValue placeholder="Select period" />
             </SelectTrigger>
@@ -34,7 +34,7 @@ export function DashboardHeader() {
             <RefreshCw className="size-4" />
             <span className="sr-only">Refresh data</span>
           </Button>
-          <Button variant="outline" className="border-border/50 bg-card/50">
+          <Button disabled variant="outline" className="border-border/50 bg-card/50">
             <Download className="mr-2 size-4" />
             Export
           </Button>

@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 import type { NavigationItems } from "./nav-types";
 import { NavMain } from "./nav-main";
-import { ChevronsLeft, ChevronsRight, LayoutDashboard, User2 } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, LayoutDashboard, Users2 } from "lucide-react";
 import { AdminNavUser } from "./admin-nav-user";
 
 const data: NavigationItems = {
@@ -31,7 +31,7 @@ const data: NavigationItems = {
     {
       title: "Users",
       url: "/admin/users",
-      icon: User2 as React.ComponentType,
+      icon: Users2 as React.ComponentType,
     },
   ],
   footerItems: [
