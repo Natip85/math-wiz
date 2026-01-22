@@ -1,6 +1,6 @@
 {
   "Common": {
-    "appName": "Math Wiz",
+    "appName": "Learn Quest",
     "loading": "Cargando..."
   },
   "Nav": {
@@ -9,7 +9,7 @@
     "playground": "Zona de juegos",
     "signIn": "Iniciar sesión",
     "admin": "Admin",
-    "logoAlt": "Math Wiz",
+    "logoAlt": "Learn Quest",
     "chat": "Chat",
     "menu": "Menú",
     "openMenu": "Abrir menú"
@@ -28,24 +28,24 @@
     "learningSession": "Sesión de aprendizaje: {id}"
   },
   "HomePage": {
-    "title": "¡Aventuras",
-    "titleHighlight": "Matemáticas!",
-    "description": "¡Convierte la práctica de matemáticas en un viaje emocionante! Juegos interactivos, desafíos coloridos y recompensas que harán que tu hijo ame los números.",
+    "title": "¡Aventuras de",
+    "titleHighlight": "Aprendizaje!",
+    "description": "¡Convierte el aprendizaje en un viaje emocionante! Matemáticas, Ciencias, Inglés - juegos interactivos, desafíos coloridos y recompensas que harán que tu hijo ame aprender.",
     "startPlaying": "Empieza a Jugar Gratis",
     "watchDemo": "Ver Demo",
-    "heroImageAlt": "Niño feliz aprendiendo matemáticas"
+    "heroImageAlt": "Niño feliz aprendiendo"
   },
   "AboutPage": {
     "hero": {
-      "title": "Haciendo las Matemáticas",
-      "titleHighlight": "¡Divertidas!",
-      "description": "Math Quest es una forma divertida y atractiva para que los niños practiquen sus habilidades matemáticas. ¡Creemos que aprender debe sentirse como una aventura!"
+      "title": "Haciendo el Aprendizaje",
+      "titleHighlight": "¡Divertido!",
+      "description": "Learn Quest es una forma divertida y atractiva para que los niños practiquen Matemáticas, Ciencias e Inglés. ¡Creemos que aprender debe sentirse como una aventura!"
     },
     "features": {
-      "title": "Por qué los Niños Aman Math Quest",
+      "title": "Por qué los Niños Aman Learn Quest",
       "customQuizzes": {
         "title": "Cuestionarios Personalizados",
-        "description": "Elige suma, resta, multiplicación o división. ¡Selecciona cuántas preguntas quieres!"
+        "description": "Elige entre Matemáticas, Ciencias o Inglés. ¡Selecciona tu tema y cuántas preguntas quieres!"
       },
       "learnAtYourPace": {
         "title": "Aprende a tu Ritmo",
@@ -60,39 +60,39 @@
       "title": "Cómo Funciona",
       "step1": {
         "title": "Configura tu Cuestionario",
-        "description": "Elige el tipo de problemas matemáticos y cuántas preguntas quieres practicar."
+        "description": "Elige tu materia, tema y cuántas preguntas quieres practicar."
       },
       "step2": {
-        "title": "Resuelve Problemas",
+        "title": "Responde Preguntas",
         "description": "Responde cada pregunta a tu propio ritmo. ¡Escribe tu respuesta y presiona enviar!"
       },
       "step3": {
         "title": "Ve tus Resultados",
-        "description": "¡Revisa cuántas acertaste y celebra tus victorias matemáticas!"
+        "description": "¡Revisa cuántas acertaste y celebra tus victorias de aprendizaje!"
       }
     },
     "mission": {
       "title": "Nuestra Misión",
-      "description": "Queremos que cada niño se sienta seguro con las matemáticas. Math Quest convierte la práctica en juego, ayudando a los niños a construir bases sólidas mientras se divierten. ¡Porque cuando aprender se siente como un juego, todos ganan!"
+      "description": "Queremos que cada niño se sienta seguro aprendiendo. Learn Quest convierte la práctica en juego, ayudando a los niños a construir bases sólidas en Matemáticas, Ciencias e Inglés mientras se divierten. ¡Porque cuando aprender se siente como un juego, todos ganan!"
     },
     "cta": {
       "title": "¿Listo para Empezar?",
-      "description": "¡Salta a una aventura matemática y descubre lo divertida que puede ser la práctica!",
+      "description": "¡Salta a una aventura de aprendizaje y descubre lo divertida que puede ser la práctica!",
       "button": "Iniciar un Cuestionario"
     },
-    "footer": "Hecho con <heart></heart> para jóvenes matemáticos de todo el mundo"
+    "footer": "Hecho con <heart></heart> para jóvenes estudiantes de todo el mundo"
   },
   "PlaygroundPage": {
     "title": "¿Listo para un",
     "titleHighlight": "Desafío?",
-    "description": "¡Configura tu cuestionario y pon a prueba tus habilidades matemáticas!",
+    "description": "¡Configura tu cuestionario y pon a prueba tus habilidades!",
     "configureQuiz": "Configurar Cuestionario",
     "chooseSettings": "Elige tu configuración abajo",
     "startQuiz": "Iniciar Cuestionario"
   },
   "Leaderboard": {
     "title": "Tabla de Clasificación",
-    "description": "Los mejores matemáticos esta semana",
+    "description": "Los mejores estudiantes esta semana",
     "empty": "Aún no hay puntuaciones. ¡Sé el primero en jugar!",
     "you": "Tú"
   },

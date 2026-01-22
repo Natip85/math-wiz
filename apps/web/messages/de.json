@@ -1,6 +1,6 @@
 {
   "Common": {
-    "appName": "Math Wiz",
+    "appName": "Learn Quest",
     "loading": "Wird geladen..."
   },
   "Nav": {
@@ -9,7 +9,7 @@
     "playground": "Spielplatz",
     "signIn": "Anmelden",
     "admin": "Admin",
-    "logoAlt": "Math Wiz",
+    "logoAlt": "Learn Quest",
     "chat": "Chat",
     "menu": "Menü",
     "openMenu": "Menü öffnen"
@@ -28,24 +28,24 @@
     "learningSession": "Lernsitzung: {id}"
   },
   "HomePage": {
-    "title": "Mathe-Abenteuer",
+    "title": "Lern-Abenteuer",
     "titleHighlight": "Erwarten Dich!",
-    "description": "Verwandle Matheübungen in eine aufregende Reise! Interaktive Spiele, bunte Herausforderungen und Belohnungen, die dein Kind Zahlen lieben lassen.",
+    "description": "Verwandle das Lernen in eine aufregende Reise! Mathe, Naturwissenschaften, Englisch - interaktive Spiele, bunte Herausforderungen und Belohnungen, die dein Kind das Lernen lieben lassen.",
     "startPlaying": "Kostenlos Starten",
     "watchDemo": "Demo Ansehen",
-    "heroImageAlt": "Glückliches Kind beim Mathelernen"
+    "heroImageAlt": "Glückliches Kind beim Lernen"
   },
   "AboutPage": {
     "hero": {
-      "title": "Mathe Spaßig",
+      "title": "Lernen Spaßig",
       "titleHighlight": "Machen!",
-      "description": "Math Quest ist eine lustige und fesselnde Art für Kinder, ihre Mathefähigkeiten zu üben. Wir glauben, dass Lernen sich wie ein Abenteuer anfühlen sollte!"
+      "description": "Learn Quest ist eine lustige und fesselnde Art für Kinder, Mathe, Naturwissenschaften und Englisch zu üben. Wir glauben, dass Lernen sich wie ein Abenteuer anfühlen sollte!"
     },
     "features": {
-      "title": "Warum Kinder Math Quest Lieben",
+      "title": "Warum Kinder Learn Quest Lieben",
       "customQuizzes": {
         "title": "Individuelle Quiz",
-        "description": "Wähle Addition, Subtraktion, Multiplikation oder Division. Bestimme wie viele Fragen du willst!"
+        "description": "Wähle zwischen Mathe, Naturwissenschaften oder Englisch. Wähle dein Thema und wie viele Fragen du willst!"
       },
       "learnAtYourPace": {
         "title": "Lerne in Deinem Tempo",
@@ -60,39 +60,39 @@
       "title": "So Funktioniert's",
       "step1": {
         "title": "Richte Dein Quiz Ein",
-        "description": "Wähle die Art der Matheaufgaben und wie viele Fragen du üben möchtest."
+        "description": "Wähle dein Fach, Thema und wie viele Fragen du üben möchtest."
       },
       "step2": {
-        "title": "Löse Aufgaben",
+        "title": "Beantworte Fragen",
         "description": "Beantworte jede Frage in deinem eigenen Tempo. Tippe deine Antwort ein und drücke Absenden!"
       },
       "step3": {
         "title": "Sieh Deine Ergebnisse",
-        "description": "Überprüfe wie viele du richtig hattest und feiere deine Mathe-Erfolge!"
+        "description": "Überprüfe wie viele du richtig hattest und feiere deine Lernerfolge!"
       }
     },
     "mission": {
       "title": "Unsere Mission",
-      "description": "Wir wollen, dass jedes Kind sich mit Mathe sicher fühlt. Math Quest verwandelt Übung in Spiel und hilft Kindern, solide Grundlagen aufzubauen während sie Spaß haben. Denn wenn Lernen sich wie ein Spiel anfühlt, gewinnen alle!"
+      "description": "Wir wollen, dass jedes Kind sich beim Lernen sicher fühlt. Learn Quest verwandelt Übung in Spiel und hilft Kindern, solide Grundlagen in Mathe, Naturwissenschaften und Englisch aufzubauen während sie Spaß haben. Denn wenn Lernen sich wie ein Spiel anfühlt, gewinnen alle!"
     },
     "cta": {
       "title": "Bereit Anzufangen?",
-      "description": "Spring in ein Mathe-Abenteuer und entdecke wie viel Spaß Übung machen kann!",
+      "description": "Spring in ein Lern-Abenteuer und entdecke wie viel Spaß Übung machen kann!",
       "button": "Quiz Starten"
     },
-    "footer": "Mit <heart></heart> gemacht für junge Mathematiker überall"
+    "footer": "Mit <heart></heart> gemacht für junge Lernende überall"
   },
   "PlaygroundPage": {
     "title": "Bereit für eine",
     "titleHighlight": "Herausforderung?",
-    "description": "Richte dein Quiz ein und stelle deine Mathefähigkeiten auf die Probe!",
+    "description": "Richte dein Quiz ein und stelle deine Fähigkeiten auf die Probe!",
     "configureQuiz": "Quiz Konfigurieren",
     "chooseSettings": "Wähle unten deine Einstellungen",
     "startQuiz": "Quiz Starten"
   },
   "Leaderboard": {
     "title": "Bestenliste",
-    "description": "Top-Mathematiker diese Woche",
+    "description": "Top-Lernende diese Woche",
     "empty": "Noch keine Punkte. Sei der Erste, der spielt!",
     "you": "Du"
   },

@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { Brain, Calculator, Heart, Rocket, Star, Target, Trophy, Zap } from "lucide-react";
+import { BookOpen, Brain, Heart, Rocket, Star, Target, Trophy, Zap } from "lucide-react";
 
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -49,7 +49,7 @@ export default function AboutPage() {
 
           <div className="grid gap-6 md:grid-cols-3">
             <FeatureCard
-              icon={<Calculator className="h-10 w-10" />}
+              icon={<BookOpen className="h-10 w-10" />}
               title={t("features.customQuizzes.title")}
               description={t("features.customQuizzes.description")}
               color="primary"

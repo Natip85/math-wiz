@@ -3,7 +3,7 @@
 
 declare const messages: {
   Common: {
-    appName: "Math Wiz";
+    appName: "Learn Quest";
     loading: "Loading...";
   };
   Nav: {
@@ -12,7 +12,7 @@ declare const messages: {
     playground: "Playground";
     signIn: "Sign in";
     admin: "Admin";
-    logoAlt: "Math Wiz";
+    logoAlt: "Learn Quest";
     chat: "Chat";
     menu: "Menu";
     openMenu: "Open menu";
@@ -31,24 +31,24 @@ declare const messages: {
     learningSession: "Learning session: {id}";
   };
   HomePage: {
-    title: "Math Adventures";
+    title: "Learning Adventures";
     titleHighlight: "Await!";
-    description: "Turn math practice into an exciting journey! Interactive games, colorful challenges, and rewards that make your child love numbers.";
+    description: "Turn learning into an exciting journey! Math, Science, English - interactive games, colorful challenges, and rewards that make your child love to learn.";
     startPlaying: "Start Playing Free";
     watchDemo: "Watch Demo";
-    heroImageAlt: "Happy child learning math";
+    heroImageAlt: "Happy child learning";
   };
   AboutPage: {
     hero: {
-      title: "Making Math Fun";
-      titleHighlight: "One Problem at a Time!";
-      description: "Math Quest is a fun and engaging way for kids to practice their math skills. We believe learning should feel like an adventure!";
+      title: "Making Learning Fun";
+      titleHighlight: "One Question at a Time!";
+      description: "Learn Quest is a fun and engaging way for kids to practice Math, Science, and English. We believe learning should feel like an adventure!";
     };
     features: {
-      title: "Why Kids Love Math Quest";
+      title: "Why Kids Love Learn Quest";
       customQuizzes: {
         title: "Custom Quizzes";
-        description: "Choose addition, subtraction, multiplication, or division. Pick how many questions you want!";
+        description: "Choose from Math, Science, or English. Pick your topic and how many questions you want!";
       };
       learnAtYourPace: {
         title: "Learn at Your Pace";
@@ -63,39 +63,39 @@ declare const messages: {
       title: "How It Works";
       step1: {
         title: "Set Up Your Quiz";
-        description: "Pick the type of math problems and how many questions you want to practice.";
+        description: "Pick your subject, topic, and how many questions you want to practice.";
       };
       step2: {
-        title: "Solve Problems";
+        title: "Answer Questions";
         description: "Answer each question at your own pace. Type in your answer and hit submit!";
       };
       step3: {
         title: "See Your Results";
-        description: "Check how many you got right and celebrate your math victories!";
+        description: "Check how many you got right and celebrate your learning victories!";
       };
     };
     mission: {
       title: "Our Mission";
-      description: "We want every child to feel confident with math. Math Quest turns practice into play, helping kids build strong foundations while having fun. Because when learning feels like a game, everyone wins!";
+      description: "We want every child to feel confident in learning. Learn Quest turns practice into play, helping kids build strong foundations in Math, Science, and English while having fun. Because when learning feels like a game, everyone wins!";
     };
     cta: {
       title: "Ready to Start?";
-      description: "Jump into a math adventure and see how fun practice can be!";
+      description: "Jump into a learning adventure and see how fun practice can be!";
       button: "Start a Quiz";
     };
-    footer: "Made with <heart></heart> for young mathematicians everywhere";
+    footer: "Made with <heart></heart> for young learners everywhere";
   };
   PlaygroundPage: {
     title: "Ready for a";
     titleHighlight: "Challenge?";
-    description: "Configure your quiz and put your math skills to the test!";
+    description: "Configure your quiz and put your skills to the test!";
     configureQuiz: "Configure Quiz";
     chooseSettings: "Choose your settings below";
     startQuiz: "Start Quiz";
   };
   Leaderboard: {
     title: "Leaderboard";
-    description: "Top mathematicians this week";
+    description: "Top learners this week";
     empty: "No scores yet. Be the first to play!";
     you: "You";
   };
