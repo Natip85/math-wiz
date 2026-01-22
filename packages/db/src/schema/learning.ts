@@ -6,11 +6,15 @@ import {
   integer,
   boolean,
   timestamp,
-  json,
+  jsonb,
   index,
   pgEnum,
 } from "drizzle-orm/pg-core";
 import { user } from "./auth";
+
+// ============================================================================
+// Enums
+// ============================================================================
 
 export const mode = ["playground", "quiz"] as const;
 export type Mode = (typeof mode)[number];
@@ -20,8 +24,83 @@ export const sessionStatus = ["in_progress", "completed", "paused"] as const;
 export type SessionStatus = (typeof sessionStatus)[number];
 export const sessionStatusEnum = pgEnum("session_status", sessionStatus);
 
-export const questionType = ["word_problem", "equation", "multiple_choice"] as const;
+// Subject enum
+export const subject = ["math", "science", "english"] as const;
+export type Subject = (typeof subject)[number];
+export const subjectEnum = pgEnum("subject", subject);
+
+// ============================================================================
+// Subject-Specific Question Types
+// ============================================================================
+
+export const mathQuestionTypes = ["equation", "word_problem", "multiple_choice"] as const;
+export const scienceQuestionTypes = [
+  "fact",
+  "experiment",
+  "diagram_label",
+  "multiple_choice",
+] as const;
+export const englishQuestionTypes = [
+  "grammar",
+  "reading_comprehension",
+  "spelling",
+  "sentence_completion",
+] as const;
+
+// Combined question types for database storage (unique values only)
+export const questionType = [
+  // Math types
+  "equation",
+  "word_problem",
+  "multiple_choice",
+  // Science types (excluding duplicates)
+  "fact",
+  "experiment",
+  "diagram_label",
+  // English types (excluding duplicates)
+  "grammar",
+  "reading_comprehension",
+  "spelling",
+  "sentence_completion",
+] as const;
+
 export type QuestionType = (typeof questionType)[number];
+export type MathQuestionType = (typeof mathQuestionTypes)[number];
+export type ScienceQuestionType = (typeof scienceQuestionTypes)[number];
+export type EnglishQuestionType = (typeof englishQuestionTypes)[number];
+
+// Mapping for validation
+export const questionTypesBySubject = {
+  math: mathQuestionTypes,
+  science: scienceQuestionTypes,
+  english: englishQuestionTypes,
+} as const;
+
+// ============================================================================
+// Evaluation Strategies
+// ============================================================================
+
+export const evaluationStrategy = [
+  "exact_match",
+  "multiple_choice",
+  "ai_rubric",
+  "partial_credit",
+] as const;
+export type EvaluationStrategy = (typeof evaluationStrategy)[number];
+
+// ============================================================================
+// Topics by Subject
+// ============================================================================
+
+export const topicsBySubject = {
+  math: ["addition", "subtraction", "multiplication", "division", "fractions", "decimals"] as const,
+  science: ["plants", "animals", "forces", "matter", "weather", "solar_system"] as const,
+  english: ["grammar", "spelling", "reading_comprehension", "vocabulary", "punctuation"] as const,
+} as const;
+
+export type MathTopic = (typeof topicsBySubject.math)[number];
+export type ScienceTopic = (typeof topicsBySubject.science)[number];
+export type EnglishTopic = (typeof topicsBySubject.english)[number];
 
 export const learningSessions = pgTable(
   "learning_sessions",
@@ -31,7 +110,8 @@ export const learningSessions = pgTable(
       .references(() => user.id, { onDelete: "cascade" })
       .notNull(),
     mode: modeEnum("mode").$type<Mode | null>().default(null),
-    topic: text("topic").notNull(), // addition, subtraction, etc.
+    subject: subjectEnum("subject").default("math").notNull(),
+    topic: text("topic").notNull(), // addition, subtraction, plants, grammar, etc.
     status: sessionStatusEnum("status").$type<SessionStatus>().default("in_progress").notNull(),
 
     totalQuestions: integer("total_questions").default(10),
@@ -41,7 +121,10 @@ export const learningSessions = pgTable(
     startedAt: timestamp("started_at").defaultNow().notNull(),
     endedAt: timestamp("ended_at"),
   },
-  (table) => [index("learning_sessions_userId_idx").on(table.userId)]
+  (table) => [
+    index("learning_sessions_userId_idx").on(table.userId),
+    index("learning_sessions_subject_idx").on(table.subject),
+  ]
 );
 
 export const learningSessionsRelations = relations(learningSessions, ({ one, many }) => ({
@@ -64,14 +147,19 @@ export const questions = pgTable(
       .references(() => learningSessions.id, { onDelete: "cascade" })
       .notNull(),
 
+    subject: subjectEnum("subject").default("math").notNull(),
     type: text("type").$type<QuestionType>().default("word_problem").notNull(),
     topic: text("topic").notNull(),
     difficulty: text("difficulty").default("easy"),
+    evaluationStrategy: text("evaluation_strategy")
+      .$type<EvaluationStrategy>()
+      .default("exact_match")
+      .notNull(),
 
     questionText: text("question_text").notNull(),
-    correctAnswer: integer("correct_answer").notNull(),
-    options: json("options").$type<number[] | null>(), // for multiple choice - array of 4 numbers
-    hints: json("hints").notNull(), // array of hint strings
+    correctAnswer: jsonb("correct_answer").notNull(), // { value: number } for math, varies by subject
+    options: jsonb("options"), // for multiple choice - array of options (numbers or strings)
+    hints: jsonb("hints").notNull(), // array of hint strings
     visualDescription: text("visual_description"), // for word problems with visuals
     imageUrl: text("image_url"), // generated image URL from visual description
 
@@ -82,6 +170,7 @@ export const questions = pgTable(
   (table) => [
     index("questions_sessionId_idx").on(table.sessionId),
     index("questions_sessionId_questionIndex_idx").on(table.sessionId, table.questionIndex),
+    index("questions_subject_idx").on(table.subject),
   ]
 );
 
@@ -107,8 +196,10 @@ export const answers = pgTable(
       .references(() => questions.id, { onDelete: "cascade" })
       .notNull(),
 
-    userAnswer: integer("user_answer"),
+    userAnswer: jsonb("user_answer"), // { value: number } for math, varies by subject
     isCorrect: boolean("is_correct"),
+    score: integer("score"), // for partial credit (0-100)
+    feedback: text("feedback"), // AI-generated feedback for wrong answers
     hintsUsed: integer("hints_used").default(0),
     timeMs: integer("time_ms"), // how long the child took
 
@@ -142,6 +233,7 @@ export const skillsProgress = pgTable(
       .references(() => user.id, { onDelete: "cascade" })
       .notNull(),
 
+    subject: subjectEnum("subject").default("math").notNull(),
     topic: text("topic").notNull(),
 
     totalQuestions: integer("total_questions").default(0),
@@ -154,6 +246,7 @@ export const skillsProgress = pgTable(
   (table) => [
     index("skills_progress_userId_idx").on(table.userId),
     index("skills_progress_userId_topic_idx").on(table.userId, table.topic),
+    index("skills_progress_userId_subject_topic_idx").on(table.userId, table.subject, table.topic),
   ]
 );
 

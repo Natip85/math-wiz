@@ -66,7 +66,7 @@ export function NavBar({ className }: React.ComponentProps<"div">) {
         {/* Desktop logo (left on desktop) */}
         <Link href="/" className="hidden shrink-0 md:block">
           <Image
-            src={resolvedTheme === "light" ? "/logo.png" : "/dark-logo.png"}
+            src={resolvedTheme === "light" ? "/logo.png" : "/logo.png"}
             alt={t("logoAlt")}
             width={70}
             height={70}

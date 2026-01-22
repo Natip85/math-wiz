@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useTRPC } from "@/utils/trpc-client";
-import { topics } from "./playground-config-form";
+import { topicsBySubject } from "./playground-config-form";
+import type { Subject } from "./playground-config-form";
 
 export function PausedSessions() {
   const router = useRouter();
@@ -52,7 +53,8 @@ export function PausedSessions() {
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         {pausedSessions.map((session) => {
-          const topic = topics.find((topicItem) => topicItem.value === session.topic);
+          const subjectTopics = topicsBySubject[(session.subject ?? "math") as Subject];
+          const topic = subjectTopics?.find((topicItem) => topicItem.value === session.topic);
           const TopicIcon = topic?.icon;
           const progressPercent = Math.round(
             (session.answeredCount / session.totalQuestions) * 100

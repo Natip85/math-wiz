@@ -101,6 +101,12 @@ declare const messages: {
   };
   PlaygroundConfigForm: {
     generating: "Generating your challenge...";
+    subject: {
+      label: "Subject";
+      math: "Math";
+      science: "Science";
+      english: "English";
+    };
     difficulty: {
       label: "Difficulty";
       easy: "Easy";
@@ -114,6 +120,17 @@ declare const messages: {
       subtraction: "Subtraction";
       multiplication: "Multiplication";
       division: "Division";
+      plants: "Plants";
+      animals: "Animals";
+      forces: "Forces";
+      matter: "Matter";
+      weather: "Weather";
+      solar_system: "Solar System";
+      grammar: "Grammar";
+      spelling: "Spelling";
+      reading_comprehension: "Reading";
+      vocabulary: "Vocabulary";
+      punctuation: "Punctuation";
     };
     maxNumber: {
       label: "Max Number";
@@ -188,6 +205,13 @@ declare const messages: {
       word_problem: "Word Problem";
       equation: "Equation";
       multiple_choice: "Multiple Choice";
+      fact: "True/False";
+      experiment: "Experiment";
+      diagram_label: "Diagram";
+      grammar: "Grammar";
+      reading_comprehension: "Reading";
+      spelling: "Spelling";
+      sentence_completion: "Fill in Blank";
     };
     points: "pts";
     resume: "Resume";
@@ -326,6 +350,16 @@ declare const messages: {
       updating: "Updating...";
       updateProfile: "Update Profile";
     };
+  };
+  QuestionUI: {
+    true: "True";
+    false: "False";
+    submit: "Submit";
+    checking: "Checking...";
+    enterAnswer: "Enter your answer";
+    enterNumber: "Enter your answer";
+    selectOption: "Select an option";
+    noOptions: "No options available";
   };
 };
 export default messages;

@@ -98,6 +98,12 @@
   },
   "PlaygroundConfigForm": {
     "generating": "מייצר את האתגר שלך...",
+    "subject": {
+      "label": "מקצוע",
+      "math": "מתמטיקה",
+      "science": "מדעים",
+      "english": "אנגלית"
+    },
     "difficulty": {
       "label": "רמת קושי",
       "easy": "קל",
@@ -110,7 +116,18 @@
       "addition": "חיבור",
       "subtraction": "חיסור",
       "multiplication": "כפל",
-      "division": "חילוק"
+      "division": "חילוק",
+      "plants": "צמחים",
+      "animals": "בעלי חיים",
+      "forces": "כוחות",
+      "matter": "חומר",
+      "weather": "מזג אוויר",
+      "solar_system": "מערכת השמש",
+      "grammar": "דקדוק",
+      "spelling": "איות",
+      "reading_comprehension": "הבנת הנקרא",
+      "vocabulary": "אוצר מילים",
+      "punctuation": "פיסוק"
     },
     "maxNumber": {
       "label": "מספר מקסימלי",
@@ -184,7 +201,14 @@
     "questionType": {
       "word_problem": "בעיית מילים",
       "equation": "משוואה",
-      "multiple_choice": "בחירה מרובה"
+      "multiple_choice": "בחירה מרובה",
+      "fact": "נכון/לא נכון",
+      "experiment": "ניסוי",
+      "diagram_label": "תרשים",
+      "grammar": "דקדוק",
+      "reading_comprehension": "הבנת הנקרא",
+      "spelling": "איות",
+      "sentence_completion": "השלמת משפט"
     },
     "points": "נק׳",
     "resume": "המשך",
@@ -323,5 +347,15 @@
       "updating": "מעדכן...",
       "updateProfile": "עדכן פרופיל"
     }
+  },
+  "QuestionUI": {
+    "true": "נכון",
+    "false": "לא נכון",
+    "submit": "שלח",
+    "checking": "בודק...",
+    "enterAnswer": "הכנס את התשובה שלך",
+    "enterNumber": "הכנס את התשובה שלך",
+    "selectOption": "בחר אפשרות",
+    "noOptions": "אין אפשרויות זמינות"
   }
 }

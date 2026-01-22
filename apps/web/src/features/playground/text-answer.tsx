@@ -1,16 +1,16 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useTranslations } from "next-intl";
 import z from "zod/v4";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { ConfettiOverlay } from "@/hooks/use-session-completion";
 
 import { HintPopover } from "./hint-popover";
@@ -18,12 +18,12 @@ import { useSubmitAnswer } from "./hooks/use-submit-answer";
 import type { QuestionComponentProps } from "./question-renderer";
 
 const answerSchema = z.object({
-  answer: z.number({ error: "Please enter a number" }),
+  answer: z.string().min(1, "Please enter an answer"),
 });
 
 type AnswerFormValues = z.infer<typeof answerSchema>;
 
-export function WordProblem({ question, sessionId, subject, isFetching }: QuestionComponentProps) {
+export function TextAnswer({ question, sessionId, subject, isFetching }: QuestionComponentProps) {
   const t = useTranslations("QuestionUI");
   const [hintsUsed, setHintsUsed] = useState(0);
   const startTimeRef = useRef(0);
@@ -31,7 +31,7 @@ export function WordProblem({ question, sessionId, subject, isFetching }: Questi
   const form = useForm<AnswerFormValues>({
     resolver: zodResolver(answerSchema),
     defaultValues: {
-      answer: undefined,
+      answer: "",
     },
   });
 
@@ -48,14 +48,19 @@ export function WordProblem({ question, sessionId, subject, isFetching }: Questi
   // Reset timer and focus input when question changes
   useEffect(() => {
     startTimeRef.current = Date.now();
+    form.reset();
     form.setFocus("answer");
   }, [question.id, form]);
 
   async function onSubmit(values: AnswerFormValues) {
     // eslint-disable-next-line react-hooks/purity -- Date.now() is called in form submit handler, not during render
     const timeMs = Date.now() - startTimeRef.current;
+
+    // Determine answer type based on subject and question type
+    const answerType = getAnswerType(subject, question.type);
+
     await submitAnswer({
-      answer: { value: values.answer },
+      answer: { type: answerType, value: values.answer },
       hintsUsed,
       timeMs,
     });
@@ -64,7 +69,7 @@ export function WordProblem({ question, sessionId, subject, isFetching }: Questi
   return (
     <>
       <ConfettiOverlay show={showConfetti} />
-      <div className="relative flex flex-col gap-3 p-4">
+      <div className="relative flex flex-col gap-4 p-4">
         {/* Hints - top right */}
         <div className="absolute top-4 right-4">
           <HintPopover hints={question.hints} onHintsUsedChange={setHintsUsed} />
@@ -82,36 +87,31 @@ export function WordProblem({ question, sessionId, subject, isFetching }: Questi
             />
           </div>
         )}
-        <p className="pr-18 text-center font-mono text-lg">{question.questionText}</p>
 
+        {/* Question text */}
+        <p className="pr-18 text-center text-lg">{question.questionText}</p>
+
+        {/* Text input form */}
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex items-center justify-center gap-5"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <FormField
               control={form.control}
               name="answer"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      type="number"
-                      placeholder={t("enterNumber")}
+                    <Textarea
+                      placeholder={t("enterAnswer")}
+                      className="min-h-24 resize-none"
                       autoFocus
                       {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value === "" ? undefined : Number(value));
-                      }}
-                      value={field.value ?? ""}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" size="sm" disabled={isPending || isFetching}>
+            <Button type="submit" size="lg" disabled={isPending || isFetching} className="w-full">
               {isPending || isFetching ? (
                 <>
                   <Loader2 className="size-4 animate-spin" />
@@ -126,4 +126,20 @@ export function WordProblem({ question, sessionId, subject, isFetching }: Questi
       </div>
     </>
   );
+}
+
+/**
+ * Determine the answer type based on subject and question type
+ */
+function getAnswerType(
+  subject: "math" | "science" | "english",
+  questionType: string
+): "text" | "explanation" {
+  // Science experiment questions use "explanation" type
+  if (subject === "science" && questionType === "experiment") {
+    return "explanation";
+  }
+
+  // English sentence_completion uses "text" type
+  return "text";
 }

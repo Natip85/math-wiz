@@ -9,6 +9,9 @@ import Image from "next/image";
 import { trpc } from "@/utils/trpc-client";
 import { useLocale } from "next-intl";
 
+type Subject = "math" | "science" | "english";
+type Difficulty = "easy" | "medium" | "hard";
+
 export default function GeneratingPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -32,15 +35,12 @@ export default function GeneratingPage() {
     // Prevent double-execution in React StrictMode
     if (hasStartedRef.current) return;
 
-    const topic = searchParams.get("topic") as
-      | "addition"
-      | "subtraction"
-      | "multiplication"
-      | "division"
-      | null;
-    const difficulty = searchParams.get("difficulty") as "easy" | "medium" | "hard" | null;
+    const subject = (searchParams.get("subject") as Subject) || "math";
+    const topic = searchParams.get("topic");
+    const difficulty = searchParams.get("difficulty") as Difficulty | null;
     const questionCount = Number(searchParams.get("questionCount")) || 5;
-    const maxNumber = Number(searchParams.get("maxNumber")) || 20;
+    const maxNumberParam = searchParams.get("maxNumber");
+    const maxNumber = maxNumberParam ? Number(maxNumberParam) : undefined;
 
     if (!topic || !difficulty) {
       router.replace("/playground");
@@ -49,10 +49,11 @@ export default function GeneratingPage() {
 
     hasStartedRef.current = true;
     createPlaygroundRun({
+      subject,
       topic,
       difficulty,
       questionCount,
-      maxNumber,
+      ...(maxNumber !== undefined && { maxNumber }),
       locale,
     });
   }, [searchParams, createPlaygroundRun, router, locale]);

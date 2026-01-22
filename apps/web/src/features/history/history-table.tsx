@@ -3,7 +3,17 @@
 import { useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, XCircle, Lightbulb, Play, Clock } from "lucide-react";
+import {
+  CheckCircle2,
+  XCircle,
+  Lightbulb,
+  Play,
+  Clock,
+  Calculator,
+  FlaskConical,
+  BookOpen,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,7 +33,60 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTRPC } from "@/utils/trpc-client";
+
+// Subject icons mapping
+const subjectIcons: Record<string, LucideIcon> = {
+  math: Calculator,
+  science: FlaskConical,
+  english: BookOpen,
+};
+
+/**
+ * Get the full answer text without truncation
+ */
+function getFullAnswer(answer: unknown): string {
+  if (answer === null || answer === undefined) return "—";
+  if (typeof answer !== "object") return String(answer);
+
+  const a = answer as Record<string, unknown>;
+
+  // Math: { value: number }
+  if ("value" in a && !("type" in a)) {
+    return String(a.value);
+  }
+
+  // Science/English with type discriminator
+  if ("type" in a) {
+    switch (a.type) {
+      case "boolean":
+        return a.value ? "True" : "False";
+      case "choice":
+      case "text":
+      case "explanation":
+        return String(a.value ?? "");
+      case "correction":
+        return String((a as { corrected?: string }).corrected ?? a.value ?? "");
+      default:
+        return String(a.value ?? "—");
+    }
+  }
+
+  return "—";
+}
+
+/**
+ * Format answer objects for display (truncated for table view)
+ * Handles different answer formats: Math { value }, Science/English { type, value }
+ */
+function formatAnswer(answer: unknown): { text: string; isTruncated: boolean } {
+  const fullText = getFullAnswer(answer);
+  if (fullText.length > 30) {
+    return { text: fullText.slice(0, 30) + "…", isTruncated: true };
+  }
+  return { text: fullText, isTruncated: false };
+}
 
 function formatTime(ms: number | null) {
   if (ms === null) return null;
@@ -116,6 +179,17 @@ export function HistoryTable() {
             <div className="flex flex-1 items-center justify-between gap-4 pe-4">
               <div className="space-y-1 text-start">
                 <div className="flex items-center gap-2">
+                  {/* Subject icon and label */}
+                  {(() => {
+                    const subject = session.subject ?? "math";
+                    const SubjectIcon = subjectIcons[subject] ?? Calculator;
+                    return (
+                      <span className="text-muted-foreground flex items-center gap-1.5">
+                        <SubjectIcon className="size-4" />
+                        <span className="text-xs">{tConfig(`subject.${subject}`)}</span>
+                      </span>
+                    );
+                  })()}
                   <span className="font-semibold">{tConfig(`topic.${session.topic}`)}</span>
                   <StatusBadge status={session.status} t={t} />
                 </div>
@@ -167,7 +241,7 @@ export function HistoryTable() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-12">{t("table.number")}</TableHead>
-                  <TableHead>{t("table.question")}</TableHead>
+                  <TableHead className="min-w-[200px]">{t("table.question")}</TableHead>
                   <TableHead className="w-24">{t("table.type")}</TableHead>
                   <TableHead className="w-24 text-center">{t("table.answer")}</TableHead>
                   <TableHead className="w-24 text-center">{t("table.correctAnswer")}</TableHead>
@@ -180,19 +254,54 @@ export function HistoryTable() {
                 {session.questions.map((question) => (
                   <TableRow key={question.id}>
                     <TableCell className="font-medium">{question.questionIndex + 1}</TableCell>
-                    <TableCell className="max-w-md truncate">{question.questionText}</TableCell>
+                    <TableCell className="max-w-md min-w-[200px]">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="line-clamp-2 cursor-help">{question.questionText}</span>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-sm">
+                          {question.questionText}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TableCell>
                     <TableCell>
                       <QuestionTypeLabel type={question.type} t={t} />
                     </TableCell>
                     <TableCell className="text-center">
-                      {question.userAnswer !== null ? (
-                        <span className="font-mono">{question.userAnswer}</span>
-                      ) : (
-                        <span className="text-muted-foreground">—</span>
-                      )}
+                      {(() => {
+                        const { text, isTruncated } = formatAnswer(question.userAnswer);
+                        if (isTruncated) {
+                          return (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <span className="cursor-help font-mono text-sm">{text}</span>
+                              </TooltipTrigger>
+                              <TooltipContent className="max-w-sm">
+                                {getFullAnswer(question.userAnswer)}
+                              </TooltipContent>
+                            </Tooltip>
+                          );
+                        }
+                        return <span className="font-mono text-sm">{text}</span>;
+                      })()}
                     </TableCell>
                     <TableCell className="text-center">
-                      <span className="font-mono">{question.correctAnswer}</span>
+                      {(() => {
+                        const { text, isTruncated } = formatAnswer(question.correctAnswer);
+                        if (isTruncated) {
+                          return (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <span className="cursor-help font-mono text-sm">{text}</span>
+                              </TooltipTrigger>
+                              <TooltipContent className="max-w-sm">
+                                {getFullAnswer(question.correctAnswer)}
+                              </TooltipContent>
+                            </Tooltip>
+                          );
+                        }
+                        return <span className="font-mono text-sm">{text}</span>;
+                      })()}
                     </TableCell>
                     <TableCell className="text-center">
                       {question.timeMs ? (

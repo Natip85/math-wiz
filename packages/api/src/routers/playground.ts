@@ -9,13 +9,36 @@ import {
   questions as questionsTable,
   questionType,
   userScore,
+  subject as subjectValues,
+  topicsBySubject,
 } from "@math-wiz/db/schema/learning";
+import type { Subject, EvaluationStrategy } from "@math-wiz/db/schema/learning";
 
 import { protectedProcedure, router } from "../index";
+import { getPromptForSubject } from "../prompts";
+import { evaluateAnswer } from "../evaluators";
+import {
+  answerInputSchema,
+  mathAnswerSchema,
+  scienceAnswerSchema,
+  englishAnswerSchema,
+} from "../schemas/answers";
+import type { MathAnswer, ScienceAnswer, EnglishAnswer } from "../schemas/answers";
 
-async function generateImageFromDescription(visualDescription: string): Promise<string | null> {
+async function generateImageFromDescription(
+  visualDescription: string,
+  subject: Subject = "math"
+): Promise<string | null> {
   try {
-    const prompt = `Create a simple, colorful, child-friendly educational illustration for a 9-year-old math student.
+    const subjectContexts: Record<Subject, string> = {
+      math: "a 9-year-old math student. Objects should be clearly countable.",
+      science:
+        "a 9-year-old science student. Show scientific concepts clearly with labeled parts if needed.",
+      english:
+        "a 9-year-old English student. Use clear visual storytelling appropriate for reading comprehension.",
+    };
+
+    const prompt = `Create a simple, colorful, child-friendly educational illustration for ${subjectContexts[subject]}
 
 The illustration should show: ${visualDescription}
 
@@ -24,7 +47,6 @@ Requirements:
 - Simple and clear shapes
 - No text or numbers in the image
 - Cartoon/illustration style appropriate for children
-- Objects should be clearly countable
 - White or light background`;
 
     const result = await generateText({
@@ -81,13 +103,13 @@ function getAccuracyMultiplier(accuracy: number): number {
   return 0.8;
 }
 
-const questionSchema = z.object({
+// Math question schema - numeric answers
+const mathQuestionSchema = z.object({
   questions: z.array(
     z.object({
       type: z.enum(questionType),
       questionText: z.string(),
-      correctAnswer: z.number(),
-      // For multiple choice questions - 4 options where one is correct
+      correctAnswer: mathAnswerSchema,
       options: z.array(z.number()).length(4).nullable(),
       hints: z.tuple([z.string(), z.string(), z.string(), z.string()]),
       visualDescription: z.string().nullable(),
@@ -95,24 +117,97 @@ const questionSchema = z.object({
   ),
 });
 
+// Science question schema - multiple answer types
+const scienceQuestionSchema = z.object({
+  questions: z.array(
+    z.object({
+      type: z.enum(questionType),
+      questionText: z.string(),
+      correctAnswer: scienceAnswerSchema,
+      options: z.array(z.string()).length(4).nullable(),
+      hints: z.tuple([z.string(), z.string(), z.string(), z.string()]),
+      visualDescription: z.string().nullable(),
+    })
+  ),
+});
+
+// English question schema - text-based answers
+const englishQuestionSchema = z.object({
+  questions: z.array(
+    z.object({
+      type: z.enum(questionType),
+      questionText: z.string(),
+      correctAnswer: englishAnswerSchema,
+      options: z.array(z.string()).length(4).nullable(),
+      hints: z.tuple([z.string(), z.string(), z.string(), z.string()]),
+      visualDescription: z.string().nullable(),
+    })
+  ),
+});
+
+// Get the appropriate schema based on subject
+function getQuestionSchemaForSubject(subject: Subject) {
+  switch (subject) {
+    case "math":
+      return mathQuestionSchema;
+    case "science":
+      return scienceQuestionSchema;
+    case "english":
+      return englishQuestionSchema;
+    default:
+      return mathQuestionSchema;
+  }
+}
+
+// Get evaluation strategy based on question type and subject
+function getEvaluationStrategy(subject: Subject, questionType: string): EvaluationStrategy {
+  // Math is always exact match
+  if (subject === "math") return "exact_match";
+
+  // Multiple choice is always exact match
+  if (questionType === "multiple_choice") return "multiple_choice";
+
+  // Science experiments and explanations need AI rubric
+  if (subject === "science" && questionType === "experiment") return "ai_rubric";
+
+  // English corrections and some comprehension need AI rubric
+  if (subject === "english" && ["reading_comprehension", "grammar"].includes(questionType)) {
+    return "ai_rubric";
+  }
+
+  // Sentence completion gets partial credit
+  if (subject === "english" && questionType === "sentence_completion") return "partial_credit";
+
+  return "exact_match";
+}
+
 export type QuestionType = (typeof questionType)[number];
-export type Question = z.infer<typeof questionSchema>["questions"][number];
-export type PlaygroundQuestions = z.infer<typeof questionSchema>["questions"];
+export type MathQuestion = z.infer<typeof mathQuestionSchema>["questions"][number];
+export type ScienceQuestion = z.infer<typeof scienceQuestionSchema>["questions"][number];
+export type EnglishQuestion = z.infer<typeof englishQuestionSchema>["questions"][number];
+export type Question = MathQuestion | ScienceQuestion | EnglishQuestion;
 
 const createPlaygroundRunInput = z.object({
-  topic: z.enum(["addition", "subtraction", "multiplication", "division"]),
+  subject: z.enum(subjectValues).default("math"),
+  topic: z.string(), // validated against topicsBySubject at runtime
   difficulty: z.enum(["easy", "medium", "hard"]),
   questionCount: z.number().min(1).max(10),
-  maxNumber: z.number().min(10).max(1000),
+  maxNumber: z.number().min(10).max(1000).optional(), // math-only
   locale: z.string().default("en"),
 });
 
 export type CreatePlaygroundRunInput = z.infer<typeof createPlaygroundRunInput>;
 
+// Validate topic against subject
+function validateTopicForSubject(subject: Subject, topic: string): boolean {
+  const validTopics = topicsBySubject[subject] as readonly string[];
+  return validTopics.includes(topic);
+}
+
 const submitAnswerInput = z.object({
   sessionId: z.string().uuid(),
   questionId: z.string().uuid(),
-  userAnswer: z.number(),
+  answer: answerInputSchema, // type-safe per subject
   hintsUsed: z.number().min(0).max(4).default(0),
   timeMs: z.number().min(0).optional(),
 });
@@ -177,6 +272,7 @@ export const playgroundRouter = router({
 
       return {
         id: session.id,
+        subject: session.subject,
         topic: session.topic,
         status: effectiveStatus,
         startedAt: session.startedAt,
@@ -234,6 +330,7 @@ export const playgroundRouter = router({
 
     return pausedSessions.map((session) => ({
       id: session.id,
+      subject: session.subject,
       topic: session.topic,
       startedAt: session.startedAt,
       totalQuestions: session.totalQuestions ?? 0,
@@ -246,8 +343,15 @@ export const playgroundRouter = router({
   createPlaygroundRun: protectedProcedure
     .input(createPlaygroundRunInput)
     .mutation(async ({ input, ctx }) => {
-      const { topic, difficulty, questionCount, maxNumber, locale } = input;
+      const { subject, topic, difficulty, questionCount, maxNumber, locale } = input;
       const userId = ctx.session.user.id;
+
+      // Validate topic for subject
+      if (!validateTopicForSubject(subject, topic)) {
+        throw new Error(
+          `Invalid topic "${topic}" for subject "${subject}". Valid topics: ${topicsBySubject[subject].join(", ")}`
+        );
+      }
 
       // Check if there's already an active session - if so, return it instead of creating a new one
       const existingActiveSession = await db.query.learningSessions.findFirst({
@@ -263,88 +367,34 @@ export const playgroundRouter = router({
         return { sessionId: existingActiveSession.id };
       }
 
-      // Distribute questions across types (roughly equal, with remainder going to word problems)
-      const equationCount = Math.floor(questionCount / 3);
-      const multipleChoiceCount = Math.floor(questionCount / 3);
-      const wordProblemCount = questionCount - equationCount - multipleChoiceCount;
+      // Get subject-specific prompt
+      const prompt = getPromptForSubject({
+        subject,
+        topic,
+        difficulty,
+        questionCount,
+        locale,
+        maxNumber,
+      });
 
-      // Language-specific instructions
-      const languageInstructions =
-        locale === "he"
-          ? `
-**CRITICAL: Generate ALL text content in Hebrew (עברית).**
-- All questionText must be in Hebrew
-- All hints must be in Hebrew
-- Use Hebrew names for children (e.g., דני, מאיה, יוסי, נועה)
-- Keep visual descriptions in English (for image generation)
-- Use natural, child-friendly Hebrew appropriate for a 9-year-old`
-          : `
-**Generate ALL text content in English.**
-- Use English names for children (e.g., Emma, Jack, Sophie, Tom)
-- Keep language simple and clear for a 9-year-old`;
-
-      const prompt = `You are generating a set of ${questionCount} math questions for a 9-year-old child for a **playground app**.
-
-${languageInstructions}
-
-Requirements:
-- Topic: ${topic} (e.g., addition, subtraction, multiplication, division)
-- Difficulty: ${difficulty} (easy, medium, hard)
-- Number of questions: ${questionCount}
-- Each operand (number) in the math problem must be between 1 and ${maxNumber}
-- **CRITICAL: Generate DIVERSE questions with DIFFERENT number combinations!**
-  - Do NOT make all questions have the same answer
-  - Use a wide variety of operands throughout the range (1 to ${maxNumber})
-  - For example with maxNumber=20 and addition: use combinations like 7+5, 13+4, 9+8, 3+11 (varied operands, varied answers)
-  - Avoid repetitive patterns like all sums equaling ${maxNumber}
-
-**Question Type Distribution (mix it up, don't group by type):**
-1. ${wordProblemCount} "word_problem" questions - Fun story problems (e.g., "Emma has 5 stickers. Her friend gives her 3 more. How many stickers does Emma have now?")
-   - Set options to null
-   - ALL word problems MUST have a visualDescription for drag-and-drop interaction
-
-2. ${equationCount} "equation" questions - Simple math equations (e.g., "What is 7 + 4?", "Calculate: 12 - 5 = ?")
-   - Set options to null
-   - Set visualDescription to null
-
-3. ${multipleChoiceCount} "multiple_choice" questions - Questions with 4 answer options to choose from
-   - Provide exactly 4 number options in the options array
-   - One option MUST be the correctAnswer
-   - Other options should be plausible wrong answers (close to correct answer)
-   - Set visualDescription to null
-
-**For ALL questions:**
-- Each question must include 4 hints in this exact order:
-  1. Thinking hint (encourages strategy)
-  2. Visual hint (imagine or draw)
-  3. Step hint (break it down)
-  4. Full explanation
-- Output should be **fun and age-appropriate**
-- Make the questions engaging and encourage learning
-- Keep language simple and clear for a 9-year-old
-
-**For word problems with visuals:**
-- Visual descriptions should be detailed enough to create an illustration (ALWAYS in English)
-- Example: "5 red apples on the left and 3 green apples on the right"
-- Use colorful, kid-friendly objects (apples, stars, balloons, toys, animals)
-
-Important: 
-- The correctAnswer should be the numerical answer to the math problem
-- Shuffle/mix the question types - don't put all of one type together`;
+      // Get subject-specific question schema
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const questionSchema = getQuestionSchemaForSubject(subject) as any;
 
       const result = await generateObject({
-        model: "anthropic/claude-sonnet-4.5",
+        model: "anthropic/claude-sonnet-4-20250514",
         schema: zodSchema(questionSchema),
         prompt,
       });
 
-      const generatedQuestions = result.object.questions;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const generatedQuestions = (result.object as any).questions as Question[];
 
       // Generate images for questions with visual descriptions (in parallel)
       const questionsWithImages = await Promise.all(
         generatedQuestions.map(async (q) => {
           if (q.visualDescription) {
-            const imageUrl = await generateImageFromDescription(q.visualDescription);
+            const imageUrl = await generateImageFromDescription(q.visualDescription, subject);
             return { ...q, imageUrl };
           }
           return { ...q, imageUrl: null };
@@ -357,6 +407,7 @@ Important:
         .values({
           userId,
           mode: "playground",
+          subject,
           topic,
           totalQuestions: questionCount,
           currentQuestionIndex: 0,
@@ -370,9 +421,11 @@ Important:
       // Save the generated questions to the database
       const questionRecords = questionsWithImages.map((q, index) => ({
         sessionId: session.id,
+        subject,
         type: q.type,
         topic,
         difficulty,
+        evaluationStrategy: getEvaluationStrategy(subject, q.type),
         questionText: q.questionText,
         correctAnswer: q.correctAnswer,
         // Ensure nullable fields are explicitly null, not undefined
@@ -483,6 +536,7 @@ Important:
       session: {
         id: session.id,
         mode: session.mode,
+        subject: session.subject,
         topic: session.topic,
         status: session.status,
         startedAt: session.startedAt,
@@ -517,7 +571,7 @@ Important:
   }),
 
   submitAnswer: protectedProcedure.input(submitAnswerInput).mutation(async ({ input, ctx }) => {
-    const { sessionId, questionId, userAnswer, hintsUsed, timeMs } = input;
+    const { sessionId, questionId, answer: answerInput, hintsUsed, timeMs } = input;
     const userId = ctx.session.user.id;
 
     // Verify the session belongs to the user and get current score
@@ -541,14 +595,36 @@ Important:
       throw new Error("Question not found");
     }
 
-    const isCorrect = userAnswer === question.correctAnswer;
+    // Verify subject matches
+    if (answerInput.subject !== question.subject) {
+      throw new Error(
+        `Answer subject "${answerInput.subject}" doesn't match question subject "${question.subject}"`
+      );
+    }
 
-    // Calculate score for this question
+    // Evaluate the answer using the appropriate strategy
+    const evaluationResult = await evaluateAnswer({
+      strategy: question.evaluationStrategy as EvaluationStrategy,
+      subject: question.subject as Subject,
+      questionText: question.questionText,
+      correctAnswer: question.correctAnswer as MathAnswer | ScienceAnswer | EnglishAnswer,
+      userAnswer: answerInput.answer,
+    });
+
+    const { isCorrect, score: evaluationScore, feedback } = evaluationResult;
+
+    // Calculate score for this question (using evaluation score for partial credit)
     const questionScore = calculateQuestionScore({
       isCorrect,
       hintsUsed,
       difficulty: question.difficulty,
     });
+
+    // For partial credit, scale the question score by the evaluation score
+    const adjustedQuestionScore =
+      evaluationScore < 100 && evaluationScore > 0
+        ? Math.round(questionScore * (evaluationScore / 100))
+        : questionScore;
 
     // Insert the answer
     const [answer] = await db
@@ -556,8 +632,10 @@ Important:
       .values({
         sessionId,
         questionId,
-        userAnswer,
+        userAnswer: answerInput.answer,
         isCorrect,
+        score: evaluationScore,
+        feedback,
         hintsUsed,
         timeMs,
       })
@@ -567,7 +645,7 @@ Important:
     const nextIndex = (session.currentQuestionIndex ?? 0) + 1;
     const totalQuestions = session.totalQuestions ?? 0;
     const isSessionComplete = nextIndex >= totalQuestions;
-    const currentSessionScore = (session.score ?? 0) + questionScore;
+    const currentSessionScore = (session.score ?? 0) + adjustedQuestionScore;
 
     // Calculate final session score with accuracy multiplier if complete
     let finalSessionScore = currentSessionScore;
@@ -621,10 +699,12 @@ Important:
     return {
       answerId: answer?.id,
       isCorrect,
+      evaluationScore,
+      feedback,
       correctAnswer: question.correctAnswer,
       nextQuestionIndex: nextIndex,
       isSessionComplete,
-      questionScore,
+      questionScore: adjustedQuestionScore,
       sessionScore: finalSessionScore,
     };
   }),

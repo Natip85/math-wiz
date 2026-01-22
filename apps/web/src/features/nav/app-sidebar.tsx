@@ -83,7 +83,7 @@ export function AppSidebar({ children, ...props }: React.ComponentProps<typeof S
               priority
             />
             <Image
-              src="/dark-logo.png"
+              src="/logo.png"
               alt="Math Wiz Logo"
               width={50}
               height={50}
@@ -108,7 +108,7 @@ export function AppSidebar({ children, ...props }: React.ComponentProps<typeof S
               priority
             />
             <Image
-              src="/dark-logo.png"
+              src="/logo.png"
               alt="Math Wiz Logo"
               width={50}
               height={50}

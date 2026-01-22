@@ -98,6 +98,12 @@
   },
   "PlaygroundConfigForm": {
     "generating": "Génération de votre défi...",
+    "subject": {
+      "label": "Matière",
+      "math": "Mathématiques",
+      "science": "Sciences",
+      "english": "Anglais"
+    },
     "difficulty": {
       "label": "Difficulté",
       "easy": "Facile",
@@ -110,7 +116,18 @@
       "addition": "Addition",
       "subtraction": "Soustraction",
       "multiplication": "Multiplication",
-      "division": "Division"
+      "division": "Division",
+      "plants": "Plantes",
+      "animals": "Animaux",
+      "forces": "Forces",
+      "matter": "Matière",
+      "weather": "Météo",
+      "solar_system": "Système Solaire",
+      "grammar": "Grammaire",
+      "spelling": "Orthographe",
+      "reading_comprehension": "Compréhension",
+      "vocabulary": "Vocabulaire",
+      "punctuation": "Ponctuation"
     },
     "maxNumber": {
       "label": "Nombre Maximum",
@@ -184,7 +201,14 @@
     "questionType": {
       "word_problem": "Problème Écrit",
       "equation": "Équation",
-      "multiple_choice": "Choix Multiple"
+      "multiple_choice": "Choix Multiple",
+      "fact": "Vrai/Faux",
+      "experiment": "Expérience",
+      "diagram_label": "Diagramme",
+      "grammar": "Grammaire",
+      "reading_comprehension": "Compréhension",
+      "spelling": "Orthographe",
+      "sentence_completion": "Compléter"
     },
     "points": "pts",
     "resume": "Reprendre",
@@ -323,5 +347,15 @@
       "updating": "Mise à jour...",
       "updateProfile": "Mettre à Jour le Profil"
     }
+  },
+  "QuestionUI": {
+    "true": "Vrai",
+    "false": "Faux",
+    "submit": "Soumettre",
+    "checking": "Vérification...",
+    "enterAnswer": "Entrez votre réponse",
+    "enterNumber": "Entrez votre réponse",
+    "selectOption": "Sélectionnez une option",
+    "noOptions": "Aucune option disponible"
   }
 }

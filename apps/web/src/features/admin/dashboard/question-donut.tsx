@@ -73,7 +73,7 @@ export function QuestionDonut() {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="mt-4 flex justify-center gap-4 p-0">
+      <CardFooter className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 p-0">
         {data.map((item) => (
           <div key={item.name} className="flex items-center gap-2">
             <div className="size-2 rounded-full" style={{ backgroundColor: item.color }} />

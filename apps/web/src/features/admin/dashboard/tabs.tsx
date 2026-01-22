@@ -101,7 +101,7 @@ export function AdminDashboardTabs() {
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col gap-0">
-      <div className="px-6">
+      <div className="bg-background sticky top-0 z-10 px-6 py-2">
         <div className="mx-auto max-w-[1600px]">
           <TabsList>
             {tabs.map((tab) => (

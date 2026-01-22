@@ -263,15 +263,35 @@ export const adminRouter = router({
 
   getQuestionTypeStats: protectedProcedure.query(async () => {
     const typeLabels: Record<string, string> = {
+      // Math types
       word_problem: "Word Problems",
       equation: "Equations",
       multiple_choice: "Multiple Choice",
+      // Science types
+      fact: "Facts",
+      experiment: "Experiments",
+      diagram_label: "Diagram Labels",
+      // English types
+      grammar: "Grammar",
+      reading_comprehension: "Reading Comprehension",
+      spelling: "Spelling",
+      sentence_completion: "Sentence Completion",
     };
 
     const typeColors: Record<string, string> = {
+      // Math types
       word_problem: "var(--chart-1)",
       equation: "var(--chart-2)",
       multiple_choice: "var(--chart-3)",
+      // Science types
+      fact: "var(--chart-4)",
+      experiment: "var(--chart-5)",
+      diagram_label: "var(--chart-1)",
+      // English types
+      grammar: "var(--chart-2)",
+      reading_comprehension: "var(--chart-3)",
+      spelling: "var(--chart-4)",
+      sentence_completion: "var(--chart-5)",
     };
 
     const results = await db
@@ -291,12 +311,26 @@ export const adminRouter = router({
 
   getTopicPerformance: protectedProcedure.query(async () => {
     const topicColors: Record<string, string> = {
+      // Math topics
       addition: "bg-chart-1",
       subtraction: "bg-chart-2",
       multiplication: "bg-chart-3",
       division: "bg-chart-4",
       fractions: "bg-chart-5",
       decimals: "bg-chart-1",
+      // Science topics
+      plants: "bg-chart-2",
+      animals: "bg-chart-3",
+      forces: "bg-chart-4",
+      matter: "bg-chart-5",
+      weather: "bg-chart-1",
+      solar_system: "bg-chart-2",
+      // English topics
+      grammar: "bg-chart-3",
+      spelling: "bg-chart-4",
+      reading_comprehension: "bg-chart-5",
+      vocabulary: "bg-chart-1",
+      punctuation: "bg-chart-2",
     };
 
     // Get question counts by topic
@@ -382,12 +416,18 @@ export const adminRouter = router({
       bucketCounts.length > 0
         ? bucketCounts.reduce((max, b) => (b.count > max.count ? b : max))
         : null;
+
+    // Helper to format hour as "H:00 AM/PM"
+    const formatHour = (hour: number): string => {
+      const h = hour % 24;
+      if (h === 0) return "12:00 AM";
+      if (h === 12) return "12:00 PM";
+      if (h < 12) return `${h}:00 AM`;
+      return `${h - 12}:00 PM`;
+    };
+
     const peakHourLabel = peakBucket
-      ? `${hourLabels[peakBucket.hour]?.replace("AM", ":00 AM").replace("PM", ":00 PM")} - ${
-          peakBucket.hour + 1 > 12
-            ? `${peakBucket.hour + 1 - 12}:00 PM`
-            : `${peakBucket.hour + 1}:00 AM`
-        }`
+      ? `${formatHour(peakBucket.hour)} - ${formatHour(peakBucket.hour + 3)}`
       : "N/A";
 
     return {

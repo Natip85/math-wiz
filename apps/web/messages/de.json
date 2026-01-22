@@ -98,6 +98,12 @@
   },
   "PlaygroundConfigForm": {
     "generating": "Deine Herausforderung wird erstellt...",
+    "subject": {
+      "label": "Fach",
+      "math": "Mathematik",
+      "science": "Wissenschaft",
+      "english": "Englisch"
+    },
     "difficulty": {
       "label": "Schwierigkeit",
       "easy": "Leicht",
@@ -110,7 +116,18 @@
       "addition": "Addition",
       "subtraction": "Subtraktion",
       "multiplication": "Multiplikation",
-      "division": "Division"
+      "division": "Division",
+      "plants": "Pflanzen",
+      "animals": "Tiere",
+      "forces": "Kräfte",
+      "matter": "Materie",
+      "weather": "Wetter",
+      "solar_system": "Sonnensystem",
+      "grammar": "Grammatik",
+      "spelling": "Rechtschreibung",
+      "reading_comprehension": "Leseverständnis",
+      "vocabulary": "Wortschatz",
+      "punctuation": "Zeichensetzung"
     },
     "maxNumber": {
       "label": "Maximale Zahl",
@@ -184,7 +201,14 @@
     "questionType": {
       "word_problem": "Textaufgabe",
       "equation": "Gleichung",
-      "multiple_choice": "Multiple Choice"
+      "multiple_choice": "Multiple Choice",
+      "fact": "Wahr/Falsch",
+      "experiment": "Experiment",
+      "diagram_label": "Diagramm",
+      "grammar": "Grammatik",
+      "reading_comprehension": "Leseverständnis",
+      "spelling": "Rechtschreibung",
+      "sentence_completion": "Lückentext"
     },
     "points": "Pkt",
     "resume": "Fortsetzen",
@@ -323,5 +347,15 @@
       "updating": "Aktualisierung...",
       "updateProfile": "Profil Aktualisieren"
     }
+  },
+  "QuestionUI": {
+    "true": "Wahr",
+    "false": "Falsch",
+    "submit": "Absenden",
+    "checking": "Überprüfung...",
+    "enterAnswer": "Gib deine Antwort ein",
+    "enterNumber": "Gib deine Antwort ein",
+    "selectOption": "Wähle eine Option",
+    "noOptions": "Keine Optionen verfügbar"
   }
 }

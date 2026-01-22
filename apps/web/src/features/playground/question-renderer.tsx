@@ -1,12 +1,16 @@
 "use client";
 
 import type { AppRouter } from "@math-wiz/api/routers/index";
-import type { QuestionType } from "@math-wiz/api/routers/playground";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { ComponentType } from "react";
+
+import type { Subject } from "./hooks/use-submit-answer";
 import { WordProblem } from "./word-problem";
-import { MultipleChoice } from "./multiple-chioce";
+import { MathMultipleChoice } from "./math-multiple-choice";
 import { Equation } from "./equation";
+import { TrueFalse } from "./true-false";
+import { TextAnswer } from "./text-answer";
+import { ChoiceQuestion } from "./choice-question";
 
 export type RouterOutput = inferRouterOutputs<AppRouter>;
 type PlaygroundQuestion = NonNullable<RouterOutput["playground"]["getById"]>["currentQuestion"];
@@ -14,39 +18,100 @@ type PlaygroundQuestion = NonNullable<RouterOutput["playground"]["getById"]>["cu
 export type QuestionComponentProps = {
   question: NonNullable<PlaygroundQuestion>;
   sessionId: string;
+  subject: Subject;
   isFetching?: boolean;
 };
 
-const WordProblemQuestion = ({ question, sessionId, isFetching }: QuestionComponentProps) => (
-  <WordProblem question={question} sessionId={sessionId} isFetching={isFetching} />
-);
+// All question types from the database schema
+type QuestionType =
+  | "equation"
+  | "word_problem"
+  | "multiple_choice"
+  | "fact"
+  | "experiment"
+  | "diagram_label"
+  | "grammar"
+  | "reading_comprehension"
+  | "spelling"
+  | "sentence_completion";
 
-const EquationQuestion = ({ question, sessionId, isFetching }: QuestionComponentProps) => (
-  <Equation question={question} sessionId={sessionId} isFetching={isFetching} />
-);
+// Question type to component mapping
+// Note: multiple_choice needs special handling based on subject
+const questionComponents: Record<
+  Exclude<QuestionType, "multiple_choice">,
+  ComponentType<QuestionComponentProps>
+> = {
+  // Math components
+  equation: Equation,
+  word_problem: WordProblem,
 
-const MultipleChoiceQuestion = ({ question, sessionId, isFetching }: QuestionComponentProps) => (
-  <MultipleChoice question={question} sessionId={sessionId} isFetching={isFetching} />
-);
+  // Science components
+  fact: TrueFalse,
+  experiment: TextAnswer,
+  diagram_label: ChoiceQuestion,
 
-const questionComponents: Record<QuestionType, ComponentType<QuestionComponentProps>> = {
-  word_problem: WordProblemQuestion,
-  equation: EquationQuestion,
-  multiple_choice: MultipleChoiceQuestion,
+  // English components
+  grammar: ChoiceQuestion,
+  reading_comprehension: ChoiceQuestion,
+  spelling: ChoiceQuestion,
+  sentence_completion: TextAnswer,
 };
 
 type QuestionRendererProps = {
   question: NonNullable<PlaygroundQuestion>;
   sessionId: string;
+  subject: Subject;
   isFetching?: boolean;
 };
 
-export function QuestionRenderer({ question, sessionId, isFetching }: QuestionRendererProps) {
-  const Component = questionComponents[question.type];
-
-  if (!Component) {
-    return <div>Unknown question type: {question.type}</div>;
+export function QuestionRenderer({
+  question,
+  sessionId,
+  subject,
+  isFetching,
+}: QuestionRendererProps) {
+  // Special handling for multiple_choice which differs by subject
+  if (question.type === "multiple_choice") {
+    // Math uses numeric multiple choice, others use string-based choice
+    if (subject === "math") {
+      return (
+        <MathMultipleChoice
+          question={question}
+          sessionId={sessionId}
+          subject={subject}
+          isFetching={isFetching}
+        />
+      );
+    } else {
+      return (
+        <ChoiceQuestion
+          question={question}
+          sessionId={sessionId}
+          subject={subject}
+          isFetching={isFetching}
+        />
+      );
+    }
   }
 
-  return <Component question={question} sessionId={sessionId} isFetching={isFetching} />;
+  const Component = questionComponents[question.type as Exclude<QuestionType, "multiple_choice">];
+
+  if (!Component) {
+    return (
+      <div className="p-4 text-center">
+        <p className="text-muted-foreground">
+          Unknown question type: <code>{question.type}</code>
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <Component
+      question={question}
+      sessionId={sessionId}
+      subject={subject}
+      isFetching={isFetching}
+    />
+  );
 }
