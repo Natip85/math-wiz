@@ -17,7 +17,11 @@
         "SENDER_EMAIL",
         "AI_GATEWAY_API_KEY",
         "AI_GATEWAY_BASE_URL",
-        "NODE_ENV"
+        "NODE_ENV",
+        "STYTCH_PROJECT_ID",
+        "STYTCH_SECRET",
+        "API_PORT",
+        "APIS_PUBLIC_BASE_URL"
       ]
     },
     "lint": {

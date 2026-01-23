@@ -23,6 +23,7 @@
     "dotenv": "catalog:",
     "drizzle-orm": "^0.45.1",
     "next": "catalog:",
+    "stytch": "^12.43.1",
     "zod": "catalog:"
   },
   "devDependencies": {

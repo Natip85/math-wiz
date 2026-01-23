@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 import type { NavigationItems } from "./nav-types";
 import { NavMain } from "./nav-main";
-import { ChevronsLeft, ChevronsRight, LayoutDashboard, Users2 } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, Key, LayoutDashboard, Users2 } from "lucide-react";
 import { AdminNavUser } from "./admin-nav-user";
 
 const data: NavigationItems = {
@@ -32,6 +32,11 @@ const data: NavigationItems = {
       title: "Users",
       url: "/admin/users",
       icon: Users2 as React.ComponentType,
+    },
+    {
+      title: "API Clients",
+      url: "/admin/api-clients",
+      icon: Key as React.ComponentType,
     },
   ],
   footerItems: [

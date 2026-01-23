@@ -14,6 +14,8 @@ export const env = createEnv({
     AI_GATEWAY_BASE_URL: z.string().url().optional(),
     RESEND_API_KEY: z.string().min(1),
     SENDER_EMAIL: z.string().email(),
+    STYTCH_PROJECT_ID: z.string().min(1),
+    STYTCH_SECRET: z.string().min(1),
     NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   },
   runtimeEnv: process.env,

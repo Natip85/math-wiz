@@ -36,3 +36,8 @@ export const trpc = createTRPCOptionsProxy<AppRouter>({
 export function useTRPC() {
   return trpc;
 }
+
+// Hook for accessing the raw tRPC client (for mutations in client components)
+export function useTRPCClient() {
+  return trpcClient;
+}
