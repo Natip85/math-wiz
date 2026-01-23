@@ -8,7 +8,7 @@ import { adminProcedure, router } from "../index";
 const stytchClient = new stytch.B2BClient({
   project_id: env.STYTCH_PROJECT_ID,
   secret: env.STYTCH_SECRET,
-  env: env.NODE_ENV === "production" ? stytch.envs.live : stytch.envs.test,
+  env: stytch.envs.test,
 });
 
 // Available scopes that can be assigned to clients
